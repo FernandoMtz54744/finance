@@ -1,0 +1,21 @@
+.agrega-tarjeta-form{
+    background-color: var(--main-color);
+    margin: 3rem 3rem 0px 3rem;
+    color: whitesmoke;
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.agrega-tarjeta-form div{
+    padding: 1rem;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+}
+
+.agrega-tarjeta-form input{
+    border: none;
+    outline: inherit;
+}

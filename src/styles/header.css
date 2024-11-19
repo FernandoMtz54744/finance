@@ -1,0 +1,36 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--main-color);
+    height: 3rem;
+    color: whitesmoke;
+    font-size: medium;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.login-button:hover{
+    cursor: pointer;
+}
+
+.auth-menu{
+    display: flex;
+    flex-direction: row;
+}
+
+.auth-menu div{
+    padding-right: 1rem;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-image{
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 100%;
+}

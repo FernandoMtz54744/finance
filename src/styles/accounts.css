@@ -1,0 +1,21 @@
+.accounts-container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 3rem;
+}
+
+.account-card{  
+    height: 5rem;
+    border-radius: 10px;
+    padding: 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.account-card:hover{
+    cursor: pointer;
+    background-color: var(--third-color);
+}

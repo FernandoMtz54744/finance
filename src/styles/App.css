@@ -1,0 +1,56 @@
+/*https://colorhunt.co/palette/16423c6a9c89c4dad2e9efec*/
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Rubik&family=Titillium+Web&display=swap');
+
+:root{
+    --main-color: #16423C;
+    --secondary-color: #6A9C89;
+    --third-color: #C4DAD2;
+}
+
+body{
+    margin: 0;
+    font-family: "Funnel Display", sans-serif;
+}
+
+a{
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.agregar-button{
+    background-color: var(--main-color);
+    height: 3rem;
+    width: 3rem;
+    border-radius: 100%;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size:2rem;
+    font-weight: 200;
+
+}
+
+.back-button{
+    background-color: var(--main-color);
+    color: whitesmoke;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 3rem;
+    bottom: 0.5rem;
+    z-index: 20;
+}
+
+.back-button:hover{
+    cursor: pointer;
+}
