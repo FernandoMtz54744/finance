@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import Movimientos from '../pages/tarjetas/Movimientos'
-import { doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase.config';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import AgregarDocumento from '../pages/tarjetas/AgregarDocumento';
 
 export default function MovimientosContainer() {
   const { idPeriodo } = useParams();
   const [movimientos, setMovimientos] = useState([]);
-  const formInicial = {fecha:"",cantidad: "",motivo: ""}
-  const [formAbono, setFormAbono] = useState(formInicial)
-  const [formCargo, setFormCargo] = useState(formInicial)
+  const [formMovimiento, setFormMovimiento] = useState({abono:{fecha:"",cantidad: "",motivo: "", metodo:"transferencia"}, cargo:{fecha:"",cantidad: "",motivo: "", metodo:"transferencia"}})
   const [modalDocumento, setModalDocument] = useState(false);
   const [linkDocumento, setLinkDocumento] = useState("");
+  const [searchParams] = useSearchParams();
 
   useEffect(()=>{
       const unsuscribe =  onSnapshot(doc(db, "Movimientos", idPeriodo), (snapshot) =>{
@@ -24,41 +23,28 @@ export default function MovimientosContainer() {
         alert("Error al consultar los movimientos");
         console.log(error)
       });
+
     return ()=> unsuscribe();
-  }, [idPeriodo])
+  }, [idPeriodo, searchParams])
 
-  const handleChangeAbono = (e) =>{
-    setFormAbono({...formAbono, [e.target.name]: e.target.value})
-  }
-
-  const handleChangeCargo = (e) =>{
-    setFormCargo({...formCargo, [e.target.name]: e.target.value})
-  }
-
-  const agregaAbono = ()=>{
+  const agregaMovimiento = (tipo)=>{
     const data = {
-      ...formAbono,
-      id: Date.now(),
-      cantidad: Number(formAbono.cantidad),
-      tipo: "abono"
+      ...formMovimiento[tipo],
+      cantidad: Number(formMovimiento[tipo].cantidad),
+      tipo: tipo,
+      id: Date.now()
     }
     setMovimientos([...movimientos, data]);
-    setFormAbono(formInicial)
+    setFormMovimiento({...formMovimiento, [tipo]:{fecha:searchParams.get("initial"),cantidad: "",motivo: "", tipo:"", metodo:formMovimiento[tipo].metodo}})
+    
   }
 
-  const agregaCargo = ()=>{
-    const data = {
-      ...formCargo,
-      id: Date.now(),
-      cantidad: Number(formCargo.cantidad),
-      tipo: "cargo"
-    }
-    setMovimientos([...movimientos, data]);
-    setFormCargo(formInicial);
-  }
+  const handleChangeForm = (e, tipo)=>{
+    setFormMovimiento({...formMovimiento, [tipo]:{...formMovimiento[tipo], [e.target.name]:e.target.value}})
+  } 
 
   const eliminaMovimiento = (id) =>{
-    const data = movimientos.filter(movimiento => movimiento.id != id);
+    const data = movimientos.filter(movimiento => movimiento.id !== id);
     setMovimientos(data);
   }
 
@@ -106,20 +92,30 @@ export default function MovimientosContainer() {
 
   }
 
+  const handleKeyDownForm = (e, tipo) =>{
+    if(e.key === 'Enter') {
+      e.preventDefault();
+      agregaMovimiento(tipo);
+    }
+  }
+
   return (
     <>
-      <Movimientos movimientos={movimientos} 
-      formAbono={formAbono} formCargo={formCargo} 
-      handleChangeAbono={handleChangeAbono} handleChangeCargo={handleChangeCargo}
-      agregaAbono={agregaAbono} agregaCargo={agregaCargo}
+      <Movimientos movimientos={movimientos}
+      formMovimiento={formMovimiento} 
+      agregaMovimiento = {agregaMovimiento}
+      handleChangeForm = {handleChangeForm}
+      handleKeyDownForm = {handleKeyDownForm}
       actualizaMovimientos={actualizaMovimientos}
       eliminaMovimiento = {eliminaMovimiento}
       toggleModal={toggleModal}
+      initial = {searchParams.get("initial")}
+      final = {searchParams.get("final")}
       />
       {modalDocumento?(
         <>
           <AgregarDocumento linkDocumento={linkDocumento} handleLinkDocumento={handleLinkDocumento} agregaDocumento={agregaDocumento}/>
-          <div className="overlay"></div>
+          <div className="overlay" onClick={()=>setModalDocument(false)}></div>
         </>
         ):
         ("")

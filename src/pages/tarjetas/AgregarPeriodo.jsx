@@ -6,7 +6,7 @@ export default function AgregarPeriodo({form, handleChange, handleSubmit}) {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="alias">Nombre del periodo: </label>
-          <input type="text" name='alias' id='alias' value={form.alias} onChange={handleChange}/>
+          <input type="text" name='alias' id='alias' value={form.alias} onChange={handleChange} autoComplete='off'/>
         </div>
         <div>
           <label htmlFor="fechaInicio">Fecha de incio</label>

@@ -7,11 +7,7 @@ export default function AgregarTarjeta({form, handleChange, handleSubmit}) {
         <form className='agrega-tarjeta-form' onSubmit={handleSubmit}>
             <div>
                 <label htmlFor="alias">Alias</label>
-                <input type="text" name='alias' id='alias' value={form.alias} onChange={handleChange}/>
-            </div>
-            <div>
-                <label htmlFor="fechaInicio">Fecha de incio</label>
-                <input type="date" name='fechaInicio' id='fechaInicio' value={form.fechaInicio} onChange={handleChange}/>
+                <input type="text" name='alias' id='alias' value={form.alias} onChange={handleChange} autoComplete='off'/>
             </div>
             <div>
                 <label htmlFor="fechaCorte">Fecha de corte</label>

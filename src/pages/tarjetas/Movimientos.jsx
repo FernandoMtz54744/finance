@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faFile, faArrowLeft} from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from 'react-router-dom';
 
-export default function Movimientos({movimientos, formAbono, formCargo, 
-          handleChangeAbono, handleChangeCargo, agregaAbono, agregaCargo, 
-          actualizaMovimientos, eliminaMovimiento, toggleModal}) {
-
+export default function Movimientos({movimientos,
+          formMovimiento,agregaMovimiento,handleChangeForm,handleKeyDownForm,
+          actualizaMovimientos, eliminaMovimiento, toggleModal, 
+          initial, final}) {
 
   const navigate = useNavigate();
 
@@ -22,28 +22,37 @@ export default function Movimientos({movimientos, formAbono, formCargo,
         <div className='abonos-container'>
         <div className='tipo-movimiento-title'>Abonos</div>
           <table>
-            <thead><tr><th>Fecha</th><th>Cantidad</th><th>Motivo</th><th></th></tr></thead>
+            <thead><tr><th>Fecha</th><th>Cantidad</th><th>Motivo</th><th>Método</th><th></th></tr></thead>
             <tbody>
             <tr>
-              <td>
-                <input type="date" name='fecha' value={formAbono.fecha} onChange={handleChangeAbono} className='input-table' />
-              </td>
-              <td>
-                <input type="number" name='cantidad' value={formAbono.cantidad} onChange={handleChangeAbono} className='input-table'/>
-              </td>
-              <td>
-                <input type="text" name='motivo' value={formAbono.motivo} onChange={handleChangeAbono} className='input-table'/>
-              </td>
-              <td>
-                <button onClick={agregaAbono} className='table-agregar-button'>Agregar</button>
-              </td>
+                <td>
+                  <input type="date" name='fecha' value={formMovimiento.abono.fecha} onChange={(e)=>handleChangeForm(e, "abono")} 
+                  className='input-table' onKeyDown={(e)=>handleKeyDownForm(e, "abono")} 
+                  min={initial} max={final} defaultValue={initial}/>
+                </td>
+                <td>
+                  <input type="number" name='cantidad' value={formMovimiento.abono.cantidad} onChange={(e)=>handleChangeForm(e, "abono")}  className='input-table cantidad-input' onKeyDown={(e)=>handleKeyDownForm(e, "abono")} />
+                </td>
+                <td>
+                  <input type="text" name='motivo' value={formMovimiento.abono.motivo} onChange={(e)=>handleChangeForm(e, "abono")}  className='input-table' autoComplete='off' onKeyDown={(e)=>handleKeyDownForm(e, "abono")} />
+                </td>
+                <td>
+                  <select name="metodo" id="metodo" value={formMovimiento.abono.metodo} onChange={(e)=>handleChangeForm(e, "abono")} className='select-metodo'>
+                    <option value="transferencia">Transferencia</option>
+                    <option value="efectivo">Efectivo</option>
+                  </select>
+                </td>
+                <td>
+                  <button onClick={()=>agregaMovimiento("abono")} className='table-agregar-button'>Agregar</button>
+                </td>
             </tr>
             {movimientos && movimientos.filter(movimiento => movimiento.tipo === "abono").map((movimiento,i) => {
             return(
               <tr key={i}>
                 <td>{movimiento.fecha}</td>
                 <td>${Number(movimiento.cantidad).toLocaleString('en', numberFormatOption)}</td>
-                <td>{movimiento.motivo}</td>
+                <td className='motivo-movimiento'>{movimiento.motivo}</td>
+                <td className='motivo-movimiento'>{movimiento.metodo}</td>
                 <td><div className='table-eliminar-button' onClick={()=>eliminaMovimiento(movimiento.id)}>Eliminar</div></td>
               </tr>
             )
@@ -66,20 +75,29 @@ export default function Movimientos({movimientos, formAbono, formCargo,
           <div className='tipo-movimiento-title'>Cargos</div>
          
           <table>
-            <thead><tr><th>Fecha</th><th>Cantidad</th><th>Motivo</th><th></th></tr></thead>
+            <thead><tr><th>Fecha</th><th>Cantidad</th><th>Motivo</th><th>Método</th><th></th></tr></thead>
             <tbody>
             <tr>
               <td>
-                <input type="date" name='fecha' value={formCargo.fecha} onChange={handleChangeCargo} className='input-table'/>
+                <input type="date" name='fecha' value={formMovimiento.cargo.fecha} onChange={(e)=>handleChangeForm(e, "cargo")}  
+                className='input-table' onKeyDown={(e)=>handleKeyDownForm(e, "cargo")} 
+                min={initial} max={final} defaultValue={initial}
+                />
               </td>
               <td>
-                <input type="number" name='cantidad' value={formCargo.cantidad} onChange={handleChangeCargo} className='input-table'/>
+                <input type="number" name='cantidad' value={formMovimiento.cargo.cantidad} onChange={(e)=>handleChangeForm(e, "cargo")} className='input-table cantidad-input' onKeyDown={(e)=>handleKeyDownForm(e, "cargo")} />
               </td>
               <td>
-                <input type="text" name='motivo' value={formCargo.motivo} onChange={handleChangeCargo} className='input-table'/>
+                <input type="text" name='motivo' value={formMovimiento.cargo.motivo} onChange={(e)=>handleChangeForm(e, "cargo")} className='input-table' autoComplete='off' onKeyDown={(e)=>handleKeyDownForm(e, "cargo")} />
               </td>
               <td>
-                <button onClick={agregaCargo} className='table-agregar-button'>Agregar</button>
+                  <select name="metodo" id="metodo" value={formMovimiento.cargo.metodo} onChange={(e)=>handleChangeForm(e, "cargo")} className='select-metodo'>
+                    <option value="transferencia">Transferencia</option>
+                    <option value="efectivo">Efectivo</option>
+                  </select>
+                </td>
+              <td>
+                <button onClick={()=>agregaMovimiento("cargo")} className='table-agregar-button'>Agregar</button>
               </td>
             </tr>  
             {movimientos && movimientos.filter(movimiento => movimiento.tipo === "cargo").map((movimiento,i) => {
@@ -87,7 +105,8 @@ export default function Movimientos({movimientos, formAbono, formCargo,
               <tr key={i}>
                 <td>{movimiento.fecha}</td>
                 <td>${Number(movimiento.cantidad).toLocaleString('en', numberFormatOption)}</td>
-                <td>{movimiento.motivo}</td>
+                <td className='motivo-movimiento'>{movimiento.motivo}</td>
+                <td className='motivo-movimiento'>{movimiento.metodo}</td>
                 <td><div className='table-eliminar-button' onClick={()=>eliminaMovimiento(movimiento.id)}>Eliminar</div></td>
               </tr>
             )

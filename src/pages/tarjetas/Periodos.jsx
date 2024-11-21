@@ -7,7 +7,7 @@ export default function Periodos({periodos, idTarjeta, user}) {
     <div className='periodos-container'>
         {periodos.filter(periodo => periodo.idTarjeta === idTarjeta).map((periodo,i) =>{
             return(
-                <Link className='periodo-card' to={`/movimientos/${periodo.idPeriodo}`} key={i}>
+                <Link className='periodo-card' to={`/movimientos/${periodo.idPeriodo}?initial=${periodo.fechaInicio}&final=${periodo.fechaCorte}`} key={i}>
                     <div className='alias'>{periodo.alias}</div>
                     <div className='fecha'>Fecha de inicio: {periodo.fechaInicio}</div>
                     <div className='fecha'>Fecha de corte: {periodo.fechaCorte}</div>

@@ -9,7 +9,6 @@ export default function AgregarTarjetaContainer() {
     const context = useAuth();  
     const [form, setForm] = useState({
         alias:"",
-        fechaInicio: "",
         fechaCorte:"",
         color:"",
         tipo:""
