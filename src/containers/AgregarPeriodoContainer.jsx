@@ -13,6 +13,7 @@ export default function AgregarPeriodoContainer() {
       alias:"",
       fechaInicio: "",
       fechaCorte:"",
+      saldoInicial: 0
   });
 
   const handleChange = (e)=>{
@@ -23,6 +24,7 @@ export default function AgregarPeriodoContainer() {
     const data = {
       idUsuario: context.user.uid,
       idTarjeta: idTarjeta,
+      saldoFinal: form.saldoInicial,
       ...form
     }
     addDoc(collection(db, "Periodos"), data).then((response) => {

@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react'
 import Movimientos from '../pages/tarjetas/Movimientos'
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase.config';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import AgregarDocumento from '../pages/tarjetas/AgregarDocumento';
 
 export default function MovimientosContainer() {
   const { idPeriodo } = useParams();
+  const {periodo} = useLocation().state;
   const [movimientos, setMovimientos] = useState([]);
-  const [formMovimiento, setFormMovimiento] = useState({abono:{fecha:"",cantidad: "",motivo: "", metodo:"transferencia"}, cargo:{fecha:"",cantidad: "",motivo: "", metodo:"transferencia"}})
+  const [formMovimiento, setFormMovimiento] = useState({abono:{fecha:"",cantidad: "",motivo: "", metodo:"Transferencia"}, cargo:{fecha:"",cantidad: "",motivo: "", metodo:"Transferencia"}})
   const [modalDocumento, setModalDocument] = useState(false);
   const [linkDocumento, setLinkDocumento] = useState("");
-  const [searchParams] = useSearchParams();
+  const [total, setTotal] = useState({totalAbono: 0, totalCargo: 0, totalPeriodo: 0, saldoFinal: 0});
 
   useEffect(()=>{
       const unsuscribe =  onSnapshot(doc(db, "Movimientos", idPeriodo), (snapshot) =>{
@@ -23,9 +24,24 @@ export default function MovimientosContainer() {
         alert("Error al consultar los movimientos");
         console.log(error)
       });
+      setFormMovimiento({abono:{fecha:periodo.fechaInicio,cantidad: "",motivo: "", metodo:"Transferencia"}, cargo:{fecha:periodo.fechaInicio,cantidad: "",motivo: "", metodo:"Transferencia"}})
+      
+      return ()=> unsuscribe();
+  }, [idPeriodo, periodo])
 
-    return ()=> unsuscribe();
-  }, [idPeriodo, searchParams])
+  useEffect(()=>{
+    const totalAbono = movimientos.filter(movimiento => movimiento.tipo === "abono").reduce((suma, actual) => suma + actual.cantidad, 0);
+    const totalCargo = movimientos.filter(movimiento => movimiento.tipo === "cargo").reduce((suma, actual) => suma + actual.cantidad, 0);
+    const totalPeriodo = Number(totalAbono)-Number(totalCargo);
+    const saldoFinal = Number(periodo.saldoInicial) + Number(totalPeriodo);
+    const total = {
+      totalAbono: totalAbono,
+      totalCargo: totalCargo,
+      totalPeriodo: totalPeriodo,
+      saldoFinal: saldoFinal
+    }
+    setTotal(total);
+  }, [movimientos])
 
   const agregaMovimiento = (tipo)=>{
     const data = {
@@ -35,9 +51,10 @@ export default function MovimientosContainer() {
       id: Date.now()
     }
     setMovimientos([...movimientos, data]);
-    setFormMovimiento({...formMovimiento, [tipo]:{fecha:searchParams.get("initial"),cantidad: "",motivo: "", tipo:"", metodo:formMovimiento[tipo].metodo}})
+    setFormMovimiento({...formMovimiento, [tipo]:{fecha:periodo.fechaInicio,cantidad: "",motivo: "", tipo:"", metodo:formMovimiento[tipo].metodo}})
     
   }
+
 
   const handleChangeForm = (e, tipo)=>{
     setFormMovimiento({...formMovimiento, [tipo]:{...formMovimiento[tipo], [e.target.name]:e.target.value}})
@@ -52,10 +69,26 @@ export default function MovimientosContainer() {
     const documentoRef = doc(db, "Movimientos", idPeriodo);
     const data = {
       idPeriodo: idPeriodo,
-      movimientos: movimientos
+      movimientos: movimientos,
     }
     setDoc(documentoRef, data, {merge: true}).then((responde)=>{
       alert("Movimientos guardados");
+      actualizaSaldoPeriodo();
+    }).catch((error)=>{
+      alert("Error");
+      console.log(error);
+    })
+
+    
+  }
+
+  const actualizaSaldoPeriodo = ()=>{
+    const documentoRef = doc(db, "Periodos", idPeriodo);
+    const data = {
+      saldoFinal: total.saldoFinal
+    }
+    setDoc(documentoRef, data, {merge: true}).then((responde)=>{
+      alert("Saldo final actualizado");
     }).catch((error)=>{
       alert("Error");
       console.log(error);
@@ -109,8 +142,8 @@ export default function MovimientosContainer() {
       actualizaMovimientos={actualizaMovimientos}
       eliminaMovimiento = {eliminaMovimiento}
       toggleModal={toggleModal}
-      initial = {searchParams.get("initial")}
-      final = {searchParams.get("final")}
+      periodo = {periodo}
+      total = {total}
       />
       {modalDocumento?(
         <>

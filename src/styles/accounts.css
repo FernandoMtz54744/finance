@@ -6,16 +6,51 @@
 }
 
 .account-card{  
-    height: 5rem;
-    border-radius: 10px;
-    padding: 2rem;
+    border-radius: 5px;
     font-size: 1rem;
+    padding: 1rem;
     font-weight: 500;
     color: whitesmoke;
     text-decoration: none;
+    width: 16rem;
+    height: 8.2rem;
 }
 
 .account-card:hover{
     cursor: pointer;
     background-color: var(--third-color);
+}
+
+.tarjeta-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.account-card .dato-title{
+    font-size: 0.8rem;
+}
+
+.account-card .saldo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.account-card .fechas-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.account-card .fecha-limite-pago-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: flex-end;
 }

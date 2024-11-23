@@ -6,6 +6,6 @@ export default function AccountsContainer() {
     const context = useAuth();
 
     return (
-        <Accounts accounts={context.tarjetas}/>
+        <Accounts accounts={context.tarjetas} periodos={context.periodos}/>
     )
 }

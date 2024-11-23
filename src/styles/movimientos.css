@@ -173,3 +173,40 @@
 .cantidad-input{
     max-width: 6rem;
 }
+
+.title-movimientos{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: 500;
+    padding-top: 0.5rem;
+}
+
+.title-saldo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: 500;
+    background-color: var(--main-color);
+    color: whitesmoke;
+    margin: 1rem 1rem 0px 1rem;
+    padding: .3rem;
+}
+
+.green{
+    color: #00e676;;
+}
+
+.red{
+    color: #ff5252;
+}
+
+.title-saldo .total-periodo{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
