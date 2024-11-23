@@ -6,7 +6,7 @@ import { convertDate, currencyFormat, getNextFechaByDay } from '../../utils/util
 export default function Accounts({accounts, periodos}) {
 
   const obtenerSaldoUltimoPeriodo = (periodos, idTarjeta)=>{
-    const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta == idTarjeta);
+    const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
     console.log(periodosTarjeta.length)
     if(periodosTarjeta.length === 0){
       return 0;
@@ -19,7 +19,7 @@ export default function Accounts({accounts, periodos}) {
     <div>
       <div className='accounts-container'>
           {accounts.map((account, i) => (
-            <Link className='account-card' to={`/periodos/${account.id}`} key={i}
+            <Link className='account-card' to={`/periodos`} key={i} state={{tarjeta: account}}
             style={{background: `linear-gradient(${account.color}, #020024)`}}>
               <div className='tarjeta-title'>
                 <div>Tarjeta de {account.tipo}</div>
@@ -33,7 +33,7 @@ export default function Accounts({accounts, periodos}) {
                 {account.fechaLimitePago && (
                 <div className='fecha-limite-pago-container'>
                   <div className='dato-title'>F. Límite de pago</div>
-                  <div>{convertDate(account.fechaLimitePago)}</div>
+                  <div>{convertDate(getNextFechaByDay(account.fechaLimitePago))}</div>
                 </div>
                 )}
                 

@@ -17,10 +17,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeContainer/>}/>
           <Route path="/Home" element={<AccountsContainer/>}/>
-          <Route path="/periodos/:idTarjeta" element={<PeriodosContainer/>}/>
+          <Route path="/periodos" element={<PeriodosContainer/>}/>
           <Route path="/movimientos/:idPeriodo" element={<MovimientosContainer/>}/>
           <Route path="/agregarTarjeta" element={<AgregarTarjetaContainer/>}/>
-          <Route path="/periodos/:idTarjeta/agregar" element={<AgregarPeriodoContainer/>}/>
+          <Route path="/periodos/agregar" element={<AgregarPeriodoContainer/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

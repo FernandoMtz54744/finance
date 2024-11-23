@@ -3,16 +3,17 @@ import AgregarPeriodo from '../pages/tarjetas/AgregarPeriodo'
 import { useAuth } from '../context/AuthContext';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase/firebase.config';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function AgregarPeriodoContainer() {
   const context = useAuth();  
-  const { idTarjeta } = useParams();
-
+  const {tarjeta} = useLocation().state;
+  const navigate = useNavigate();
   const [form, setForm] = useState({
       alias:"",
       fechaInicio: "",
       fechaCorte:"",
+      fechaLimitePago: "",
       saldoInicial: 0
   });
 
@@ -23,12 +24,13 @@ export default function AgregarPeriodoContainer() {
   const agregaPeriodo = ()=>{
     const data = {
       idUsuario: context.user.uid,
-      idTarjeta: idTarjeta,
+      idTarjeta: tarjeta.id,
       saldoFinal: form.saldoInicial,
       ...form
     }
-    addDoc(collection(db, "Periodos"), data).then((response) => {
+    addDoc(collection(db, "Periodos"), data).then(() => {
         alert("Se agregó con exito");
+        navigate(-1);
       }
     ).catch((error)=>{
       alert("Ocurrió un error al agregar la tarjeta")
@@ -42,6 +44,6 @@ export default function AgregarPeriodoContainer() {
   }
 
   return (
-    <AgregarPeriodo form={form} handleChange={handleChange} handleSubmit={handleSubmit}/>
+    <AgregarPeriodo form={form} handleChange={handleChange} handleSubmit={handleSubmit} tarjeta={tarjeta}/>
   )
 }

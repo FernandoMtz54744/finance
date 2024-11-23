@@ -1,12 +1,12 @@
 import Periodos from '../pages/tarjetas/Periodos';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function PeriodosContainer() {
-    const { idTarjeta } = useParams();
     const context = useAuth();
+    const { tarjeta } = useLocation().state;
     
   return (
-        <Periodos periodos={context.periodos} idTarjeta={idTarjeta} user={context.user}/>
+        <Periodos periodos={context.periodos} idTarjeta={tarjeta.id} tarjeta={tarjeta}/>
   )
 }

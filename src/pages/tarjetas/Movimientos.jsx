@@ -18,6 +18,9 @@ export default function Movimientos({movimientos,
           <div>{periodo.alias}</div>
           <div>Fecha inicio: {convertDate(periodo.fechaInicio)}</div>
           <div>Fecha de corte: {convertDate(periodo.fechaCorte)}</div>
+          {periodo.fechaLimitePago && (
+            <div>Fecha límite de pago: {convertDate(periodo.fechaLimitePago)}</div>
+          )}
       </div>
       <div className='title-saldo'>
           <div>Saldo inicial: {currencyFormat(periodo.saldoInicial)}</div>

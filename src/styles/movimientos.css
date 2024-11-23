@@ -71,7 +71,7 @@
 }
 
 .total-abono{
-    color: #00e676;
+    color: var(--green);
 }
 
 .total-cargo{
@@ -197,7 +197,7 @@
 }
 
 .green{
-    color: #00e676;;
+    color: var(--green);
 }
 
 .red{

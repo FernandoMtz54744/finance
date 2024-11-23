@@ -85,7 +85,8 @@ export default function MovimientosContainer() {
   const actualizaSaldoPeriodo = ()=>{
     const documentoRef = doc(db, "Periodos", idPeriodo);
     const data = {
-      saldoFinal: total.saldoFinal
+      saldoFinal: total.saldoFinal,
+      totalPeriodo: total.totalPeriodo
     }
     setDoc(documentoRef, data, {merge: true}).then((responde)=>{
       alert("Saldo final actualizado");
