@@ -8,10 +8,12 @@ import { AuthProvider } from './context/AuthContext';
 import HomeContainer from './containers/HomeContainer';
 import AgregarTarjetaContainer from './containers/AgregarTarjetaContainer';
 import AgregarPeriodoContainer from './containers/AgregarPeriodoContainer';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <AuthProvider>
+      <Toaster/>
       <BrowserRouter>
         <HeaderContainer/>
         <Routes>

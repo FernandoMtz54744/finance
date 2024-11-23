@@ -3,10 +3,13 @@ import AgregarTarjeta from '../pages/tarjetas/AgregarTarjeta'
 import { db } from "../firebase/firebase.config"
 import { useAuth } from '../context/AuthContext';
 import { addDoc, collection } from 'firebase/firestore';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function AgregarTarjetaContainer() {
 
     const context = useAuth();  
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         alias:"",
         fechaCorte:"",
@@ -24,11 +27,13 @@ export default function AgregarTarjetaContainer() {
         idUsuario: context.user.uid,
         ...form
       }
-      addDoc(collection(db, "Tarjetas"), data).then((response) => {
-          alert("Se agregó con exito");
+
+      addDoc(collection(db, "Tarjetas"), data).then(() => {
+          toast.success("Se agregó la tarjeta con éxito")
+          navigate(-1);
         }
       ).catch((error)=>{
-        alert("Ocurrió un error al agregar la tarjeta")
+        toast.error("Error al agregar la tarjeta")
         console.log(error)
       })
     }
