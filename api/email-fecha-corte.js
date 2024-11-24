@@ -1,8 +1,8 @@
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
 import { format, parseISO } from 'date-fns';
-import es from "date-fns/locale/es/index.js"
-const sgMail = require('@sendgrid/mail')
+import { es } from 'date-fns/locale';
+import sgMail from '@sendgrid/mail';
 
 export async function GET() {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)

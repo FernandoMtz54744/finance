@@ -3,7 +3,7 @@ import { db } from '../src/firebase/firebase.config';
 import { getNextFechaByDay } from '../src/utils/utils';
 import { differenceInDays, format } from 'date-fns';
 import { es } from 'date-fns/locale';
-const sgMail = require('@sendgrid/mail')
+import sgMail from '@sendgrid/mail';
 
 
 export async function GET() {
