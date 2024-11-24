@@ -1,10 +1,8 @@
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
-import { toLocaleEs } from '../src/utils/utils';
+const sgMail = require('@sendgrid/mail')
 
 export async function GET() {
-    const fns = require('date-fns')
-    const sgMail = require('@sendgrid/mail')
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const hoy = new Date();
     const tarjetas = [];
@@ -20,9 +18,9 @@ export async function GET() {
     let emailed = 0;
     try{
         for(const tarjeta of tarjetas){
-            const fechaCorte = fns.parseISO(tarjeta.fechaCorte);
+            const fechaCorte = new Date(tarjeta.fechaCorte);
             if(hoy.getDate() === fechaCorte.getDate()){
-                const hoyFormatted = toLocaleEs(fns.format(hoy,"dd/MM/yyyy"));
+                const hoyFormatted = fechaCorte.toLocaleDateString();
                 const msg = {
                     to: tarjeta.correo,
                     from: 'fernando.mtz.devs@gmail.com',
