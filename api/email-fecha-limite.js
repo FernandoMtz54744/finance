@@ -1,26 +1,26 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
 import { getNextFechaByDay, toLocaleEs } from '../src/utils/utils';
+import { DateTime } from 'luxon';
+const sgMail = require('@sendgrid/mail')
 
 export async function GET() {
-    const sgMail = require('@sendgrid/mail')
-    const fns = require('date-fns')
     const diasAntes = [18,10,7,0];
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-    const hoy = new Date();
+    const hoy = DateTime.local().startOf("day");
     const tarjetas = [];
+    let emailed = 0;
     try{
         const snapshot = await getDocs((query(collection(db, "Tarjetas"),where("fechaLimitePago", "!=", ""))));
         snapshot.docs.forEach(tarjeta =>{
             tarjetas.push(tarjeta.data())
         });
 
-        let emailed = 0;
         for(const tarjeta of tarjetas){
-            const proximaFechaLimite = getNextFechaByDay(tarjeta.fechaLimitePago);
-            const diff = fns.differenceInDays(proximaFechaLimite, hoy);
+            const proximaFechaLimite = DateTime.fromISO(getNextFechaByDay(tarjeta.fechaLimitePago));
+            const diff = proximaFechaLimite.diff(hoy, ["days"]).days;
             if(diasAntes.includes(diff)){
-                const limiteFormatted = toLocaleEs(fns.format(proximaFechaLimite,"dd/MM/yyyy"));
+                const limiteFormatted = proximaFechaLimite.toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
                 const msg = {
                     to: tarjeta.correo,
                     from: 'fernando.mtz.devs@gmail.com',

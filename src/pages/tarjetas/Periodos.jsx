@@ -2,22 +2,23 @@ import React from 'react'
 import "../../styles/periodo.css"
 import { Link } from 'react-router-dom'
 import { convertDate, currencyFormat } from '../../utils/utils'
-import { isWithinInterval, parseISO } from 'date-fns'
+import { DateTime } from 'luxon'
 
 export default function Periodos({periodos, idTarjeta, tarjeta}) {
   
   const isPeriodoActual = (fechaInicio, fechaCorte)=>{
-    const today = Date.now();
-    const fechaInicioDate = parseISO(fechaInicio);
-    const fechaCorteDate = parseISO(fechaCorte);
-    return isWithinInterval(today, {start: fechaInicioDate, end: fechaCorteDate});
+    //La fecha de hoy está entre la fecha de inicio y la fecha de corte
+    const today = DateTime.local();
+    const fechaInicioDate = DateTime.fromISO(fechaInicio);
+    const fechaCorteDate = DateTime.fromISO(fechaCorte);
+    return today >= fechaInicioDate && today <= fechaCorteDate;
   }
 
   const isBetweenCorteLimit = (fechaLimitePago, fechaDeCorte)=>{
-    const today = new Date();
-    const fechaLimite = parseISO(fechaLimitePago);
-    const fechaCorte = parseISO(fechaDeCorte);
-    return isWithinInterval(today, {start: fechaCorte, end: fechaLimite});
+    const today = DateTime.local();
+    const fechaLimite = DateTime.fromISO(fechaLimitePago);
+    const fechaCorte = DateTime.fromISO(fechaDeCorte);
+    return today >= fechaCorte && today <= fechaLimite;
   }
 
   return (

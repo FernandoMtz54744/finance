@@ -1,9 +1,7 @@
-import { addMonths, format, isBefore, parseISO } from "date-fns";
-import { es } from "date-fns/locale";
+import { DateTime } from 'luxon';
 
 export function convertDate(date) {
-    const fecha = parseISO(date);
-    return format(fecha,"dd/MMM/yyyy", {locale: es})
+    return DateTime.fromISO(date).setLocale("es").toFormat('dd/LLL/yyyy');
 }
 
 export function currencyFormat(number){
@@ -21,14 +19,14 @@ export function currencyFormat(number){
 }
 
 export function getNextFechaByDay(fecha){
-    const dia = parseISO(fecha).getDate();
-    const hoy = new Date();
-    const fechaProxima = new Date(hoy.getFullYear(), hoy.getMonth(), dia);
-    if (hoy.getDate() === dia) {
-        return format(hoy, 'yyyy-MM-dd');
+    const dia = DateTime.fromISO(fecha).day;
+    const hoy = DateTime.local().startOf("day");
+    const fechaProxima = hoy.set({day: dia});
+    if (hoy.hasSame(fechaProxima, "day")) {
+        return hoy.toISODate();
     }
-    const fechaFinal = isBefore(hoy, fechaProxima) ? fechaProxima : addMonths(fechaProxima, 1);
-    return format(fechaFinal, 'yyyy-MM-dd');
+    const fechaFinal =  hoy < fechaProxima? fechaProxima.toISODate() : fechaProxima.plus({months: 1}).toISODate();
+    return fechaFinal;
 }
 
 //En formato dd/MM/yyyy
