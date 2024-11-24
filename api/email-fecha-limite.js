@@ -2,11 +2,11 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
 import { getNextFechaByDay } from '../src/utils/utils';
 import { differenceInDays, format } from 'date-fns';
-import { es } from 'date-fns/locale';
-import sgMail from '@sendgrid/mail';
+const sgMail = require('@sendgrid/mail')
 
 
 export async function GET() {
+    const { es } = require('date-fns/locale');
     const diasAntes = [18,10,7,0];
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const hoy = new Date();
