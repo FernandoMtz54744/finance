@@ -1,10 +1,10 @@
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
 import { toLocaleEs } from '../src/utils/utils';
-const fns = require('date-fns')
-const sgMail = require('@sendgrid/mail')
 
 export async function GET() {
+    const fns = require('date-fns')
+    const sgMail = require('@sendgrid/mail')
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const hoy = new Date();
     const tarjetas = [];
