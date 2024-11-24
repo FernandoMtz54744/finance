@@ -1,0 +1,12 @@
+{
+"crons": [
+    {
+        "path": "/api/email-fecha-corte",
+        "schedule": "15 17 * * *"
+    },
+    {
+        "path": "/api/email-fecha-limite",
+        "schedule": "0 17 * * *"
+    }
+]
+}
