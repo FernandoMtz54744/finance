@@ -2,21 +2,22 @@ import React from 'react'
 import "../../styles/periodo.css"
 import { Link } from 'react-router-dom'
 import { convertDate, currencyFormat } from '../../utils/utils'
+import { isWithinInterval, parseISO } from 'date-fns'
 
 export default function Periodos({periodos, idTarjeta, tarjeta}) {
   
   const isPeriodoActual = (fechaInicio, fechaCorte)=>{
     const today = Date.now();
-    const fechaInicioDate = new Date(fechaInicio);
-    const fechaCorteDate = new Date(fechaCorte);
-    return today >= fechaInicioDate && today <= fechaCorteDate;
+    const fechaInicioDate = parseISO(fechaInicio);
+    const fechaCorteDate = parseISO(fechaCorte);
+    return isWithinInterval(today, {start: fechaInicioDate, end: fechaCorteDate});
   }
 
-  const isFechaLimitePorVencer = (fechaLimitePago)=>{
-    const today = Date.now();
-    const fechaLimite = new Date(fechaLimitePago).getTime();
-    const diferencia = Math.floor((fechaLimite - today) / (1000 * 60 * 60 * 24));
-    return today < fechaLimite && diferencia <= 20;
+  const isBetweenCorteLimit = (fechaLimitePago, fechaDeCorte)=>{
+    const today = new Date();
+    const fechaLimite = parseISO(fechaLimitePago);
+    const fechaCorte = parseISO(fechaDeCorte);
+    return isWithinInterval(today, {start: fechaCorte, end: fechaLimite});
   }
 
   return (
@@ -30,7 +31,7 @@ export default function Periodos({periodos, idTarjeta, tarjeta}) {
                   {isPeriodoActual(periodo.fechaInicio, periodo.fechaCorte) && (
                     <div className='periodo-actual green'>Periodo Actual</div>
                   )}
-                  {isFechaLimitePorVencer(periodo.fechaLimitePago) && (
+                  {isBetweenCorteLimit(periodo.fechaLimitePago, periodo.fechaCorte) && (
                     <div className={`pago-pendiente ${periodo.totalPeriodo<0?"red":"green"}`}>Pagar {currencyFormat(periodo.totalPeriodo)}</div>
                   )}
                   <div className='periodo-data'>
@@ -38,7 +39,7 @@ export default function Periodos({periodos, idTarjeta, tarjeta}) {
                     <div className='fecha'>Inicio: {convertDate(periodo.fechaInicio)}</div>
                     <div className='fecha'>Corte: {convertDate(periodo.fechaCorte)}</div>
                     {periodo.fechaLimitePago && (
-                    <div className={`fecha ${isFechaLimitePorVencer(periodo.fechaLimitePago)?"red":""}`}>Límite de pago: {convertDate(periodo.fechaLimitePago)}</div>
+                    <div className={`fecha ${isBetweenCorteLimit(periodo.fechaLimitePago, periodo.fechaCorte)?"red":""}`}>Límite de pago: {convertDate(periodo.fechaLimitePago)}</div>
                     )}
                   </div>
                     

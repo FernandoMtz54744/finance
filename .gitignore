@@ -24,3 +24,5 @@ yarn-error.log*
 
 .env
 Requerimientos.txt
+
+.vercel

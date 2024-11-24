@@ -15,7 +15,8 @@ export default function AgregarTarjetaContainer() {
         fechaCorte:"",
         color:"",
         tipo:"Débito",
-        fechaLimitePago:""
+        fechaLimitePago:"",
+        correo:""
     })
 
     const handleChange = (e)=>{

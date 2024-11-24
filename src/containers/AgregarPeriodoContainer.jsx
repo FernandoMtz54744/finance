@@ -26,6 +26,7 @@ export default function AgregarPeriodoContainer() {
       idUsuario: context.user.uid,
       idTarjeta: tarjeta.id,
       saldoFinal: form.saldoInicial,
+      totalPeriodo: 0,
       ...form
     }
     addDoc(collection(db, "Periodos"), data).then(() => {

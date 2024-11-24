@@ -32,7 +32,10 @@ export default function AgregarTarjeta({form, handleChange, handleSubmit}) {
                 <input type="date" name='fechaLimitePago' id='fechaLimitePago' value={form.fechaLimitePago} onChange={handleChange} className='input-date'/>
             </div>
             ):("")}
-            
+            <div>
+                <label htmlFor="correo">Correo de notificaciones</label>
+                <input type="email" name='correo' id='correo' value={form.correo} onChange={handleChange} autoComplete='off' className='input-form alias-input'/>
+            </div>
             
             <div>
                 <input type="submit" value="Agregar" className='submit-button'/>

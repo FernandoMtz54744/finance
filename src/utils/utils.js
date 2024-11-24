@@ -1,5 +1,9 @@
-export function convertDate (date) {
-    return [date.substring(8,10), date.substring(5,7), date.substring(0,4)].join('/');
+import { addMonths, format, isBefore, parseISO } from "date-fns";
+import { es } from "date-fns/locale";
+
+export function convertDate(date) {
+    const fecha = parseISO(date);
+    return format(fecha,"dd/MMM/yyyy", {locale: es})
 }
 
 export function currencyFormat(number){
@@ -17,9 +21,12 @@ export function currencyFormat(number){
 }
 
 export function getNextFechaByDay(fecha){
-    const dia = Number(fecha.substring(8,10));
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    return new Date(year, month+1, dia).toISOString();
+    const dia = parseISO(fecha).getDate();
+    const hoy = new Date();
+    const fechaProxima = new Date(hoy.getFullYear(), hoy.getMonth(), dia);
+    if (hoy.getDate() === dia) {
+        return format(hoy, 'yyyy-MM-dd');
+    }
+    const fechaFinal = isBefore(hoy, fechaProxima) ? fechaProxima : addMonths(fechaProxima, 1);
+    return format(fechaFinal, 'yyyy-MM-dd');
 }
