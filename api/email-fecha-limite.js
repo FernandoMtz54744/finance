@@ -14,27 +14,29 @@ export async function GET() {
         snapshot.docs.forEach(tarjeta =>{
             tarjetas.push(tarjeta.data())
         });
+
+        let emailed = 0;
+        for(const tarjeta of tarjetas){
+            const proximaFechaLimite = getNextFechaByDay(tarjeta.fechaLimitePago);
+            const diff = fns.differenceInDays(proximaFechaLimite, hoy);
+            if(diasAntes.includes(diff)){
+                const limiteFormatted = toLocaleEs(fns.format(proximaFechaLimite,"dd/MM/yyyy"));
+                const msg = {
+                    to: tarjeta.correo,
+                    from: 'fernando.mtz.devs@gmail.com',
+                    subject: 'Recordatorio fecha límite de pago',
+                    text: `Faltan pocos días para el pago de tu tarjeta de crédito`,
+                    html: `<strong>Faltan ${diff} días para la fecha límite de tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides realizar el pago.
+                            <p>Fecha límite: ${limiteFormatted}</p><p>-Finance By FerDevs</p></strong>`,
+                }
+                await sgMail.send(msg)
+                emailed++;
+            }
+        }
     }catch(error){
         console.log(error);
     }
 
-    let emailed = 0;
-    for(const tarjeta of tarjetas){
-        const proximaFechaLimite = getNextFechaByDay(tarjeta.fechaLimitePago);
-        const diff = fns.differenceInDays(proximaFechaLimite, hoy);
-        if(diasAntes.includes(diff)){
-            const limiteFormatted = toLocaleEs(fns.format(proximaFechaLimite,"dd/MM/yyyy"));
-            const msg = {
-                to: tarjeta.correo,
-                from: 'fernando.mtz.devs@gmail.com',
-                subject: 'Recordatorio fecha límite de pago',
-                text: `Faltan pocos días para el pago de tu tarjeta de crédito`,
-                html: `<strong>Faltan ${diff} días para la fecha límite de tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides realizar el pago.
-                        <p>Fecha límite: ${limiteFormatted}</p><p>-Finance By FerDevs</p></strong>`,
-            }
-            await sgMail.send(msg)
-            emailed++;
-        }
-    }
+    
     return new Response(`${emailed} Tarjetas de ${tarjetas.length}`)  
 }
