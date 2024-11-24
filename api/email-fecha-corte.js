@@ -22,7 +22,7 @@ export async function GET() {
                                     .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
                 const msg = {
                     to: tarjeta.correo,
-                    from: 'fernando.mtz.devs@gmail.com',
+                    from: 'financebyferdevs@gmail.com',
                     subject: 'Recordatorio fecha de corte',
                     text: `El día de hoy es la fecha de corte de tu tarjeta, no olvides revisar tu estado de cuenta.`,
                     html: `<strong>El día de hoy ${hoyFormatted} es la fecha de corte de tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides revisar tu estado de cuenta<p>-Finance By FerDevs</p></strong>`,

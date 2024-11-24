@@ -23,7 +23,7 @@ export async function GET() {
                 const limiteFormatted = proximaFechaLimite.toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
                 const msg = {
                     to: tarjeta.correo,
-                    from: 'fernando.mtz.devs@gmail.com',
+                    from: 'financebyferdevs@gmail.com',
                     subject: 'Recordatorio fecha límite de pago',
                     text: `Faltan pocos días para el pago de tu tarjeta de crédito`,
                     html: `<strong>Faltan ${diff} días para la fecha límite de tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides realizar el pago.
