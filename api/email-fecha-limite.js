@@ -2,7 +2,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
 import { getNextFechaByDay } from '../src/utils/utils';
 import { differenceInDays, format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { es } from 'date-fns/locale/es.js';
 const sgMail = require('@sendgrid/mail')
 
 
