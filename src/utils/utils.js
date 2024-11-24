@@ -30,3 +30,42 @@ export function getNextFechaByDay(fecha){
     const fechaFinal = isBefore(hoy, fechaProxima) ? fechaProxima : addMonths(fechaProxima, 1);
     return format(fechaFinal, 'yyyy-MM-dd');
 }
+
+//En formato dd/MM/yyyy
+export const toLocaleEs=(fecha)=>{
+    const dia = Number(fecha.substring(0,2));
+    const mes = Number(fecha.substring(3,5));
+    const anio = fecha.substring(6,10);
+    return `${dia} de ${mesToEs(mes)} de ${anio}`
+}
+
+const mesToEs =(mes)=>{
+    switch(mes){
+        case 1:
+            return "enero";
+        case 2: 
+            return "febrero";
+        case 3:
+            return "marzo";
+        case 4: 
+            return "abril";
+        case 5:
+            return "mayo";
+        case 6: 
+            return "junio";
+        case 7:
+            return "julio";
+        case 8:
+            return "agosto";
+        case 9:
+            return "septiembre";
+        case 10:
+            return "octubre";
+        case 11:
+            return "noviembre";
+        case 12:
+            return "diciembre";
+        default:
+            return "mes no disponible";
+    }
+}
