@@ -1,7 +1,7 @@
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
 import { format, parseISO } from 'date-fns';
-import { es } from 'date-fns/locale/index.js';
+import es from "date-fns/locale/es/index.js"
 const sgMail = require('@sendgrid/mail')
 
 export async function GET() {
