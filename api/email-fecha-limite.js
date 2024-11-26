@@ -19,11 +19,12 @@ export async function GET() {
             const proximaFechaLimite = DateTime.fromISO(getNextFechaByDay(tarjeta.fechaLimitePago));
             const diff = proximaFechaLimite.diff(hoy, ["days"]).days;
             if(diasAntes.includes(diff)){
-                const limiteFormatted = proximaFechaLimite.toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
+                const limiteFormatted = proximaFechaLimite.setLocale("es").toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
                 await emailjs.send("service_educdoa", "template_ituk95n",{
                     dias: diff,
                     tarjeta: tarjeta.alias,
                     tipo: tarjeta.tipo,
+                    limite: limiteFormatted,
                     to: tarjeta.correo,
                     reply_to: "FinanceByFerDevs@gmail.com"
                 },{publicKey: process.env.EMAILJS_PUBLIC_KEY})
