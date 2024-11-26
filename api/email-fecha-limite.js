@@ -1,12 +1,11 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
-import { getNextFechaByDay, toLocaleEs } from '../src/utils/utils';
+import { getNextFechaByDay } from '../src/utils/utils';
 import { DateTime } from 'luxon';
-const sgMail = require('@sendgrid/mail')
+import emailjs from "@emailjs/nodejs"
 
 export async function GET() {
     const diasAntes = [18,10,7,0];
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
     const hoy = DateTime.local().startOf("day");
     const tarjetas = [];
     let emailed = 0;
@@ -21,15 +20,13 @@ export async function GET() {
             const diff = proximaFechaLimite.diff(hoy, ["days"]).days;
             if(diasAntes.includes(diff)){
                 const limiteFormatted = proximaFechaLimite.toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
-                const msg = {
+                await emailjs.send("service_educdoa", "template_ituk95n",{
+                    dias: diff,
+                    tarjeta: tarjeta.alias,
+                    tipo: tarjeta.tipo,
                     to: tarjeta.correo,
-                    from: process.env.SENDGRID_EMAIL_SENDER,
-                    subject: 'Recordatorio fecha límite de pago',
-                    text: `Faltan pocos días para el pago de tu tarjeta de crédito`,
-                    html: `<strong>Faltan ${diff} días para la fecha límite de tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides realizar el pago.
-                            <p>Fecha límite: ${limiteFormatted}</p><p>-Finance By FerDevs</p></strong>`,
-                }
-                await sgMail.send(msg)
+                    reply_to: "FinanceByFerDevs@gmail.com"
+                },{publicKey: process.env.EMAILJS_PUBLIC_KEY})
                 emailed++;
             }
         }
