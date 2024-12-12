@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../../styles/accounts.css"
 import { Link } from 'react-router-dom'
 import { convertDate, currencyFormat, getNextFechaByDay } from '../../utils/utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faEdit} from "@fortawesome/free-solid-svg-icons"
 
 export default function Accounts({accounts, periodos}) {
 
+  const [edit, setEdit] = useState(false);
+  
   const obtenerSaldoUltimoPeriodo = (periodos, idTarjeta)=>{
     const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
     console.log(periodosTarjeta.length)
@@ -17,9 +21,10 @@ export default function Accounts({accounts, periodos}) {
 
   return (
     <div>
+      <center className='account-title'>{edit?"Seleccione la tarjeta para editar": "Tus Tarjetas"}</center>
       <div className='accounts-container'>
-          {accounts.map((account, i) => (
-            <Link className='account-card' to={`/periodos`} key={i} state={{tarjeta: account}}
+          {accounts.sort((a, b) => a.alias.localeCompare(b.alias)).map((account, i) => (
+            <Link className='account-card' to={edit?"/editarTarjeta":"/periodos"} key={i} state={{tarjeta: account}}
             style={{background: `linear-gradient(${account.color}, #020024)`}}>
               <div className='tarjeta-title'>
                 <div>Tarjeta de {account.tipo}</div>
@@ -47,6 +52,7 @@ export default function Accounts({accounts, periodos}) {
           ))}
       </div>
       <Link className='agregar-button' to="/agregarTarjeta">+</Link>
+      <FontAwesomeIcon icon={faEdit}  className='edit-button' onClick={()=>setEdit(!edit)}/>
     </div>
   )
 }

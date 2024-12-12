@@ -4,6 +4,7 @@ import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase.config';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import AgregarDocumento from '../pages/tarjetas/AgregarDocumento';
+import toast from 'react-hot-toast';
 
 export default function MovimientosContainer() {
   const { idPeriodo } = useParams();
@@ -72,10 +73,10 @@ export default function MovimientosContainer() {
       movimientos: movimientos,
     }
     setDoc(documentoRef, data, {merge: true}).then((responde)=>{
-      alert("Movimientos guardados");
+      toast.success("Movimientos guardados");
       actualizaSaldoPeriodo();
     }).catch((error)=>{
-      alert("Error");
+      toast.error("Error al guardar los movimientos");
       console.log(error);
     })
 
@@ -89,9 +90,9 @@ export default function MovimientosContainer() {
       totalPeriodo: total.totalPeriodo
     }
     setDoc(documentoRef, data, {merge: true}).then((responde)=>{
-      alert("Saldo final actualizado");
+      toast.success("Saldo final actualizado");
     }).catch((error)=>{
-      alert("Error");
+      toast.error("Error al actualizar el saldo final");
       console.log(error);
     })
   }

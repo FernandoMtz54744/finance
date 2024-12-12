@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "../../styles/periodo.css"
 import { Link } from 'react-router-dom'
 import { convertDate, currencyFormat } from '../../utils/utils'
 import { DateTime } from 'luxon'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
 export default function Periodos({periodos, idTarjeta, tarjeta}) {
+
+  const [edit, setEdit] = useState(false);
   
   const isPeriodoActual = (fechaInicio, fechaCorte)=>{
     //La fecha de hoy está entre la fecha de inicio y la fecha de corte
@@ -23,12 +27,12 @@ export default function Periodos({periodos, idTarjeta, tarjeta}) {
 
   return (
     <div className='periodos-container'>
-      <center className='tarjeta-name'>{tarjeta.alias}&nbsp;{tarjeta.tipo}</center>
+      <center className='tarjeta-name'>{edit?"Seleccione el periodo para editar":(tarjeta.alias+" "+tarjeta.tipo) }</center>
         {periodos.filter(periodo => periodo.idTarjeta === idTarjeta).sort((a, b) => (new Date(b.fechaCorte)-new Date(a.fechaCorte))).map((periodo,i) =>{
             return(
                 <Link className="periodo-card" 
-                to={`/movimientos/${periodo.idPeriodo}?`} key={i}
-                state={{periodo: periodo}} >
+                to={edit?"/editarPeriodo":`/movimientos/${periodo.idPeriodo}?`} key={i}
+                state={{periodo: periodo, tarjeta: tarjeta}} >
                   {isPeriodoActual(periodo.fechaInicio, periodo.fechaCorte) && (
                     <div className='periodo-actual green'>Periodo Actual</div>
                   )}
@@ -48,6 +52,7 @@ export default function Periodos({periodos, idTarjeta, tarjeta}) {
             )
         })}
         <Link className='agregar-button' to={`agregar`} state={{tarjeta: tarjeta}}>+</Link>
+        <FontAwesomeIcon icon={faEdit}  className='edit-button' onClick={()=>setEdit(!edit)}/>
     </div>
   )
 }

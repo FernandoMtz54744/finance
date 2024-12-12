@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
-import AgregarTarjeta from '../pages/tarjetas/AgregarTarjeta'
-import { db } from "../firebase/firebase.config"
-import { useAuth } from '../context/AuthContext';
-import { addDoc, collection } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react'
+import EditarTarjeta from '../pages/tarjetas/EditarTarjeta'
+import { useLocation, useNavigate } from 'react-router-dom';
+import { doc, updateDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { db } from '../firebase/firebase.config';
 
-export default function AgregarTarjetaContainer() {
-
-    const context = useAuth();  
+export default function EditarTarjetaContainer() {
     const navigate = useNavigate();
+    const { tarjeta } = useLocation().state;
     const [form, setForm] = useState({
         alias:"",
         fechaCorte:"",
@@ -19,14 +17,24 @@ export default function AgregarTarjetaContainer() {
         correo:""
     })
 
+    useEffect(()=>{
+      setForm({
+        alias:tarjeta.alias,
+        fechaCorte: tarjeta.fechaCorte,
+        color: tarjeta.color,
+        tipo: tarjeta.tipo,
+        fechaLimitePago: tarjeta.fechaLimitePago,
+        correo: tarjeta.correo
+    })
+    }, [tarjeta])
+
     const handleChange = (e)=>{
         setForm({...form, [e.target.name]: e.target.value});
     }
 
-    const agregaTarjeta = ()=>{
+    const editarTarjeta = ()=>{
       const data = {
-        idUsuario: context.user.uid,
-        ...form
+        ...form,
       }
 
       if(!validarForm(data)){
@@ -34,9 +42,8 @@ export default function AgregarTarjetaContainer() {
         return;
       }
 
-
-      addDoc(collection(db, "Tarjetas"), data).then(() => {
-          toast.success("Se agregó la tarjeta con éxito")
+      updateDoc(doc(db, "Tarjetas", tarjeta.id), data).then(() => {
+          toast.success("Se modificó la tarjeta con éxito")
           navigate(-1);
         }
       ).catch((error)=>{
@@ -47,7 +54,7 @@ export default function AgregarTarjetaContainer() {
 
     const handleSubmit = (e) =>{
       e.preventDefault();
-      agregaTarjeta();
+      editarTarjeta();
     }
 
     const validarForm = (data)=>{
@@ -63,6 +70,8 @@ export default function AgregarTarjetaContainer() {
     }
 
   return (
-    <AgregarTarjeta form={form} handleChange={handleChange} handleSubmit={handleSubmit}/>
+    <div>
+        <EditarTarjeta form={form} handleChange={handleChange} handleSubmit={handleSubmit}/>
+    </div>
   )
 }

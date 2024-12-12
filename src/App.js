@@ -9,6 +9,8 @@ import HomeContainer from './containers/HomeContainer';
 import AgregarTarjetaContainer from './containers/AgregarTarjetaContainer';
 import AgregarPeriodoContainer from './containers/AgregarPeriodoContainer';
 import { Toaster } from 'react-hot-toast';
+import EditarTarjetaContainer from './containers/EditarTarjetaContainer';
+import EditarPeriodoContainer from './containers/EditarPeriodoContainer';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path="/movimientos/:idPeriodo" element={<MovimientosContainer/>}/>
           <Route path="/agregarTarjeta" element={<AgregarTarjetaContainer/>}/>
           <Route path="/periodos/agregar" element={<AgregarPeriodoContainer/>}/>
+          <Route path="/editarTarjeta" element={<EditarTarjetaContainer/>}/>
+          <Route path="/editarPeriodo" element={<EditarPeriodoContainer/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
