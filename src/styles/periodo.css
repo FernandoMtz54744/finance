@@ -57,3 +57,17 @@
     font-weight: 600;
     font-size: 1.5rem;
 }
+
+/* SMARTPHONES */
+@media (max-width: 480px){
+    .periodo-data{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .alias{
+        width: 100%;
+        text-align: center;
+    }
+}

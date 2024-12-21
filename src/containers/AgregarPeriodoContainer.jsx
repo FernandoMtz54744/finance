@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AgregarPeriodo from '../pages/tarjetas/AgregarPeriodo'
 import { useAuth } from '../context/AuthContext';
 import { addDoc, collection } from 'firebase/firestore';
@@ -6,6 +6,7 @@ import { db } from '../firebase/firebase.config';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { DateTime } from 'luxon';
+import { getFechaLimitePago, getLastFechaByDay, getNextFechaByDay } from '../utils/utils';
 
 export default function AgregarPeriodoContainer() {
   const context = useAuth();  
@@ -18,6 +19,21 @@ export default function AgregarPeriodoContainer() {
       fechaLimitePago: "",
       saldoInicial: 0
   });
+
+  useEffect(()=>{
+    setForm({...form, 
+      fechaInicio: getLastFechaByDay(DateTime.fromISO(tarjeta.fechaCorte).plus({days: 1}).toISODate()),
+      fechaCorte: getNextFechaByDay(tarjeta.fechaCorte)
+    })
+  }, [])
+
+  useEffect(()=>{
+    if(form.fechaCorte){
+      setForm({...form,
+        fechaLimitePago: getFechaLimitePago(form.fechaCorte)
+      })
+    }
+  }, [form.fechaCorte]) 
 
   const handleChange = (e)=>{
       setForm({...form, [e.target.name]: e.target.value});

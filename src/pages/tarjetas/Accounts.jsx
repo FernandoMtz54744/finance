@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "../../styles/accounts.css"
 import { Link } from 'react-router-dom'
-import { convertDate, currencyFormat, getNextFechaByDay } from '../../utils/utils';
+import { convertDate, currencyFormat, getFechaLimitePago, getNextFechaByDay } from '../../utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEdit} from "@fortawesome/free-solid-svg-icons"
 
@@ -11,12 +11,19 @@ export default function Accounts({accounts, periodos}) {
   
   const obtenerSaldoUltimoPeriodo = (periodos, idTarjeta)=>{
     const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
-    console.log(periodosTarjeta.length)
     if(periodosTarjeta.length === 0){
       return 0;
     }else{
       return periodosTarjeta.sort((a, b) => (new Date(b.fechaCorte)-new Date(a.fechaCorte)))[0].saldoFinal;
     }
+  }
+
+  const obtenerSaldoTotal = (periodos, idTarjeta)=>{
+    const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
+    const saldoTotal = periodosTarjeta.reduce((total, periodo)=>{
+      return total + periodo.saldoFinal;
+    }, 0)
+    return saldoTotal;
   }
 
   return (
@@ -38,14 +45,17 @@ export default function Accounts({accounts, periodos}) {
                 {account.fechaLimitePago && (
                 <div className='fecha-limite-pago-container'>
                   <div className='dato-title'>F. Límite de pago</div>
-                  <div>{convertDate(getNextFechaByDay(account.fechaLimitePago))}</div>
+                  <div>{convertDate(getFechaLimitePago(account.fechaCorte))}</div>
                 </div>
                 )}
                 
               </div>
               <div className='saldo'>
                 <div className='dato-title'>Saldo final</div>
-                <div>{currencyFormat(obtenerSaldoUltimoPeriodo(periodos, account.id))}</div>
+                <div>{account.tipo === "Débito"?
+                  currencyFormat(obtenerSaldoUltimoPeriodo(periodos, account.id)):
+                  currencyFormat(obtenerSaldoTotal(periodos, account.id))
+                  }</div>
               </div>
               
             </Link>

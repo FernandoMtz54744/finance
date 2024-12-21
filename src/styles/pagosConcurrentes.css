@@ -1,0 +1,40 @@
+.pago-container{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.pago-data{
+    border-radius: 10px;
+    color: whitesmoke;
+    padding: 1rem;
+    background-color: var(--main-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.no-pagado{
+    color: red;
+}
+
+.pagado{
+    color: var(--green);
+}
+
+.pagos-container{
+    padding: 1rem;
+}
+
+.pago-status{
+    background-color: var(--main-color);
+    width: 15rem;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: center;
+    align-self: flex-end;
+    margin-right: 2rem;
+    padding-top: 5px;
+    color: whitesmoke;
+}

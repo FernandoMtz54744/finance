@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Movimientos from '../pages/tarjetas/Movimientos'
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase.config';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import AgregarDocumento from '../pages/tarjetas/AgregarDocumento';
 import toast from 'react-hot-toast';
 
@@ -10,7 +10,7 @@ export default function MovimientosContainer() {
   const { idPeriodo } = useParams();
   const {periodo} = useLocation().state;
   const [movimientos, setMovimientos] = useState([]);
-  const [formMovimiento, setFormMovimiento] = useState({abono:{fecha:"",cantidad: "",motivo: "", metodo:"Transferencia"}, cargo:{fecha:"",cantidad: "",motivo: "", metodo:"Transferencia"}})
+  const [formMovimiento, setFormMovimiento] = useState({fecha:"",cantidad: "",motivo: "", isEfectivo: false});
   const [modalDocumento, setModalDocument] = useState(false);
   const [linkDocumento, setLinkDocumento] = useState("");
   const [total, setTotal] = useState({totalAbono: 0, totalCargo: 0, totalPeriodo: 0, saldoFinal: 0});
@@ -18,47 +18,62 @@ export default function MovimientosContainer() {
   useEffect(()=>{
       const unsuscribe =  onSnapshot(doc(db, "Movimientos", idPeriodo), (snapshot) =>{
         if(snapshot.exists()){
-          setMovimientos(snapshot.data().movimientos);
+          const movimientos = snapshot.data().movimientos;
+          if(movimientos){
+            setMovimientos(movimientos);
+          }
           setLinkDocumento(snapshot.data().documento)
         } 
       }, (error) =>{
         alert("Error al consultar los movimientos");
         console.log(error)
       });
-      setFormMovimiento({abono:{fecha:periodo.fechaInicio,cantidad: "",motivo: "", metodo:"Transferencia"}, cargo:{fecha:periodo.fechaInicio,cantidad: "",motivo: "", metodo:"Transferencia"}})
+      setFormMovimiento({fecha:periodo.fechaInicio,cantidad: "",motivo: "", isEfectivo:false})
       
       return ()=> unsuscribe();
   }, [idPeriodo, periodo])
 
   useEffect(()=>{
-    const totalAbono = movimientos.filter(movimiento => movimiento.tipo === "abono").reduce((suma, actual) => suma + actual.cantidad, 0);
-    const totalCargo = movimientos.filter(movimiento => movimiento.tipo === "cargo").reduce((suma, actual) => suma + actual.cantidad, 0);
-    const totalPeriodo = Number(totalAbono)-Number(totalCargo);
-    const saldoFinal = Number(periodo.saldoInicial) + Number(totalPeriodo);
-    const total = {
-      totalAbono: totalAbono,
-      totalCargo: totalCargo,
-      totalPeriodo: totalPeriodo,
-      saldoFinal: saldoFinal
+    if(movimientos){
+      const totalAbono = movimientos.filter(movimiento => movimiento.tipo === "abono").reduce((suma, actual) => suma + actual.cantidad, 0);
+      const totalCargo = movimientos.filter(movimiento => movimiento.tipo === "cargo").reduce((suma, actual) => suma + actual.cantidad, 0);
+      const totalPeriodo = Math.round((Number(totalAbono)-Number(totalCargo)) * 100 ) / 100;
+      const saldoFinal = Math.round((Number(periodo.saldoInicial) + Number(totalPeriodo)) * 100) / 100;
+      const total = {
+        totalAbono: totalAbono,
+        totalCargo: totalCargo,
+        totalPeriodo: totalPeriodo,
+        saldoFinal: saldoFinal
+      }
+      setTotal(total);
     }
-    setTotal(total);
   }, [movimientos])
 
-  const agregaMovimiento = (tipo)=>{
+  const agregaMovimiento = ()=>{
+    let tipo;
+    if(formMovimiento.cantidad < 0){
+      tipo = "cargo";
+    }else{
+      tipo = "abono";
+    }
     const data = {
-      ...formMovimiento[tipo],
-      cantidad: Number(formMovimiento[tipo].cantidad),
+      ...formMovimiento,
+      cantidad: Number(Math.abs(formMovimiento.cantidad)),
       tipo: tipo,
       id: Date.now()
     }
     setMovimientos([...movimientos, data]);
-    setFormMovimiento({...formMovimiento, [tipo]:{fecha:periodo.fechaInicio,cantidad: "",motivo: "", tipo:"", metodo:formMovimiento[tipo].metodo}})
+    setFormMovimiento({...formMovimiento, cantidad: "",motivo: "", isEfectivo: false})
     
   }
 
 
-  const handleChangeForm = (e, tipo)=>{
-    setFormMovimiento({...formMovimiento, [tipo]:{...formMovimiento[tipo], [e.target.name]:e.target.value}})
+  const handleChangeForm = (e)=>{
+    if(e.target.type === "checkbox"){
+      setFormMovimiento({...formMovimiento, [e.target.name]:e.target.checked})
+    }else{
+      setFormMovimiento({...formMovimiento, [e.target.name]:e.target.value})
+    }
   } 
 
   const eliminaMovimiento = (id) =>{
@@ -111,10 +126,10 @@ export default function MovimientosContainer() {
       documento: link
     }
     setDoc(documentoRef, data, {merge: true}).then((responde)=>{
-      alert("Movimientos guardados");
+      toast.success("Documento guardado");
+      toggleModal();
     }).catch((error)=>{
-      alert("Error al agregar el documento");
-      console.log(error);
+      toast.error("Error al agregar el documento");
     })
   }
 
@@ -127,10 +142,14 @@ export default function MovimientosContainer() {
 
   }
 
-  const handleKeyDownForm = (e, tipo) =>{
+  const handleKeyDownForm = (e) =>{
     if(e.key === 'Enter') {
       e.preventDefault();
-      agregaMovimiento(tipo);
+      if(e.target.type === "checkbox"){
+        setFormMovimiento({...formMovimiento, [e.target.name]:!formMovimiento.isEfectivo})
+      }else{
+        agregaMovimiento();
+      }
     }
   }
 
@@ -146,10 +165,11 @@ export default function MovimientosContainer() {
       toggleModal={toggleModal}
       periodo = {periodo}
       total = {total}
+      linkDocumento={linkDocumento}
       />
       {modalDocumento?(
         <>
-          <AgregarDocumento linkDocumento={linkDocumento} handleLinkDocumento={handleLinkDocumento} agregaDocumento={agregaDocumento}/>
+          <AgregarDocumento  handleLinkDocumento={handleLinkDocumento} agregaDocumento={agregaDocumento} linkDocumento={linkDocumento}/>
           <div className="overlay" onClick={()=>setModalDocument(false)}></div>
         </>
         ):

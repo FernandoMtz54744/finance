@@ -7,8 +7,9 @@ export default function Header({usuario, loginGoogle, logout}) {
         <Link to="/">Finance</Link>
         {usuario? (
           <div className='auth-menu'>
+            <div><Link to="/pagosConcurrentes">Pagos Concurrentes</Link></div>
             <img src={usuario.photoURL} className='user-image'/>
-            <div>{usuario.displayName}</div>
+            <div className='displayname'>{usuario.displayName}</div>
             <div className='login-button' onClick={logout}>Log out</div>
         </div>
         ):(

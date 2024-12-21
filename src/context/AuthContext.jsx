@@ -46,7 +46,6 @@ export function AuthProvider({children}){
                             periodosTemp.push({...periodo.data(), idPeriodo: periodo.id})
                         })
                         setPeriodos(periodosTemp);
-                        console.log(periodosTemp);
                     });
                 }catch(error){
                     console.log(error)

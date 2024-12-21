@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 export default function AgregarPeriodo({form, handleChange, handleSubmit, tarjeta}) {
   return (
     <div>
@@ -20,7 +21,7 @@ export default function AgregarPeriodo({form, handleChange, handleSubmit, tarjet
         {tarjeta.tipo === "Crédito" && (
         <div>
           <label htmlFor="fechaLimitePago">Fecha límite de Pago</label>
-          <input type="date" name='fechaLimitePago' id='fechaLimitePago' value={form.fechaLimitePago} onChange={handleChange} className='input-date'/>
+          <input type="date" name='fechaLimitePago' id='fechaLimitePago' value={form.fechaLimitePago} className='input-date' readOnly="true"/>
         </div>
         )}
         <div>

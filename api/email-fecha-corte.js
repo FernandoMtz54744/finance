@@ -16,7 +16,8 @@ export async function GET() {
         const hoy = DateTime.local();
         for(const tarjeta of tarjetas){
             const fechaCorte = DateTime.fromISO(tarjeta.fechaCorte);
-            if(hoy.day === fechaCorte.day){
+            const fechaRevisarCorte = fechaCorte.plus({days: 1});
+            if(hoy.day === fechaRevisarCorte.day){
                 const hoyFormatted = DateTime.fromISO(getNextFechaByDay(fechaCorte.toISODate())).setLocale("es")
                                     .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
                 await emailjs.send("service_educdoa", "template_hzw5wwm",{

@@ -1,31 +1,39 @@
-// import { google } from "googleapis";
+// import { gapi } from 'gapi-script';
 
-let auth;
+// let auth;
 
 // export const authenticateGoogleDrive = () => {
-//   auth = new google.auth.GoogleAuth({
-//     keyFile: `finance-444518-59e38148b0e8.json`,
-//     scopes: "https://www.googleapis.com/auth/drive",
-//   });
+//     gapi.client.init({
+//         apiKey: "Your-API-KEY",
+//         clientId:"Your-Oath-ClientID",
+//         scope: "https://www.googleapis.com/auth/drive",
+//       });
 // };
 
-// export const uploadToGoogleDrive = async (file) => {
-//     const fileMetadata = {
-//       name: file.originalname,
-//       parents: ["1T8smHRI3g1Or9pSjxsV_BDFvR4LepqZu"], // Change it according to your desired parent folder id
+// export const uploadFile = async (file, folderId) => {
+//     const metadata = {  
+//       name: file.name, // Nombre del archivo que aparecerá en Google Drive
+//       parents: [folderId], // ID de la carpeta donde deseas subir el archivo
 //     };
   
-//     const media = {
-//       mimeType: file.mimetype,
-//       body: fs.createReadStream(file.path),
-//     };
+//     const formData = new FormData();
+//     formData.append(
+//       "metadata",
+//       new Blob([JSON.stringify(metadata)], { type: "application/json" })
+//     );
+//     formData.append("file", file); // El archivo que deseas subir
   
-//     const driveService = google.drive({ version: "v3", auth });
+//     try {
+//       const response = await gapi.client.request({
+//         path: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+//         method: "POST",
+//         body: formData,
+//       });
   
-//     const response = await driveService.files.create({
-//       requestBody: fileMetadata,
-//       media: media,
-//       fields: "id",
-//     });
-//     return response;
+//       console.log("Archivo subido con éxito:", response.result);
+//       return response.result; // Devuelve los detalles del archivo subido
+//     } catch (error) {
+//       console.error("Error al subir archivo:", error);
+//       throw error;
+//     }
 //   };

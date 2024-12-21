@@ -11,6 +11,7 @@ import AgregarPeriodoContainer from './containers/AgregarPeriodoContainer';
 import { Toaster } from 'react-hot-toast';
 import EditarTarjetaContainer from './containers/EditarTarjetaContainer';
 import EditarPeriodoContainer from './containers/EditarPeriodoContainer';
+import PagosConcurrentesContainer from './containers/PagosConcurrentes/PagosConcurrentesContainer';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/periodos/agregar" element={<AgregarPeriodoContainer/>}/>
           <Route path="/editarTarjeta" element={<EditarTarjetaContainer/>}/>
           <Route path="/editarPeriodo" element={<EditarPeriodoContainer/>}/>
+          <Route path="/pagosConcurrentes" element={<PagosConcurrentesContainer/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

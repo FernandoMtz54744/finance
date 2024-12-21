@@ -34,3 +34,15 @@
     width: 1.5rem;
     border-radius: 100%;
 }
+
+/* SMARTPHONES */
+@media (max-width: 480px){
+    .header{
+        font-size: 0.5rem;
+    }
+
+    .displayname{
+        display: none!important;
+    }
+
+}
