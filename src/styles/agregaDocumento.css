@@ -6,9 +6,9 @@
     background: var(--main-color);
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    z-index: 20; /* Por encima del overlay */
+    z-index: 20;
     display: none;
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Transición suave */
+    transition: opacity 0.3s ease, transform 0.3s ease;
     color: whitesmoke;
 }
 
@@ -22,7 +22,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(128, 128, 128, 0.6); /* Gris con 70% de opacidad */
+    background: rgba(128, 128, 128, 0.4); /* Gris con 70% de opacidad */
     z-index: 10;
 }
 

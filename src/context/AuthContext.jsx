@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { GoogleAuthProvider, signInWithPopup,
     signOut, onAuthStateChanged} from "firebase/auth";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { authenticateGoogleDrive } from "../googleDrive/googleDrive.config";
 
 export const authContext = createContext();
 
@@ -50,9 +49,6 @@ export function AuthProvider({children}){
                 }catch(error){
                     console.log(error)
                 }
-
-                //Inicia google drive
-                // authenticateGoogleDrive();
             }         
         })
         return ()=>suscribed();

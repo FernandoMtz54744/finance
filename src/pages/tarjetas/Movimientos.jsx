@@ -1,7 +1,7 @@
 import React from 'react'
 import "../../styles/movimientos.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faFile, faArrowLeft, faEye, faTrash, faMoneyBill} from "@fortawesome/free-solid-svg-icons"
+import {faFile, faArrowLeft, faEye, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { Link, useNavigate } from 'react-router-dom';
 import { convertDate, currencyFormat } from '../../utils/utils';
 import { faMoneyBillWave } from '@fortawesome/free-solid-svg-icons/faMoneyBillWave';

@@ -5,6 +5,7 @@ import { db } from '../firebase/firebase.config';
 import { useLocation, useParams } from 'react-router-dom';
 import AgregarDocumento from '../pages/tarjetas/AgregarDocumento';
 import toast from 'react-hot-toast';
+import Loading from '../pages/header/Loading';
 
 export default function MovimientosContainer() {
   const { idPeriodo } = useParams();
@@ -12,8 +13,10 @@ export default function MovimientosContainer() {
   const [movimientos, setMovimientos] = useState([]);
   const [formMovimiento, setFormMovimiento] = useState({fecha:"",cantidad: "",motivo: "", isEfectivo: false});
   const [modalDocumento, setModalDocument] = useState(false);
-  const [linkDocumento, setLinkDocumento] = useState("");
+  const [file, setFile] = useState();
+  const [linkDocumento, setLinkDocumento] = useState();
   const [total, setTotal] = useState({totalAbono: 0, totalCargo: 0, totalPeriodo: 0, saldoFinal: 0});
+  const [loading, setLoading] = useState(false)
 
   useEffect(()=>{
       const unsuscribe =  onSnapshot(doc(db, "Movimientos", idPeriodo), (snapshot) =>{
@@ -112,9 +115,6 @@ export default function MovimientosContainer() {
     })
   }
 
-  const handleLinkDocumento = (e)=>{
-    setLinkDocumento(e.target.value);
-  }
 
   const toggleModal = ()=>{
     setModalDocument(!modalDocumento);
@@ -126,20 +126,52 @@ export default function MovimientosContainer() {
       documento: link
     }
     setDoc(documentoRef, data, {merge: true}).then((responde)=>{
-      toast.success("Documento guardado");
+      toast.success("Link actualizado");
+      setModalDocument(false);
       toggleModal();
     }).catch((error)=>{
       toast.error("Error al agregar el documento");
     })
   }
 
-  const agregaDocumento = ()=>{
-    actualizaLinkDocumentoBD(linkDocumento);
-    setModalDocument(false);
-  }
-
   const subirDocumento = ()=>{
+    if(file){
+      try{
+        setLoading(true)
+        const reader = new FileReader();
+        reader.onloadend = async function() {
+          const base64String = reader.result.split(',')[1];
+          const data = {
+            file: base64String,
+            fileName: file.name,
+            mime: file.type
+          };
+          const response = await fetch('/api/subir-archivo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(data),
+          });
+    
+          if (!response.ok) {
+            throw new Error('Error en la solicitud');
+          }else{
+            setLoading(false);
+            setModalDocument(false);
+            toast.success("Archivo subido exitosamente");
+            const body = await response.json();
+            actualizaLinkDocumentoBD(body.link);
+          }
 
+        }
+        reader.readAsDataURL(file);
+      }catch(error){
+        console.log(error);
+        setLoading(false);
+        toast.error("Ocurrió un error al subir el archivo");
+      }
+    }else{  
+      toast.error("No se seleccionó ningún documento");
+    }
   }
 
   const handleKeyDownForm = (e) =>{
@@ -151,6 +183,10 @@ export default function MovimientosContainer() {
         agregaMovimiento();
       }
     }
+  }
+
+  const handleChangeFile = (e)=>{
+    setFile(e.target.files[0]);
   }
 
   return (
@@ -168,10 +204,14 @@ export default function MovimientosContainer() {
       linkDocumento={linkDocumento}
       />
       {modalDocumento?(
-        <>
-          <AgregarDocumento  handleLinkDocumento={handleLinkDocumento} agregaDocumento={agregaDocumento} linkDocumento={linkDocumento}/>
-          <div className="overlay" onClick={()=>setModalDocument(false)}></div>
-        </>
+          loading?(
+            <Loading/>
+          ):(
+            <>
+              <AgregarDocumento  handleChangeFile={handleChangeFile} subirDocumento={subirDocumento} linkDocumento={linkDocumento}/>
+              <div className="overlay" onClick={()=>setModalDocument(false)}></div>
+            </>
+          )
         ):
         ("")
       }
