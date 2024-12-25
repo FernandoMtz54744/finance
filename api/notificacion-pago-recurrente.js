@@ -7,8 +7,8 @@ admin.initializeApp({
     credential: admin.credential.cert({
         "type": "service_account",
         "project_id": process.env.REACT_APP_PROJECT_ID,
-        "private_key_id": process.env.CM_PRIVATE_KEY_ID,
-        "private_key": Buffer.from(process.env.CM_PRIVATE_KEY, "base64").toString("ascii"),
+        "private_key_id": process.env.REACT_APP_CM_PRIVATE_KEY_ID,
+        "private_key": Buffer.from(process.env.REACT_APP_CM_PRIVATE_KEY, "base64").toString("ascii"),
         "client_email": "firebase-adminsdk-bc1ei@finance-b00a5.iam.gserviceaccount.com",
         "client_id": "117133029602070062487",
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
