@@ -1,4 +1,4 @@
-import { auth, db } from "../firebase/firebase.config";
+import { auth, db, generateToken } from "../firebase/firebase.config";
 import { createContext, useContext, useEffect, useState } from "react";
 import { GoogleAuthProvider, signInWithPopup,
     signOut, onAuthStateChanged} from "firebase/auth";
@@ -49,6 +49,9 @@ export function AuthProvider({children}){
                 }catch(error){
                     console.log(error)
                 }
+
+                /*NOTIFICACIONES*/
+                generateToken();   
             }         
         })
         return ()=>suscribed();

@@ -29,6 +29,40 @@ export function getNextFechaByDay(fecha){
     return fechaFinal;
 }
 
+export function getNextFechaByPeriodicity(startDate, periodicity) {
+    const currentDate = DateTime.now();
+    const initialDate = DateTime.fromISO(startDate);
+  
+    if (periodicity === "Anual") {
+      const yearsDiff = currentDate.diff(initialDate, "years").years;
+      const nextYearIncrement = Math.ceil(yearsDiff); // Calcula cuántos años sumar
+      return initialDate.plus({ years: nextYearIncrement }).toISODate();
+    } else if (periodicity === "Mensual") {
+      const monthsDiff = currentDate.diff(initialDate, "months").months;
+      const nextMonthIncrement = Math.ceil(monthsDiff); // Calcula cuántos meses sumar
+      return initialDate.plus({ months: nextMonthIncrement }).toISODate();
+    }
+  
+    throw new Error("Periodicidad no soportada");
+}
+
+export function getLastFechaByPeriodicity(startDate, periodicity) {
+    const currentDate = DateTime.now();
+    const initialDate = DateTime.fromISO(startDate);
+  
+    if (periodicity === "Anual") {
+      const yearsDiff = currentDate.diff(initialDate, "years").years;
+      const lastYearIncrement = Math.floor(yearsDiff); // Calcula cuántos años restar
+      return initialDate.plus({ years: lastYearIncrement }).toISODate();
+    } else if (periodicity === "Mensual") {
+      const monthsDiff = currentDate.diff(initialDate, "months").months;
+      const lastMonthIncrement = Math.floor(monthsDiff); // Calcula cuántos meses restar
+      return initialDate.plus({ months: lastMonthIncrement }).toISODate();
+    }
+  
+    throw new Error("Periodicidad no soportada");
+}
+
 export function getLastFechaByDay(fecha){
     const dia = DateTime.fromISO(fecha).day;
     const hoy = DateTime.local().startOf("day");
@@ -42,4 +76,8 @@ export function getLastFechaByDay(fecha){
 
 export function getFechaLimitePago(fecha){
     return DateTime.fromISO(fecha).plus({days: 20}).toISODate();
+}
+
+export function getFechaLimitePagoByDays(fecha, dias){
+    return DateTime.fromISO(fecha).plus({days: dias}).toISODate();
 }
