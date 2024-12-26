@@ -51,7 +51,7 @@ export function AuthProvider({children}){
                 }
 
                 /*NOTIFICACIONES*/
-                // generateToken();   
+                generateToken();   
             }         
         })
         return ()=>suscribed();
