@@ -1,12 +1,6 @@
-    import { collection, getDocs, query } from 'firebase/firestore';
-    import { db } from '../src/firebase/firebase.config';
     import admin from "firebase-admin";
 
-    export async function GET() {
-
-        // Inicializa Firebase Admin si no está ya inicializado
-    try {
-        console.log("Inicializa");
+try{
     admin.initializeApp({
         credential: admin.credential.cert({
             "type": "service_account",
@@ -22,32 +16,26 @@
             "universe_domain": "googleapis.com"
         })
     });
-    console.log("Termina de inicializar");
-        const notificaciones = [];
-            const snapshot = await getDocs((query(collection(db, "Notificaciones"))));
-            snapshot.docs.forEach(notificacion =>{
-                notificaciones.push(notificacion.data())
-            });
+}catch(error){
+    console.log("Dio error");
+    console.log(error);
+    return new Response("errores")
+}
+
+export async function GET() {
+
+    try {
+        const message = {
+            token: "cUGEp02_QmFzHNyQePr8wD:APA91bE16UiP6eKpZqv539sb-8wCVv6yeh_yEoY62sqP25FdKYPQLgsCTGvrXz0xSH9FW1hYsotu3Usxo-PzQ4xyLhoiaYTFRyLpFQLvlK00ymT3pwo_10M",
+            notification: {
+                title: "Prueba vercel",
+                body: "body vercel"
+            },
+        };
+
+        await admin.messaging().send(message);
+        return new Response("Notificación enviada")
             
-            try {
-                // Envía la notificación
-                const message = {
-                    token: "cUGEp02_QmFzHNyQePr8wD:APA91bE16UiP6eKpZqv539sb-8wCVv6yeh_yEoY62sqP25FdKYPQLgsCTGvrXz0xSH9FW1hYsotu3Usxo-PzQ4xyLhoiaYTFRyLpFQLvlK00ymT3pwo_10M",
-                    notification: {
-                        title: "Prueba vercel",
-                        body: "body vercel"
-                    },
-                };
-        
-                // const response = await admin.messaging().send(message);
-                return new Response("Notificación enviada")
-            } catch (error) {
-                console.error("Error enviando notificación:", error);
-                new Response(JSON.stringify({ error: "Error al enviar la notificación", details: error.message }), {
-                    status: 500,
-                    headers: { "Content-Type": "application/json" },
-                });
-            }
         } catch (error) {
             console.error('Error al enviar la notificación:', error);
             new Response(JSON.stringify({ error: "Error al notificar", details: error.message }), {
