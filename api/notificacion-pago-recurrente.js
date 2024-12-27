@@ -2,7 +2,11 @@
     import { db } from '../src/firebase/firebase.config';
     import admin from "firebase-admin";
 
-    // Inicializa Firebase Admin si no está ya inicializado
+    export async function GET() {
+
+        // Inicializa Firebase Admin si no está ya inicializado
+    try {
+        console.log("Inicializa");
     admin.initializeApp({
         credential: admin.credential.cert({
             "type": "service_account",
@@ -18,11 +22,8 @@
             "universe_domain": "googleapis.com"
         })
     });
-
-    export async function GET() {
-    
+    console.log("Termina de inicializar");
         const notificaciones = [];
-        try {
             const snapshot = await getDocs((query(collection(db, "Notificaciones"))));
             snapshot.docs.forEach(notificacion =>{
                 notificaciones.push(notificacion.data())
