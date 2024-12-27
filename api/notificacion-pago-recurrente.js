@@ -1,6 +1,5 @@
 const admin = require("firebase-admin");
 
-
 try{
     admin.initializeApp({
         credential: admin.credential.cert({
@@ -20,7 +19,6 @@ try{
 }catch(error){
     console.log("Dio error");
     console.log(error);
-    return new Response("errores")
 }
 
 export async function GET() {
