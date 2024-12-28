@@ -3,8 +3,9 @@ import { DateTime } from "luxon";
 import { db } from "../src/firebase/firebase.config";
 import { getFechaLimitePagoByDays, getLastFechaByPeriodicity, getNextFechaByPeriodicity } from "../src/utils/utils";
 
+const diasAntes = [10,5,3,2];
+
 export async function GET() {
-    const diasAntes = [10,5,3,2];
     const pagos = [];
     try{
         const snapshot = await getDocs((query(collection(db, "PagosConcurrentes"))));
@@ -13,7 +14,6 @@ export async function GET() {
         });
 
         const hoy = DateTime.local().startOf("day");
-        console.log("------")
         for(const pago of pagos){
             const proximoPago = DateTime.fromISO(pago.proximoPago);
             if(proximoPago.hasSame(hoy, "day")){
@@ -32,7 +32,6 @@ export async function GET() {
                     console.log("Fecha límite")
                 }
             }
-
         }
     }catch(error){
         console.log(error);

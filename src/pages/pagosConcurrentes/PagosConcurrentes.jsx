@@ -10,7 +10,7 @@ export default function PagosConcurrentes({pagos, actualizaPago}) {
     
   return (
     <div>
-        <center className='account-title'>{edit?"Seleccione el pago para editar": "Tus pagos concurrentes"}</center>
+        <center className='account-title'>{edit?"Seleccione el pago para editar": "Tus pagos recurrentes"}</center>
         <div className='pagos-container'>
         {pagos.sort((a,b) => a.nombre.localeCompare(b.nombre)).map((pago,i) =>{
             return(
