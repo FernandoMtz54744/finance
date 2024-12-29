@@ -10,6 +10,7 @@ import Loading from '../pages/header/Loading';
 export default function MovimientosContainer() {
   const { idPeriodo } = useParams();
   const {periodo} = useLocation().state;
+  const {tarjeta} = useLocation().state;
   const [movimientos, setMovimientos] = useState([]);
   const [formMovimiento, setFormMovimiento] = useState({fecha:"",cantidad: "",motivo: "", isEfectivo: false});
   const [modalDocumento, setModalDocument] = useState(false);
@@ -202,6 +203,7 @@ export default function MovimientosContainer() {
       periodo = {periodo}
       total = {total}
       linkDocumento={linkDocumento}
+      tarjeta={tarjeta}
       />
       {modalDocumento?(
           loading?(

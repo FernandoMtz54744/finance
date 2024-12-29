@@ -9,13 +9,14 @@ import { faMoneyBillWave } from '@fortawesome/free-solid-svg-icons/faMoneyBillWa
 export default function Movimientos({movimientos,
           formMovimiento,agregaMovimiento,handleChangeForm,handleKeyDownForm,
           actualizaMovimientos, eliminaMovimiento, toggleModal, 
-          periodo, total, linkDocumento}) {
+          periodo, total, linkDocumento, tarjeta}) {
 
   const navigate = useNavigate();
 
   return (
     <div>
       <div className='title-movimientos'>
+          <div>{tarjeta.alias}&nbsp;{tarjeta.tipo}</div>
           <div>{periodo.alias}</div>
           <div>Fecha inicio: {convertDate(periodo.fechaInicio)}</div>
           <div>Fecha de corte: {convertDate(periodo.fechaCorte)}</div>
@@ -31,7 +32,7 @@ export default function Movimientos({movimientos,
       <div className='form-movimientos'>
         <div>
           Fecha:&nbsp;  
-          <input type="date" name='fecha' value={formMovimiento.fecha} onChange={handleChangeForm} className='input-table' onKeyDown={handleKeyDownForm} min={periodo.fechaInicio} max={periodo.fechaCorte}/>
+          <input type="date" name='fecha' value={formMovimiento.fecha} onChange={handleChangeForm} className='input-table' onKeyDown={handleKeyDownForm} min={periodo.fechaInicio} max={tarjeta.tipo==="Crédito"?periodo.fechaLimitePago:periodo.fechaCorte}/>
         </div>
         <div>
           Cantidad:&nbsp;
