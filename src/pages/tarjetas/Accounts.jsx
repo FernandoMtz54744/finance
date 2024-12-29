@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "../../styles/accounts.css"
 import { Link } from 'react-router-dom'
-import { convertDate, currencyFormat, getFechaLimitePago, getNextFechaByDay } from '../../utils/utils';
+import { convertDate, currencyFormat, getFechaLimitePago, getLastFechaByDay, getNextFechaByDay } from '../../utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEdit} from "@fortawesome/free-solid-svg-icons"
 
@@ -45,7 +45,7 @@ export default function Accounts({accounts, periodos}) {
                 {account.fechaLimitePago && (
                 <div className='fecha-limite-pago-container'>
                   <div className='dato-title'>F. Límite de pago</div>
-                  <div>{convertDate(getFechaLimitePago(account.fechaCorte))}</div>
+                  <div>{convertDate(getFechaLimitePago(getLastFechaByDay(account.fechaCorte)))}</div>
                 </div>
                 )}
                 

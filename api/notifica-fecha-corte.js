@@ -21,9 +21,8 @@ export async function GET() {
                 const fechaCorteFormatted = DateTime.fromISO(getNextFechaByDay(fechaCorte.toISODate())).setLocale("es")
                                     .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
 
-                const mensaje = `El día de ayer ${fechaCorteFormatted} fue la fecha de corte de tu tarjeta de ${tarjeta.tipo} ${tarjeta.alias}, 
-                no olvides consultar su estado de cuenta.`                   
-                const enviado = await enviarEmail(tarjeta.correo, mensaje);
+                const mensaje = `El día de ayer ${fechaCorteFormatted} fue la fecha de corte de tu tarjeta ${tarjeta.tipo} ${tarjeta.alias}, no olvides consultar su estado de cuenta.`                   
+                await enviarEmail(tarjeta.correo, mensaje);
                 emailed++;
             }
         }
