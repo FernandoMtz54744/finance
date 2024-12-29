@@ -23,7 +23,7 @@ export async function GET() {
 
                 const mensaje = `El día de ayer ${fechaCorteFormatted} fue la fecha de corte de tu tarjeta de ${tarjeta.tipo} ${tarjeta.alias}, 
                 no olvides consultar su estado de cuenta.`                   
-                await enviarEmail(tarjeta.correo, mensaje);
+                const enviado = await enviarEmail(tarjeta.correo, mensaje);
                 emailed++;
             }
         }
