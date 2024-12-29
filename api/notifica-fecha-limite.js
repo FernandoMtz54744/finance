@@ -1,4 +1,4 @@
-import { collection, getDocs, orderBy, query, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
 import { currencyFormat, getFechaLimitePago, getLastFechaByDay } from '../src/utils/utils';
 import { DateTime } from 'luxon';
