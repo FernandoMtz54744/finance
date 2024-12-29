@@ -23,7 +23,6 @@ export async function GET() {
                     proximoPago: getNextFechaByPeriodicity(pago.fechaPago, pago.periodicidad)
                 }
                 await updateDoc(doc(db, "PagosConcurrentes", pago.idPago), data);
-                console.log("Se actualizó el pago correctamente");
             }
             if(pago.hasFechaLimite && !pago.pagado){
                 const fechaLimite = DateTime.fromISO(getFechaLimitePagoByDays(pago.fechaInicio, pago.diasLimitePago));

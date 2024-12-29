@@ -2,7 +2,7 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from '../src/firebase/firebase.config';
 import { DateTime } from 'luxon';
 import { getNextFechaByDay } from '../src/utils/utils';
-import emailjs from "@emailjs/nodejs"
+import { enviarEmail } from '../src/utils/emailUtils';
 
 export async function GET() {
     const tarjetas = [];
@@ -18,15 +18,12 @@ export async function GET() {
             const fechaCorte = DateTime.fromISO(tarjeta.fechaCorte);
             const fechaRevisarCorte = fechaCorte.plus({days: 1});
             if(hoy.day === fechaRevisarCorte.day){
-                const hoyFormatted = DateTime.fromISO(getNextFechaByDay(fechaCorte.toISODate())).setLocale("es")
+                const fechaCorteFormatted = DateTime.fromISO(getNextFechaByDay(fechaCorte.toISODate())).setLocale("es")
                                     .toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
-                await emailjs.send("service_educdoa", "template_hzw5wwm",{
-                    fecha: hoyFormatted,
-                    tarjeta: tarjeta.alias,
-                    tipo: tarjeta.tipo,
-                    to: tarjeta.correo,
-                    reply_to: "FinanceByFerDevs@gmail.com"
-                },{publicKey: process.env.EMAILJS_PUBLIC_KEY})
+
+                const mensaje = `El día de ayer ${fechaCorteFormatted} fue la fecha de corte de tu tarjeta de ${tarjeta.tipo} ${tarjeta.alias}, 
+                no olvides consultar su estado de cuenta.`                   
+                await enviarEmail(tarjeta.correo, mensaje);
                 emailed++;
             }
         }
