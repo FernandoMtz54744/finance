@@ -13,7 +13,7 @@ export default function Menu() {
                 <center>Menú</center>
                 <Link className='menu-link' to="/" onClick={()=>setToggleMenu(false)}>Tarjetas</Link>
                 <br />
-                <Link className='menu-link' to="/pagosConcurrentes" onClick={()=>setToggleMenu(false)}>Pagos concurrentes</Link>
+                <Link className='menu-link' to="/pagosRecurrentes" onClick={()=>setToggleMenu(false)}>Pagos recurrentes</Link>
             </div>
             <div className='menu-overlay' onClick={()=>setToggleMenu(!toggleMenu)}></div>
         </>

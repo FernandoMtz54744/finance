@@ -19,7 +19,7 @@ export async function GET() {
             const proximaFechaLimite = DateTime.fromISO(getFechaLimitePago(getLastFechaByDay(tarjeta.fechaCorte)))
             const diff = proximaFechaLimite.diff(hoy, ["days"]).days;
             const limiteFormatted = proximaFechaLimite.setLocale("es").toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' });
-            if(diasAntes.includes(diff) || true){//Si faltan x días para fecha límite de pago
+            if(diasAntes.includes(diff)){//Si faltan x días para fecha límite de pago
                 let enviarCorreo = true;
                 let mensaje = "";
                 //Se obtienen los periodos

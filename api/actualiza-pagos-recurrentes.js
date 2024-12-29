@@ -6,8 +6,8 @@ import { getFechaLimitePagoByDays, getLastFechaByPeriodicity, getNextFechaByPeri
 const diasAntes = [10,5,3,2];
 
 export async function GET() {
-    const pagos = [];
     try{
+        const pagos = [];
         const snapshot = await getDocs((query(collection(db, "PagosConcurrentes"))));
         snapshot.docs.forEach(pago =>{
             pagos.push({...pago.data(), idPago: pago.id});
@@ -23,13 +23,6 @@ export async function GET() {
                     proximoPago: getNextFechaByPeriodicity(pago.fechaPago, pago.periodicidad)
                 }
                 await updateDoc(doc(db, "PagosConcurrentes", pago.idPago), data);
-            }
-            if(pago.hasFechaLimite && !pago.pagado){
-                const fechaLimite = DateTime.fromISO(getFechaLimitePagoByDays(pago.fechaInicio, pago.diasLimitePago));
-                const diff = fechaLimite.diff(hoy, ["days"]).days;
-                if(diasAntes.includes(diff)){
-                    console.log("Fecha límite")
-                }
             }
         }
     }catch(error){
