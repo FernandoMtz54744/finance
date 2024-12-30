@@ -28,7 +28,7 @@ export default function AgregarPeriodoContainer() {
   }, [])
 
   useEffect(()=>{
-    if(form.fechaCorte){
+    if(tarjeta.tipo === "Crédito"){
       setForm({...form,
         fechaLimitePago: getFechaLimitePago(form.fechaCorte)
       })
