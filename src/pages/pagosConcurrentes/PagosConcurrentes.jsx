@@ -4,6 +4,7 @@ import { convertDate, currencyFormat, getFechaLimitePagoByDays } from '../../uti
 import "../../styles/pagosConcurrentes.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { DateTime } from 'luxon';
 
 export default function PagosConcurrentes({pagos, actualizaPago}) {
     const [edit, setEdit] = useState(false);
@@ -12,7 +13,12 @@ export default function PagosConcurrentes({pagos, actualizaPago}) {
     <div>
         <center className='account-title'>{edit?"Seleccione el pago para editar": "Tus pagos recurrentes"}</center>
         <div className='pagos-container'>
-        {pagos.sort((a,b) => a.nombre.localeCompare(b.nombre)).map((pago,i) =>{
+        {pagos.sort((a,b) => {
+            const hoy = DateTime.now();
+            const diferenciaA = DateTime.fromISO(a.proximoPago).diff(hoy, 'days').days;
+            const diferenciaB = DateTime.fromISO(b.proximoPago).diff(hoy, 'days').days;
+            return diferenciaA - diferenciaB;
+        }).map((pago,i) =>{
             return(
                 <div className={`pago-container ${pago.pagado?"pagado":"no-pagado"}`} key={i}>
 

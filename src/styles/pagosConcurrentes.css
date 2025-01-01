@@ -121,6 +121,10 @@
     position: absolute;
   }
 
+  .pagos-container{
+    margin-bottom: 5rem;
+  }
+
   /* SMARTPHONES */
 @media (max-width: 480px){
   .pago-data{
@@ -128,9 +132,5 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-
-  .pagos-container{
-    margin-bottom: 5rem;
   }
 }
