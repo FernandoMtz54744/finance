@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import { addDoc, collection, onSnapshot, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/firebase.config'
 import toast from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 export default function EfectivoContainer() {
 
@@ -34,22 +35,33 @@ export default function EfectivoContainer() {
     }
 
     const agregarEfectivo = (e)=>{
-        const data = Object.keys(form).reduce((nuevoJson, clave)=>{
-          nuevoJson[clave] = Number(form[clave]);
-          return nuevoJson;
-        }, {});  
-      
-       data.fecha = DateTime.local().toMillis();
-       data.idUsuario = params.idUsuario;
-       
-      addDoc(collection(db, "Efectivo"), data).then(() => {
-          toast.success("Se agregó el efectivo con éxito");
+      Swal.fire({
+        title: 'Agregar efectivo',
+        text: "¿Desea agregar el registro de efectivo?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, agregar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if(result.isConfirmed) {
+          const data = Object.keys(form).reduce((nuevoJson, clave)=>{
+            nuevoJson[clave] = Number(form[clave]);
+            return nuevoJson;
+          }, {});  
+        
+          data.fecha = DateTime.local().toMillis();
+          data.idUsuario = params.idUsuario;
+           
+          addDoc(collection(db, "Efectivo"), data).then(() => {
+              toast.success("Se agregó el efectivo con éxito");
+            }
+          ).catch((error)=>{
+            toast.error("Ocurrió un error al agregar el efectivo")
+            console.log(error)
+          })
+          setForm({cincuenta:0, cien: 0, doscientos:0, quinientos:0});
         }
-      ).catch((error)=>{
-        toast.error("Ocurrió un error al agregar el efectivo")
-        console.log(error)
-      })
-        setForm({cincuenta:0, cien: 0, doscientos:0, quinientos:0});
+      }); 
     }
 
     const sumaEfectivo = (cincuenta, cien, doscientos, quinientos)=>{
@@ -58,8 +70,9 @@ export default function EfectivoContainer() {
 
   return (
     <div>
-      <center className='title'>Efectivo</center>
+      <center className='title'>Agrega efectivo</center>
         <AgregaEfectivo handleChange={handleChange} form={form} agregarEfectivo={agregarEfectivo} sumaEfectivo={sumaEfectivo}/>
+        <center className='title muestra-efectivo-title'>Historial de efectivo</center>
         <MuestraEfectivo efectivos={efectivos} sumaEfectivo={sumaEfectivo}/>
     </div>
   )

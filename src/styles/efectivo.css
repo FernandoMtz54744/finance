@@ -64,8 +64,9 @@
     color: whitesmoke;
 }
 
-.muestra-efectivo-container{
-    margin-top: 4rem;
+.muestra-efectivo-title{
+    margin-top: 2rem;
+    padding-bottom: 0rem;
 }
 
 @media (max-width: 480px){
