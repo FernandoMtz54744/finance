@@ -16,6 +16,8 @@ export default function Menu() {
                 <Link className='menu-link' to="/" onClick={()=>setToggleMenu(false)}>Tarjetas</Link>
                 <br />
                 <Link className='menu-link' to={`/pagosRecurrentes/${context.user.uid}`} onClick={()=>setToggleMenu(false)}>Pagos recurrentes</Link>
+                <br />
+                <Link className='menu-link' to={`/efectivo/${context.user.uid}`} onClick={()=>setToggleMenu(false)}>Efectivo</Link>
             </div>
             <div className='menu-overlay' onClick={()=>setToggleMenu(!toggleMenu)}></div>
         </>

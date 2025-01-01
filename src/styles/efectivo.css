@@ -1,0 +1,83 @@
+.table-efectivo-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-efectivo thead{
+    background-color: var(--main-color);
+    color: whitesmoke;
+    text-align: center;
+}
+
+.table-efectivo input{
+    width: 5rem;
+    font-size: 1rem;
+    border: none;
+    text-align: center;
+}
+
+.table-efectivo thead td{
+    padding-left: 2rem;
+    padding-right: 2rem;
+} 
+
+.table-efectivo{
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.efectivo-row{
+    background-color: var(--main-color);
+    border-radius: 5px;
+    color: whitesmoke;
+    margin: 1rem;
+    padding: 0.5rem;
+}
+
+.efectivo-row:hover{
+    cursor: pointer;
+}
+
+.add-efectivo-button{
+    background-color: var(--main-color);
+    color: whitesmoke;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 100%;
+    font: inherit;
+}
+
+.add-efectivo-button:hover{
+    cursor: pointer;
+}
+
+.total-efectivo{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.muestra-total-efectivo{
+    background-color: var(--main-color);
+    color: whitesmoke;
+}
+
+.muestra-efectivo-container{
+    margin-top: 4rem;
+}
+
+@media (max-width: 480px){
+    .muestra-total-efectivo{
+        background-color: transparent;
+        color: black;
+        font-weight: 700;
+    }
+
+    .muestra-phone thead{
+        background-color: transparent;
+        color: black;
+        font-weight: 700;
+    }
+}
