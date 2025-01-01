@@ -5,7 +5,7 @@ export default function AgregarPago({form, handleChange, handleSubmit}) {
     <div>
         <form className='default-form' onSubmit={handleSubmit}>
             <center>
-                Agregar Pago Concurrente
+                Agregar Pago Recurrente
             </center>
             <div>
                 <label htmlFor="nombre">Nombre del pago</label>

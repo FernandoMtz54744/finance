@@ -28,7 +28,7 @@ export default function PagosConcurrentes({pagos, actualizaPago}) {
                         <div>{currencyFormat(pago.cantidad)}</div>
                         <div>{pago.periodicidad}</div>
                         <div className="switch">
-                            <input type="checkbox" checked={pago.pagado} />
+                            <input type="checkbox" checked={pago.pagado}/>
                             <label htmlFor="switch" onClick={()=>actualizaPago(pago.idPago, pago.pagado)}></label>
                         </div>
                         <div className={`${!pago.pagado?"no-pagado":"pagado"}`}>{pago.pagado?"PAGADO":"SIN PAGAR"}</div>

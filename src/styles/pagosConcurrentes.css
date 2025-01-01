@@ -120,3 +120,17 @@
     font-size: 12px; /* Tamaño de la palomita */
     position: absolute;
   }
+
+  /* SMARTPHONES */
+@media (max-width: 480px){
+  .pago-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pagos-container{
+    margin-bottom: 5rem;
+  }
+}

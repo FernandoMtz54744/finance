@@ -29,7 +29,7 @@ function App() {
           <Route path="/periodos/agregar" element={<AgregarPeriodoContainer/>}/>
           <Route path="/editarTarjeta" element={<EditarTarjetaContainer/>}/>
           <Route path="/editarPeriodo" element={<EditarPeriodoContainer/>}/>
-          <Route path="/pagosRecurrentes" element={<PagosConcurrentesContainer/>}/>
+          <Route path="/pagosRecurrentes/:idUsuario" element={<PagosConcurrentesContainer/>}/>
           <Route path="/agregarPago" element={<AgregarPagoContainer/>}/>
         </Routes>
       </BrowserRouter>

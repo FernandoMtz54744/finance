@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react'
 import PagosConcurrentes from '../../pages/pagosConcurrentes/PagosConcurrentes'
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
-import { addDoc, collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../firebase/firebase.config';
-import { useAuth } from '../../context/AuthContext';
+import { useParams } from 'react-router-dom';
 
 export default function PagosConcurrentesContainer() {
-  const context = useAuth();  
+  const params= useParams();
   const [pagos, setPagos] = useState([]);
   
   useEffect(()=>{
-    const queryBD = query(collection(db, "PagosConcurrentes"), where("idUsuario", "==", context.user.uid))
+    const queryBD = query(collection(db, "PagosConcurrentes"), where("idUsuario", "==", params.idUsuario))
     const unsuscribe =  onSnapshot(queryBD, (snapshot) =>{
         const pagosTemp = [];
         snapshot.docs.forEach(pago =>{

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext';
 
 export default function Menu() {
     const [toggleMenu, setToggleMenu] = useState(false);
+    const context = useAuth(); 
 
   return (
     <div>
@@ -13,7 +15,7 @@ export default function Menu() {
                 <center>Menú</center>
                 <Link className='menu-link' to="/" onClick={()=>setToggleMenu(false)}>Tarjetas</Link>
                 <br />
-                <Link className='menu-link' to="/pagosRecurrentes" onClick={()=>setToggleMenu(false)}>Pagos recurrentes</Link>
+                <Link className='menu-link' to={`/pagosRecurrentes/${context.user.uid}`} onClick={()=>setToggleMenu(false)}>Pagos recurrentes</Link>
             </div>
             <div className='menu-overlay' onClick={()=>setToggleMenu(!toggleMenu)}></div>
         </>
