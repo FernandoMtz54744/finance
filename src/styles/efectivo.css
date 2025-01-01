@@ -18,6 +18,11 @@
     text-align: center;
 }
 
+.table-efectivo input::placeholder{
+    color: black;
+    opacity: 1;
+}
+
 .table-efectivo thead td{
     padding-left: 2rem;
     padding-right: 2rem;

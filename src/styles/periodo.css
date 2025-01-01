@@ -58,6 +58,27 @@
     font-size: 1.5rem;
 }
 
+.desactivar-validacion-button{
+    background-color: var(--main-color);
+    color: whitesmoke;
+    border: none;
+    padding: 0.5rem;
+    font-size: inherit;
+    font-family: inherit;
+    border-radius: 5px;
+}
+
+.validacion-question{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.desactivar-validacion-button:hover{
+    cursor: pointer;
+}
+
 /* SMARTPHONES */
 @media (max-width: 480px){
     .periodo-data{

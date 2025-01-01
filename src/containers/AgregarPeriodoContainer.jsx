@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { DateTime } from 'luxon';
 import { getFechaLimitePago, getLastFechaByDay, getNextFechaByDay } from '../utils/utils';
+import Swal from 'sweetalert2';
 
 export default function AgregarPeriodoContainer() {
   const context = useAuth();  
@@ -20,11 +21,14 @@ export default function AgregarPeriodoContainer() {
       saldoInicial: 0
   });
 
+  const [validarFechas, setValidarFechas] = useState(true);
+
   useEffect(()=>{
     setForm({...form, 
       fechaInicio: getLastFechaByDay(DateTime.fromISO(tarjeta.fechaCorte).plus({days: 1}).toISODate()),
       fechaCorte: getNextFechaByDay(tarjeta.fechaCorte)
     })
+    setValidarFechas(true);
   }, [])
 
   useEffect(()=>{
@@ -39,7 +43,7 @@ export default function AgregarPeriodoContainer() {
       setForm({...form, [e.target.name]: e.target.value});
   }
 
-  const agregaPeriodo = ()=>{
+  const agregaPeriodo = async ()=>{
     const data = {
       idUsuario: context.user.uid,
       idTarjeta: tarjeta.id,
@@ -52,8 +56,35 @@ export default function AgregarPeriodoContainer() {
       return;
     }
 
-    if(!validaFechas(data)){
-      return;
+    if(validarFechas){
+      if(!validaFechas(data)){
+        setTimeout(()=> toast((t) => (
+          <span className='validacion-question'>
+            ¿Desactivar la validación de fechas?
+            <button onClick={() => {
+              setValidarFechas(false)
+              toast.success("Validación desactivada");
+              toast.dismiss(t.id)
+              }} className='desactivar-validacion-button'>
+              Desactivar
+            </button>
+          </span>
+        ), {position: "bottom-right"}), 1000);
+        return;
+      }
+    }else{
+      const result  = await Swal.fire({
+              title: 'Validación de fechas',
+              text: "La validación de fechas está desactivada ¿desea continuar?",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Sí, continuar',
+              cancelButtonText: 'Cancelar',
+              
+            });
+      if(!result.isConfirmed){
+        return;
+      }
     }
 
     addDoc(collection(db, "Periodos"), data).then(() => {
@@ -115,6 +146,6 @@ export default function AgregarPeriodoContainer() {
   }
 
   return (
-    <AgregarPeriodo form={form} handleChange={handleChange} handleSubmit={handleSubmit} tarjeta={tarjeta}/>
+    <AgregarPeriodo form={form} handleChange={handleChange} handleSubmit={handleSubmit} tarjeta={tarjeta} validarFechas={validarFechas}/>
   )
 }

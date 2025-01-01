@@ -12,7 +12,7 @@ import Swal from 'sweetalert2'
 export default function EfectivoContainer() {
 
     const params = useParams();
-    const [form, setForm] = useState({cincuenta:0, cien: 0, doscientos:0, quinientos:0});
+    const [form, setForm] = useState({cincuenta:"", cien: "", doscientos:"", quinientos:""});
     const [efectivos, setEfectivos] = useState([]);
 
     useEffect(()=>{

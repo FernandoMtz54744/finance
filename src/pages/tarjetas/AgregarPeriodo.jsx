@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-export default function AgregarPeriodo({form, handleChange, handleSubmit, tarjeta}) {
+export default function AgregarPeriodo({form, handleChange, handleSubmit, tarjeta, validarFechas}) {
   return (
     <div>
       <form onSubmit={handleSubmit} className='default-form'>
@@ -11,11 +11,11 @@ export default function AgregarPeriodo({form, handleChange, handleSubmit, tarjet
           <input type="text" name='alias' id='alias' value={form.alias} onChange={handleChange} autoComplete='off' className='input-form'/>
         </div>
         <div>
-          <label htmlFor="fechaInicio">Fecha de incio</label>
+          <label htmlFor="fechaInicio">Fecha de incio {!validarFechas?"(validación desactivada)":null}</label>
           <input type="date" name='fechaInicio' id='fechaInicio' value={form.fechaInicio} onChange={handleChange} className='input-date'/>
         </div>
         <div>
-          <label htmlFor="fechaCorte">Fecha de corte</label>
+          <label htmlFor="fechaCorte">Fecha de corte {!validarFechas?"(validación desactivada)":null}</label>
           <input type="date" name='fechaCorte' id='fechaCorte' value={form.fechaCorte} onChange={handleChange} className='input-date'/>
         </div>
         {tarjeta.tipo === "Crédito" && (
