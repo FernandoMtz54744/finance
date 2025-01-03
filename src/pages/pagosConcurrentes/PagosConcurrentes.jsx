@@ -14,6 +14,13 @@ export default function PagosConcurrentes({pagos, actualizaPago}) {
         <center className='account-title'>{edit?"Seleccione el pago para editar": "Tus pagos recurrentes"}</center>
         <div className='pagos-container'>
         {pagos.sort((a,b) => {
+             // Priorizar pagos no pagados
+            if (!a.pagado && b.pagado) {
+                return -1; // a va antes que b
+            } else if (a.pagado && !b.pagado) {
+                return 1; //b va antes que a
+            }
+            
             const hoy = DateTime.now();
             const diferenciaA = DateTime.fromISO(a.proximoPago).diff(hoy, 'days').days;
             const diferenciaB = DateTime.fromISO(b.proximoPago).diff(hoy, 'days').days;
