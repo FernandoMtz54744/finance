@@ -12,7 +12,8 @@ export default function MuestraEfectivo({efectivos, sumaEfectivo}) {
             return(
                 <div className='efectivo-container'>
                     <div onClick={()=>setVisible({...visible, [efectivo.fecha]: !visible[efectivo.fecha]})} className='efectivo-row'>
-                        {DateTime.fromMillis(efectivo.fecha).setLocale("es").toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' })}
+                        {DateTime.fromMillis(efectivo.fecha).setLocale("es").toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' })} 
+                        &nbsp;-&nbsp;{currencyFormat(sumaEfectivo(efectivo.cincuenta,efectivo.cien,efectivo.doscientos,efectivo.quinientos))}
                     </div>
                     {
                     visible[efectivo.fecha] && 

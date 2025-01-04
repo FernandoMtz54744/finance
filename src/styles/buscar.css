@@ -1,0 +1,26 @@
+.filtros{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+}
+
+.filtro-element{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.palabra-filtro{
+    width: 20rem;
+    border-radius: 10px;
+    padding-left: 15px;
+}
+
+.input-select-filtro{
+    border: solid 2px var(--main-color);
+    outline: none;
+    font-size: 1rem;
+}

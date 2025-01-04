@@ -14,6 +14,7 @@ import EditarPeriodoContainer from './containers/EditarPeriodoContainer';
 import PagosConcurrentesContainer from './containers/PagosConcurrentes/PagosConcurrentesContainer';
 import AgregarPagoContainer from './containers/PagosConcurrentes/AgregarPagoContainer';
 import EfectivoContainer from './containers/efectivo/EfectivoContainer';
+import BuscarContainer from './containers/buscar/BuscarContainer';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/pagosRecurrentes/:idUsuario" element={<PagosConcurrentesContainer/>}/>
           <Route path="/efectivo/:idUsuario" element={<EfectivoContainer/>}/>
           <Route path="/agregarPago" element={<AgregarPagoContainer/>}/>
+          <Route path="/buscar/:idUsuario" element={<BuscarContainer/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
