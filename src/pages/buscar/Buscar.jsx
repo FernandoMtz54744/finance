@@ -16,7 +16,7 @@ export default function Buscar({tarjetas, movimientosFiltered, handleChange, for
                 <div>Fecha fin:&nbsp;</div>
                 <div><input type="date" className='input-table' onChange={handleChange} value={formFiltros.fechaFin} name='fechaFin'/></div>
             </div>
-            <div className='checkbox-container'>
+            <div className='checkbox-container filtro-element'>
                 <label htmlFor='efectivo'>Efectivo:</label>
                 <input type='checkbox' name='efectivo' id='efectivo' onChange={handleChange} checked={formFiltros.efectivo}/>
             </div>
@@ -37,11 +37,11 @@ export default function Buscar({tarjetas, movimientosFiltered, handleChange, for
                 </div>
             </div>
             <div className='filtro-element'>
-                <button onClick={borrarFiltros} className='table-agregar-button'>Borrar filtros</button>
+                <button onClick={borrarFiltros} className='table-agregar-button borrar-filtro'>Borrar filtros</button>
             </div>
         </div>
         
-        <div className='movimientos-container'>
+        <div className='movimientos-container movimientos-busqueda'>
             <div className='abonos-container'>
                 <div className='tipo-movimiento-title'>Abonos</div>
                     <table>
@@ -84,6 +84,9 @@ export default function Buscar({tarjetas, movimientosFiltered, handleChange, for
                     <div className='total-cargo'>{currencyFormat(total.totalCargo)}</div>
                 </div>
             </div>
+        </div>
+        <div className='total-filtros'>
+            Total: {currencyFormat(total.totalPeriodo)} 
         </div>
     </div>
   )

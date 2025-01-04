@@ -14,7 +14,7 @@ export default function BuscarContainer() {
     const movimientos = useRef([]);
     const [movimientosFiltered, setMovientosFiltered] = useState([]); //Movimientos con los filtros
     const [tarjetas, setTarjetas] = useState([]);
-    const [total, setTotal] = useState({totalAbono: 0, totalCargo: 0, totalRango: 0});
+    const [total, setTotal] = useState({totalAbono: 0, totalCargo: 0, totalPeriodo: 0});
 
     useEffect(()=>{
         const cargaMovimientos = async ()=>{
