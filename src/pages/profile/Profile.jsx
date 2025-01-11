@@ -54,7 +54,7 @@ export default function Profile({accounts, periodos, efectivo}) {
               ))}
               {(Object.keys(efectivo).length > 0) && (
                 <div className='profile-account-data'>
-                    <div>Efectivo del {DateTime.fromMillis(efectivo.fecha).setLocale("es").toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' })} </div>
+                    <div>Efectivo {DateTime.fromMillis(efectivo.fecha).setLocale("es").toFormat('dd/LLL/yyyy')} </div>
                     <div className='green'>{currencyFormat(sumaEfectivo(efectivo.cincuenta,efectivo.cien,efectivo.doscientos,efectivo.quinientos))}</div>
                 </div>
               )}
