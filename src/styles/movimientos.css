@@ -120,12 +120,9 @@
     align-items: center;
     padding: 1rem;
     border-radius: 10px;
-    position: fixed;
-    bottom: 10px;
     width: 50%;
     align-self: center;
     left: 50%;
-    transform: translate(-50%, 0);
 }
 
 .guardar-mov-button:hover{
@@ -143,7 +140,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    position: fixed;
     right: 3rem;
     bottom: 0.5rem;
     z-index: 20;
@@ -217,10 +213,10 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    position: fixed;
     right: 8rem;
     bottom: 0.5rem;
     z-index: 20;
+    margin-right: 10px;
 }
 
 .view-button:hover{
@@ -277,6 +273,42 @@
     position: absolute;
   }
 
+.botones-movimientos-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 10px;
+    width: 100vw;
+}
+
+.doc-buttons-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.back-button-movimientos{
+    background-color: var(--main-color);
+    color: whitesmoke;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    left: 3rem;
+    bottom: 0.5rem;
+    z-index: 20;
+}
+
+.back-button-movimientos:hover{
+    cursor: pointer;
+}
 
 /* SMARTPHONES */
 @media (max-width: 480px){
@@ -350,4 +382,7 @@
         margin-bottom: 3rem;
     }
 
+    .view-button{
+        margin: 2px;
+    }
 }

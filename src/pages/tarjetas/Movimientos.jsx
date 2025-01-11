@@ -100,15 +100,18 @@ export default function Movimientos({movimientos,
         </div>
       </div>
       <div>
-        <FontAwesomeIcon icon={faFile}  className='doc-button' onClick={toggleModal}/>
-        {linkDocumento && (
-          <Link to={linkDocumento} target='_blank'><FontAwesomeIcon icon={faEye}  className='view-button'/></Link>
-        )} 
-        <FontAwesomeIcon icon={faArrowLeft}  className='back-button' onClick={()=>navigate(-1)}/>
-      </div>
+      <div className='botones-movimientos-container'>
+        <FontAwesomeIcon icon={faArrowLeft}  className='back-button-movimientos' onClick={()=>navigate(-1)}/>
         <div className='guardar-mov-button' onClick={actualizaMovimientos}>Guardar movimientos</div>
+        <div className='doc-buttons-container'>
+          {linkDocumento && (
+          <Link to={linkDocumento} target='_blank'><FontAwesomeIcon icon={faEye}  className='view-button'/></Link>
+          )} 
+          <FontAwesomeIcon icon={faFile}  className='doc-button' onClick={toggleModal}/>
+        </div>
+      </div>
         
-        
+      </div>
     </div>
   )
 }

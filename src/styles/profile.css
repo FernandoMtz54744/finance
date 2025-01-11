@@ -1,0 +1,31 @@
+.profile-account-data{
+    background-color: var(--main-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    color: whitesmoke;
+}
+
+.profile-total{
+    background-color: var(--main-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    color: whitesmoke;
+    width: 50%;
+}
+
+.profile-total-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

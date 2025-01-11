@@ -74,6 +74,10 @@
     padding-bottom: 0rem;
 }
 
+.muestra-efectivo-container{
+    margin-bottom: 4rem;
+}
+
 @media (max-width: 480px){
     .muestra-total-efectivo{
         background-color: transparent;

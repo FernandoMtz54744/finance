@@ -8,9 +8,9 @@ export default function MuestraEfectivo({efectivos, sumaEfectivo}) {
 
   return (
     <div className='muestra-efectivo-container'>
-        {efectivos.sort((a, b) => b.fecha - a.fecha).map(efectivo => {
+        {efectivos.sort((a, b) => b.fecha - a.fecha).map((efectivo, i) => {
             return(
-                <div className='efectivo-container'>
+                <div className='efectivo-container' key={i}>
                     <div onClick={()=>setVisible({...visible, [efectivo.fecha]: !visible[efectivo.fecha]})} className='efectivo-row'>
                         {DateTime.fromMillis(efectivo.fecha).setLocale("es").toLocaleString({ day: 'numeric', month: 'long', year: 'numeric' })} 
                         &nbsp;-&nbsp;{currencyFormat(sumaEfectivo(efectivo.cincuenta,efectivo.cien,efectivo.doscientos,efectivo.quinientos))}

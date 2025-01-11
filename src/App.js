@@ -15,6 +15,7 @@ import PagosConcurrentesContainer from './containers/PagosConcurrentes/PagosConc
 import AgregarPagoContainer from './containers/PagosConcurrentes/AgregarPagoContainer';
 import EfectivoContainer from './containers/efectivo/EfectivoContainer';
 import BuscarContainer from './containers/buscar/BuscarContainer';
+import ProfileContainer from './containers/profile/ProfileContainer';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/efectivo/:idUsuario" element={<EfectivoContainer/>}/>
           <Route path="/agregarPago" element={<AgregarPagoContainer/>}/>
           <Route path="/buscar/:idUsuario" element={<BuscarContainer/>}/>
+          <Route path="/profile/:idUsuario" element={<ProfileContainer/>}/>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

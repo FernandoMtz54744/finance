@@ -20,6 +20,8 @@ export default function Menu() {
                 <Link className='menu-link' to={`/efectivo/${context.user.uid}`} onClick={()=>setToggleMenu(false)}>Efectivo</Link>
                 <br />
                 <Link className='menu-link' to={`/buscar/${context.user.uid}`} onClick={()=>setToggleMenu(false)}>Buscar Movimientos</Link>
+                <br />
+                <Link className='menu-link' to={`/profile/${context.user.uid}`} onClick={()=>setToggleMenu(false)}>Perfil</Link>
             </div>
             <div className='menu-overlay' onClick={()=>setToggleMenu(!toggleMenu)}></div>
         </>
