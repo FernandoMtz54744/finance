@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 import { enviarEmail } from '../src/utils/emailUtils';
 
 export async function GET() {
-    const diasAntes = [18,10,5,3,2];
+    const diasAntes = [18,14,10,5,3,2];
     const hoy = DateTime.local().startOf("day");
     const tarjetas = [];
     let emailed = 0;
@@ -24,24 +24,29 @@ export async function GET() {
                 let mensaje = "";
                 //Se obtienen los periodos
                 const result = await getDocs(query(collection(db, "Periodos"), where('idTarjeta', '==', tarjeta.idTarjeta)));
-                result.docs.forEach(periodo =>{
-                    const periodoData = periodo.data();
-                    const fechaCortePeriodo = DateTime.fromISO(periodoData.fechaCorte);
-                    const fechaLimitePeriodo = DateTime.fromISO(periodoData.fechaLimitePago);
-                    if(hoy >= fechaCortePeriodo && hoy <= fechaLimitePeriodo){//Se busca el periodo actual que se debe pagar
-                        if(periodoData.totalPeriodo < 0){//Solo se envía notificación si hay una cantidad que pagar
-                            mensaje = `Faltan ${diff} días para la fecha límite de pago tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides realizar el pago.
-                            Fecha límite de pago: ${limiteFormatted}
-                            Pago pendiente de: ${currencyFormat(periodoData.totalPeriodo)}`
-                        }else{
-                            enviarCorreo = false;
-                        }
-                    }else{//No se cargaron los movimientos del periodo actual, se envía notificación
-                        mensaje = `Faltan ${diff} días para la fecha límite de pago tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides realizar el pago.
-                        Fecha límite de pago: ${limiteFormatted}\n
-                        No se han cargado los movimientos, por lo que se sugiere cargar el estado de cuenta para saber la cantidad del pago.`
+                //Se filtra el periodo que se debe pagar
+                const periodoFilter = result.docs.filter(periodo => {
+                        const periodoData = periodo.data();
+                        const fechaCortePeriodo = DateTime.fromISO(periodoData.fechaCorte);
+                        const fechaLimitePeriodo = DateTime.fromISO(periodoData.fechaLimitePago);
+                        return (hoy >= fechaCortePeriodo && hoy <= fechaLimitePeriodo)
                     }
-                })
+                );
+                
+                if(periodoFilter.length === 1){//Se obtuvo el periodo actual
+                    const periodoData = periodoFilter[0].data();
+                    if(periodoData.totalPeriodo < 0){//Solo se envía notificación si hay una cantidad que pagar
+                        mensaje = `Faltan ${diff} días para la fecha límite de pago tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides realizar el pago.
+                        \nFecha límite de pago: ${limiteFormatted}
+                        Pago pendiente de: ${currencyFormat(periodoData.totalPeriodo)}`
+                    }else{
+                        enviarCorreo = false;
+                    }
+                }else{ //No hay un periodo registrado pero se notifica fecha de pago
+                    mensaje = `Faltan ${diff} días para la fecha límite de pago tu tarjeta ${tarjeta.alias} ${tarjeta.tipo}, no olvides realizar el pago.
+                    Fecha límite de pago: ${limiteFormatted}\n
+                    \nNo se han cargado los movimientos, por lo que se sugiere cargar el estado de cuenta para saber la cantidad del pago.`
+                }
                 if(enviarCorreo){
                     await enviarEmail(tarjeta.correo, mensaje);
                     emailed++;
