@@ -142,9 +142,10 @@ export default function MovimientosContainer() {
         const reader = new FileReader();
         reader.onloadend = async function() {
           const base64String = reader.result.split(',')[1];
+          const fileName = `${tarjeta.alias} ${tarjeta.tipo} - ${periodo.alias}`;
           const data = {
             file: base64String,
-            fileName: file.name,
+            fileName: fileName,
             mime: file.type
           };
           const response = await fetch('/api/subir-archivo', {
