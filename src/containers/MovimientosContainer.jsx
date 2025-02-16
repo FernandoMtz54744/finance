@@ -108,6 +108,9 @@ export default function MovimientosContainer() {
       saldoFinal: total.saldoFinal,
       totalPeriodo: total.totalPeriodo
     }
+    if(tarjeta.tipo === "Crédito"){
+      data.pagado = total.totalAbono;
+    }
     setDoc(documentoRef, data, {merge: true}).then((responde)=>{
       toast.success("Saldo final actualizado");
     }).catch((error)=>{

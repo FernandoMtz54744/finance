@@ -43,7 +43,11 @@ export default function Periodos({periodos, idTarjeta, tarjeta}) {
                     <div className='alias'>{periodo.alias}</div>
                     <div className='fecha'>Inicio: {convertDate(periodo.fechaInicio)}</div>
                     <div className='fecha'>Corte: {convertDate(periodo.fechaCorte)}</div>
-                    <div>Saldo Final: {currencyFormat(periodo.saldoFinal)}</div>
+                    {(periodo.saldoFinal === 0 && periodo.pagado)?
+                      <div className='text-blue'>Liquidado: {currencyFormat(periodo.pagado)}</div>
+                    :
+                      <div>Saldo Final: {currencyFormat(periodo.saldoFinal)}</div>
+                    }
                     {periodo.fechaLimitePago && (
                     <div className={`fecha ${isBetweenCorteLimit(periodo.fechaLimitePago, periodo.fechaCorte)?"red":""}`}>Límite de pago: {convertDate(periodo.fechaLimitePago)}</div>
                     )}
