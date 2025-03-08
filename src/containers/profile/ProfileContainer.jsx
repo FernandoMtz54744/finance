@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Profile from '../../pages/profile/Profile'
 import { useAuth } from '../../context/AuthContext';
 import "../../styles/profile.css"
@@ -87,12 +87,7 @@ export default function ProfileContainer() {
               cancelButtonText: 'Cancelar'
       }).then((result) => {
         if(result.isConfirmed) {
-          const total = obtieneTotal(context.tarjetas, efectivo);
-          const data = {
-            idUsuario: params.idUsuario,
-            total: total,
-            fecha: DateTime.local().toMillis()
-          }
+          const data = obtenerCaptura();
           addDoc(collection(db, "TotalHistorial"), data).then(() => {
             toast.success("Se agregó el total en el historial con éxito");
           }
@@ -102,6 +97,24 @@ export default function ProfileContainer() {
         })
         }
       }); 
+    }
+
+    const obtenerCaptura = ()=>{
+      const data = {
+        idUsuario: params.idUsuario,
+        fecha: DateTime.local().toMillis(),
+        total: obtieneTotal(context.tarjetas, efectivo),
+        efectivo: sumaEfectivo(efectivo.cincuenta,efectivo.cien,efectivo.doscientos,efectivo.quinientos),
+        accounts: []
+      };
+      context.tarjetas.map(account =>{
+        const cuenta = {
+          alias: `${account.alias} ${account.tipo}`,
+          total: account.tipo === "Débito"? obtenerSaldoUltimoPeriodo(context.periodos, account.id) : obtenerSaldoTotal(context.periodos, account.id)
+        }
+        data.accounts.push(cuenta);
+      })
+      return data;
     }
 
   return (

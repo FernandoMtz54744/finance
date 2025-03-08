@@ -63,6 +63,35 @@
     width: 20rem;
 }
 
+.historial-data:hover{
+    cursor: pointer;
+}
+
 .total-historial-container{
     margin-bottom: 5rem;
+}
+
+.history-account-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.history-data-despliegue-container{
+    margin-bottom: 1rem;
+    border: 2px solid var(--main-color);
+    border-radius: 5px;
+    width: 18rem;
+    padding: 1rem;
+    background-color: var(--main-color);
+    color: whitesmoke;
+}
+
+.data-history-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
