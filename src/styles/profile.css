@@ -29,3 +29,40 @@
     justify-content: center;
     align-items: center;
 }
+
+.total-historial-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+}
+
+.snapshot-button{
+    position: fixed;
+    right: 2rem;
+    bottom: 1rem;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.historial-data{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--main-color);
+    margin: 1rem 1rem 0.5rem 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    color: whitesmoke;
+    width: 20rem;
+}
+
+.total-historial-container{
+    margin-bottom: 5rem;
+}

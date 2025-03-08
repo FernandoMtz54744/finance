@@ -1,43 +1,11 @@
 import React from 'react'
 import { currencyFormat } from '../../utils/utils'
 import { DateTime } from 'luxon';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCamera} from "@fortawesome/free-solid-svg-icons"
 
-export default function Profile({accounts, periodos, efectivo}) {
-
-    const obtenerSaldoUltimoPeriodo = (periodos, idTarjeta)=>{
-        const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
-        if(periodosTarjeta.length === 0){
-          return 0;
-        }else{
-          return periodosTarjeta.sort((a, b) => (new Date(b.fechaCorte)-new Date(a.fechaCorte)))[0].saldoFinal;
-        }
-    }
-    
-    const obtenerSaldoTotal = (periodos, idTarjeta)=>{
-    const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
-    const saldoTotal = periodosTarjeta.reduce((total, periodo)=>{
-        return total + periodo.saldoFinal;
-    }, 0)
-    return saldoTotal;
-    }
-
-
-    const sumaEfectivo = (cincuenta, cien, doscientos, quinientos)=>{
-        return (cincuenta*50)+(cien*100)+(doscientos*200) + (quinientos*500);
-    }
-
-    const obtieneTotal = (accounts, efectivo)=>{
-        let total = 0;
-        accounts.map((account) =>{
-            if(account.tipo === "Débito"){
-                total+= Number(obtenerSaldoUltimoPeriodo(periodos, account.id));
-            }else{
-                total+= Number(obtenerSaldoTotal(periodos, account.id));
-            }
-        })
-        total+= Number(sumaEfectivo(efectivo.cincuenta,efectivo.cien,efectivo.doscientos,efectivo.quinientos));
-        return total;
-    }
+export default function Profile({accounts, periodos, efectivo, totalHistorial, 
+    obtenerSaldoUltimoPeriodo, obtenerSaldoTotal, sumaEfectivo, obtieneTotal, tomarSnapshotTotal}) {
 
   return (
     <div>
@@ -65,6 +33,18 @@ export default function Profile({accounts, periodos, efectivo}) {
                 <div className='green'>{currencyFormat(obtieneTotal(accounts, efectivo))}</div>
             </div>
         </div>
+        <br></br>
+        <div className='total-historial-container'>
+            <center className='title'>Historial de Totales</center>
+            {totalHistorial.sort((a, b)=> b.fecha - a.fecha).map((total, i) => (
+                <div className='historial-data' key={i}>
+                    <div>Fecha:  {DateTime.fromMillis(total.fecha).setLocale("es").toFormat('dd/LLL/yyyy')}</div>
+                    <div className='row'>Total:&nbsp;<div className='green'>{currencyFormat(total.total)}</div></div>
+                </div>
+            ))}
+        </div>
+
+        <FontAwesomeIcon icon={faCamera} className='doc-button snapshot-button' onClick={tomarSnapshotTotal}/>
     </div>
   )
 }
