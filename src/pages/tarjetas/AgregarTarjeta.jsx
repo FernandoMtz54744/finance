@@ -1,8 +1,50 @@
 import React from 'react'
 import "../../styles/form.css"
+import { InputText } from 'primereact/inputtext';
+import { FloatLabel } from 'primereact/floatlabel';
+import { ColorPicker } from 'primereact/colorpicker';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
+import { Button } from 'primereact/button';
 
 export default function AgregarTarjeta({form, handleChange, handleSubmit}) {
+    const tipos = ["Débito", "Crédito"]
+
   return (
+    // <div>
+    //     <form  style={{backgroundColor: "white"}} className='flex flex-row items-center'>
+    //         <div className='formgrid grid'>
+    //             <div className='col-12'>
+    //                 <InputText  value={form.alias} onChange={handleChange} name='alias' id='alias' autoComplete='off'/>
+    //             </div>
+    //         </div>
+            
+    //         <div className='field col-12'>
+    //             <div className='formgroup-inline'>
+    //                 <Dropdown className='field' value={form.tipo} onChange={handleChange} options={tipos} name="tipo" id="tipo" placeholder="Tipo"/>
+    //                 <ColorPicker className='field' format="hex" value={form.color} onChange={handleChange} name='color' id='color'/>
+    //             </div>
+    //         </div>
+                
+            
+            
+    //         <div className='field col-12'>
+    //             <Calendar className='field' 
+    //                 name='fechaCorte' id='fechaCorte' value={form.fechaCorte} onChange={handleChange}/>
+    //                 <Calendar className='field' 
+    //                 name='fechaLimitePago' id='fechaLimitePago' value={form.fechaLimitePago} onChange={handleChange}/>
+    //         </div>
+    //         <div className='field col-12'>
+    //             <FloatLabel>
+    //                 <InputText name='correo' id='correo' value={form.correo} onChange={handleChange} autoComplete='off'/>
+    //                 <label htmlFor="correo">Correo</label>
+    //             </FloatLabel>
+    //         </div>
+    //         <div className='field col-12'>
+    //             <Button label='Registrar' />
+    //         </div>
+    //     </form>
+    // </div>
     <div>
         <form className='default-form' onSubmit={handleSubmit}>
             <center>

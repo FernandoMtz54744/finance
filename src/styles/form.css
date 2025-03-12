@@ -1,4 +1,4 @@
-.default-form{
+ .default-form{
     background-color: var(--main-color);
     margin: 3rem 3rem 0px 3rem;
     color: whitesmoke;
@@ -88,4 +88,4 @@
 
 .alias-input{
     width: 100%;
-}
+} 
