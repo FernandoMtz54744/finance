@@ -2,6 +2,7 @@ import './styles/App.css';
 import "primereact/resources/themes/arya-green/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import "/node_modules/primeflex/primeflex.css"
 
 import AccountsContainer from './containers/AccountsContainer';
 import HeaderContainer from './containers/HeaderContainer';

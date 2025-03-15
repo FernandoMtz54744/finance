@@ -1,7 +1,6 @@
 import React from 'react'
-import Header from '../pages/header/Header'
 import { useAuth } from '../context/AuthContext';
-import '../styles/header.css'
+import Header from '../pages/layouts/Header';
 
 export default function HeaderContainer() {
   const context = useAuth();

@@ -11,76 +11,47 @@ export default function AgregarTarjeta({form, handleChange, handleSubmit}) {
     const tipos = ["Débito", "Crédito"]
 
   return (
-    // <div>
-    //     <form  style={{backgroundColor: "white"}} className='flex flex-row items-center'>
-    //         <div className='formgrid grid'>
-    //             <div className='col-12'>
-    //                 <InputText  value={form.alias} onChange={handleChange} name='alias' id='alias' autoComplete='off'/>
-    //             </div>
-    //         </div>
-            
-    //         <div className='field col-12'>
-    //             <div className='formgroup-inline'>
-    //                 <Dropdown className='field' value={form.tipo} onChange={handleChange} options={tipos} name="tipo" id="tipo" placeholder="Tipo"/>
-    //                 <ColorPicker className='field' format="hex" value={form.color} onChange={handleChange} name='color' id='color'/>
-    //             </div>
-    //         </div>
-                
-            
-            
-    //         <div className='field col-12'>
-    //             <Calendar className='field' 
-    //                 name='fechaCorte' id='fechaCorte' value={form.fechaCorte} onChange={handleChange}/>
-    //                 <Calendar className='field' 
-    //                 name='fechaLimitePago' id='fechaLimitePago' value={form.fechaLimitePago} onChange={handleChange}/>
-    //         </div>
-    //         <div className='field col-12'>
-    //             <FloatLabel>
-    //                 <InputText name='correo' id='correo' value={form.correo} onChange={handleChange} autoComplete='off'/>
-    //                 <label htmlFor="correo">Correo</label>
-    //             </FloatLabel>
-    //         </div>
-    //         <div className='field col-12'>
-    //             <Button label='Registrar' />
-    //         </div>
-    //     </form>
-    // </div>
-    <div>
-        <form className='default-form' onSubmit={handleSubmit}>
-            <center>
-                Tarjeta
-            </center>
-            <div>
-                <label htmlFor="alias">Nombre de la tarjeta</label>
-                <div className='alias-color-container'>
-                    <input type="text" name='alias' id='alias' value={form.alias} onChange={handleChange} autoComplete='off' className='input-form alias-input'/>
-                    <input type="color" name='color' id='color' value={form.color} onChange={handleChange} className='input-color'/>
+    <div className='flex justify-content-center'>
+        <form className='p-4 border-round-sm md:w-6 sm:w-full surface-0 mt-8 mx-4' onSubmit={handleSubmit}>
+            <div className='text-center text-2xl mt-2 mb-5'>Agregar Tarjeta</div>
+            <div className='p-fluid'>
+                <div className='grid align-items-center p-fluid'>
+                    <div className='field col-12'>
+                        <FloatLabel>
+                            <InputText value={form.alias} onChange={handleChange} name='alias' id='alias' autoComplete='off'/>
+                            <label htmlFor="alias">Alias</label>
+                        </FloatLabel>
+                    </div>
+                    <div className='field md:col-11 col-10'>
+                        <Dropdown value={form.tipo} onChange={handleChange} options={tipos} name="tipo" id="tipo" placeholder="Tipo"/>
+                    </div>
+                    <div className='field md:col-1 col-2'>
+                        <ColorPicker format="hex" value={form.color} onChange={handleChange} name='color' id='color'/>
+                    </div>
+                    <div className={`field col-12 ${form.tipo === "Crédito"?"md:col-6":"md:col-12"}`}>
+                        <FloatLabel>
+                            <Calendar name='fechaCorte' id='fechaCorte' value={form.fechaCorte} onChange={handleChange}/>
+                            <label htmlFor="fechaCorte">Fecha de corte</label>
+                        </FloatLabel>
+                    </div>
+                    {
+                    form.tipo === "Crédito" && 
+                    <div className= 'field md:col-6 col-12'>
+                        <FloatLabel>
+                                <Calendar name='fechaLimitePago' id='fechaLimitePago' value={form.fechaLimitePago} onChange={handleChange}/>
+                                <label htmlFor="fechaLimitePago">Fecha límite de pago</label>
+                        </FloatLabel>
+                    </div>
+                    }
+                    
+                    <div className='field col-12'>
+                        <FloatLabel>
+                            <InputText name='correo' id='correo' value={form.correo} onChange={handleChange} autoComplete='off'/>
+                            <label htmlFor="correo">Correo</label>
+                        </FloatLabel>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <label htmlFor="tipo">Tipo</label>
-                <select name="tipo" id="tipo" value={form.tipo} onChange={handleChange} className="input-select">
-                    <option value="Débito">Débito</option>
-                    <option value="Crédito">Crédito</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="fechaCorte">Fecha de corte</label>
-                <input type="date" name='fechaCorte' id='fechaCorte' value={form.fechaCorte} onChange={handleChange} className='input-date'/>
-            </div>
-            {form.tipo === "Crédito"?(
-            <div>
-                <label htmlFor="fechaLimitePago">Fecha limite de pago</label>
-                <input type="date" name='fechaLimitePago' id='fechaLimitePago' value={form.fechaLimitePago} onChange={handleChange} className='input-date'/>
-            </div>
-            ):("")}
-            <div>
-                <label htmlFor="correo">Correo de notificaciones</label>
-                <input type="email" name='correo' id='correo' value={form.correo} onChange={handleChange} autoComplete='off' className='input-form alias-input'/>
-            </div>
-            
-            <div>
-                <input type="submit" value="Agregar" className='submit-button'/>
+                <Button label='Registrar'/>
             </div>
         </form>
     </div>

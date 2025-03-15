@@ -17,8 +17,8 @@ export default function Header({usuario, loginGoogle, logout}) {
   return (
     <Menubar model={navlist} end={
       usuario ? 
-        <div className='rigth-header-container'>
-          <div className='user-data-container'>
+        <div className='flex'>
+          <div className='flex flex-row justify-content-center align-items-center gap-2 mr-3'>
             <Avatar shape="circle" image={usuario.photoURL}/>
             <span>{usuario.displayName}</span>
           </div>
