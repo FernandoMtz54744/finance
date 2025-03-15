@@ -6,7 +6,7 @@ export async function enviarEmail(destinatario, mensaje){
             mensaje: mensaje,
             to: destinatario,
             reply_to: "FinanceByFerDevs@gmail.com"
-        },{publicKey: process.env.EMAILJS_PUBLIC_KEY})
+        },{publicKey: import.meta.env.EMAILJS_PUBLIC_KEY})
         return true;
     }catch(error){
         console.log(error);
