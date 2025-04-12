@@ -1,14 +1,13 @@
-const { google } = require('googleapis');
-const streamifier = require('streamifier');
+import { google } from 'googleapis';
+import pkg from 'streamifier';
 
 const SCOPE = ['https://www.googleapis.com/auth/drive'];
 
-//Funcion que maneja el post
-export async function POST (req, res) {
+//Funcion que maneja el post  
+export default async function handler(req, res) {
+    if (req.method !== 'POST') 
+        return res.status(405).json({ error: 'Método no permitido' });
     try {
-        //Se obtiene el archivo
-        const {file, fileName, mime} = await req.json()
-
         //Se realiza la autenticación
         const jwtClient = new google.auth.JWT(
             process.env.GOOGLE_DRIVE_EMAIL,
@@ -17,29 +16,28 @@ export async function POST (req, res) {
             SCOPE
         );
         await jwtClient.authorize();
-
+        
         //Se sube el archivo
         const drive = google.drive({ version: 'v3', auth: jwtClient });
         const fileMetaData = {
-            name: fileName,
+            name: req.body.fileName,
             parents: ["1DyFl7lGsXOWXTqWmnwuz-isa-PkSJPmg"]
         }
         
         const response = await drive.files.create({
             resource: fileMetaData,
             media: {
-                body: streamifier.createReadStream(Buffer.from(file, 'base64')),
-                mimeType: mime,
+                body: pkg.createReadStream(Buffer.from(req.body.file, 'base64')),
+                mimeType: req.body.mime,
             },
             fields: "webViewLink",
-        }, );
+        });
 
-        return new Response(JSON.stringify({link: response.data.webViewLink}));
-    } catch (error) {
+        res.status(200).json({link: response.data.webViewLink});
+    }catch (error) {
         console.error("Error al subir el archivo:", error);
-        return new Response(JSON.stringify({ error: "Error al subir el archivo", details: error.message }), {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
+        res.status(500).json({
+            error: error.message 
         });
     }
 };

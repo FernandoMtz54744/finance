@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import AgregarPago from '../../pages/pagosConcurrentes/AgregarPago'
 import { addDoc, collection } from 'firebase/firestore'
 import { db } from '../../firebase/firebase.config'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { getLastFechaByPeriodicity, getNextFechaByPeriodicity } from '../../utils/utils'
 import { DateTime } from 'luxon'
+import { getLastFechaByPeriodicity, getNextFechaByPeriodicity } from '../../utils/utils'
 
 export default function AgregarPagoContainer() {
 

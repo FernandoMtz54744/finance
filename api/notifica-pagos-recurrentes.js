@@ -6,11 +6,13 @@ import { enviarEmail } from "../src/utils/emailUtils";
 
 const diasAntes = [18,10,5,3,2];
 
-export async function GET() {
+module.exports = async function handler(req, res) {
+    if (req.method !== 'GET') return res.status(405).json({ error: 'Método no permitido' });
+
     let emailed = 0;
     const pagos = [];
     try{
-        const snapshot = await getDocs((query(collection(db, "PagosConcurrentes"))));
+        const snapshot = await getDocs((query(collection(db, "PagosRecurrentes"))));
         snapshot.docs.forEach(pago =>{
             pagos.push({...pago.data(), idPago: pago.id});
         });

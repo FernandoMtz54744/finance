@@ -1,6 +1,6 @@
-import Periodos from '../pages/tarjetas/Periodos';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import Periodos from '../../../pages/tarjetas/periodos/Periodos';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function PeriodosContainer() {
     const context = useAuth();

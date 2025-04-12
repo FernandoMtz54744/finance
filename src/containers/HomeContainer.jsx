@@ -1,7 +1,6 @@
-import React from 'react'
 import { useAuth } from '../context/AuthContext';
-import AccountsContainer from './AccountsContainer';
 import Home from '../pages/login/Home';
+import Tarjetas from '../pages/tarjetas/Tarjetas';
 
 
 export default function HomeContainer() {
@@ -9,12 +8,10 @@ export default function HomeContainer() {
 
   return (
     <>
-    {
-      context.user?(
-        <AccountsContainer/>
-      ):(
-        <Home/>
-      )
+    {context.user?
+      <Tarjetas/>
+    :
+      <Home/>
     }
     </>
   )

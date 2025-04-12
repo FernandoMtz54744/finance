@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 
-export function convertDate(date) {
-    return DateTime.fromISO(date).setLocale("es").toFormat('dd/LLL/yyyy');
+export function convertDate(fecha: Date): string{
+    return DateTime.fromJSDate(fecha).setLocale("es").toFormat('dd/LLL/yyyy');
 }
 
 export function currencyFormat(number){
@@ -18,14 +18,13 @@ export function currencyFormat(number){
     }
 }
 
-export function getNextFechaByDay(fecha){
-    const dia = DateTime.fromISO(fecha).day;
+export function getNextFechaByDay(dia: number): Date{
     const hoy = DateTime.local().startOf("day");
     const fechaProxima = hoy.set({day: dia});
-    if (hoy.hasSame(fechaProxima, "day")) {
-        return hoy.toISODate();
+    if (hoy.hasSame(fechaProxima, "day")){
+        return hoy.toJSDate();
     }
-    const fechaFinal =  hoy < fechaProxima? fechaProxima.toISODate() : fechaProxima.plus({months: 1}).toISODate();
+    const fechaFinal =  hoy < fechaProxima? fechaProxima.toJSDate() : fechaProxima.plus({months: 1}).toJSDate();
     return fechaFinal;
 }
 
@@ -63,21 +62,37 @@ export function getLastFechaByPeriodicity(startDate, periodicity) {
     throw new Error("Periodicidad no soportada");
 }
 
-export function getLastFechaByDay(fecha){
-    const dia = DateTime.fromISO(fecha).day;
+export function getLastFechaByDay(dia: number): Date{
     const hoy = DateTime.local().startOf("day");
     const fechaPasada = hoy.set({day: dia});
     if (hoy.hasSame(fechaPasada, "day")) {
-        return hoy.toISODate();
+        return hoy.toJSDate();
     }
-    const fechaFinal =  hoy > fechaPasada? fechaPasada.toISODate() : fechaPasada.minus({months: 1}).toISODate();
+    const fechaFinal =  hoy > fechaPasada? fechaPasada.toJSDate() : fechaPasada.minus({months: 1}).toJSDate();
     return fechaFinal;
 }
 
-export function getFechaLimitePago(fecha){
-    return DateTime.fromISO(fecha).plus({days: 20}).toISODate();
+export function getFechaLimitePago(fecha: Date): Date{
+    return DateTime.fromJSDate(fecha).plus({days: 20}).toJSDate();
 }
 
 export function getFechaLimitePagoByDays(fecha, dias){
     return DateTime.fromISO(fecha).plus({days: dias}).toISODate();
+}   
+
+export const obtenerSaldoUltimoPeriodo = (periodos, idTarjeta)=>{
+    const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
+    if(periodosTarjeta.length === 0){
+        return 0;
+    }else{
+        return periodosTarjeta.sort((a, b) => (new Date(b.fechaCorte)-new Date(a.fechaCorte)))[0].saldoFinal;
+    }
+}
+
+export const obtenerSaldoTotal = (periodos, idTarjeta)=>{
+    const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
+    const saldoTotal = periodosTarjeta.reduce((total, periodo)=>{
+      return total + periodo.saldoFinal;
+    }, 0)
+    return saldoTotal;
 }

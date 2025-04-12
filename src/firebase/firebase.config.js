@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore";
-// import { getMessaging, getToken } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -17,15 +16,3 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-// export const messaging = getMessaging(app);
-
-
-// export const generateToken = async ()=>{
-//   const permission = await Notification.requestPermission();
-//   if(permission === "granted"){
-//     const token = await getToken(messaging, {
-//       vapidKey: "BLU9RO4kUTgZA9w_Ok9NwDZhYWi_-igV1Dy54zQJrSRzDcYXuYliTgim6Jy3WF2hxGuxuRp1BjDZ30DCDd17SBk"
-//     })
-//     console.log(token)
-//   }
-// }
