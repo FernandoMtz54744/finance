@@ -1,7 +1,7 @@
 import { collection, getDocs, query } from 'firebase/firestore';
 import { DateTime } from 'luxon';
 import { Tarjeta } from '@/interfaces/Tarjeta';
-import { db } from '../src/firebase/firebase.config.js';
+import { db } from '../src/firebase/firebaseAPI.config.js';
 import { enviarEmail } from '../src/utils/emailUtils.js';
 
 export default async function handler(req: any, res: any){
@@ -24,6 +24,7 @@ export default async function handler(req: any, res: any){
         });
 
         const hoy = DateTime.local();
+        console.log(hoy.day)
         for(const tarjeta of tarjetas){
             if(hoy.day === (tarjeta.diaCorte % 31 + 1)){
                 const ayer = hoy.minus({days: 1});

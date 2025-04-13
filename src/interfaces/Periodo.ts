@@ -1,5 +1,5 @@
 export interface Periodo {
-    id: string,
+    id?: string,
     idUsuario: string,
     idTarjeta: string,
     nombre: string,
