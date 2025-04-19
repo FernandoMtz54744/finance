@@ -1,18 +1,20 @@
+import { Pago } from '@/interfaces/Pago';
+import { Periodo } from '@/interfaces/Periodo';
 import { DateTime } from 'luxon';
 
 export function convertDate(fecha: Date): string{
     return DateTime.fromJSDate(fecha).setLocale("es").toFormat('dd/LLL/yyyy');
 }
 
-export function currencyFormat(number){
+export function currencyFormat(cantidad: number){
     const numberFormatOption = { 
         minimumFractionDigits: 2,
         maximumFractionDigits: 2 
     };
-    if(number > 0){
-        return `$${Number(number).toLocaleString('en', numberFormatOption)}`
-    }else if(number < 0){
-        return `-$${Math.abs(Number(number)).toLocaleString('en', numberFormatOption)}`
+    if(cantidad > 0){
+        return `$${Number(cantidad).toLocaleString('en', numberFormatOption)}`
+    }else if(cantidad < 0){
+        return `-$${Math.abs(Number(cantidad)).toLocaleString('en', numberFormatOption)}`
     }else{
         return `$0.00`
     }
@@ -45,20 +47,24 @@ export function getNextFechaByPeriodicity(startDate, periodicity) {
     throw new Error("Periodicidad no soportada");
 }
 
-export function getLastFechaByPeriodicity(startDate, periodicity) {
-    const currentDate = DateTime.now();
-    const initialDate = DateTime.fromISO(startDate);
-  
-    if (periodicity === "Anual") {
-      const yearsDiff = currentDate.diff(initialDate, "years").years;
-      const lastYearIncrement = Math.floor(yearsDiff); // Calcula cuántos años restar
-      return initialDate.plus({ years: lastYearIncrement }).toISODate();
-    } else if (periodicity === "Mensual") {
-      const monthsDiff = currentDate.diff(initialDate, "months").months;
-      const lastMonthIncrement = Math.floor(monthsDiff); // Calcula cuántos meses restar
-      return initialDate.plus({ months: lastMonthIncrement }).toISODate();
+export function getLastFechaByPeriodicity(pago: Pago): Date{
+    const hoy = DateTime.now();
+
+    if(pago.fechaPago.periodicidad === "Anual"){
+        const fecha = DateTime.local(hoy.year, pago.fechaPago.mes!, pago.fechaPago.dia); //Fecha con el día dado
+        if(hoy >= fecha){
+            return fecha.toJSDate();
+        }else{
+            return fecha.minus({years: 1}).toJSDate();
+        }
+    }else if (pago.fechaPago.periodicidad === "Mensual"){
+        const fecha =  DateTime.local(hoy.year, hoy.month, pago.fechaPago.dia)
+        if(hoy >= fecha){
+            return fecha.toJSDate();
+        }else{
+            return fecha.minus({months: 1}).toJSDate();
+        }
     }
-  
     throw new Error("Periodicidad no soportada");
 }
 
@@ -76,23 +82,34 @@ export function getFechaLimitePago(fecha: Date): Date{
     return DateTime.fromJSDate(fecha).plus({days: 20}).toJSDate();
 }
 
-export function getFechaLimitePagoByDays(fecha, dias){
-    return DateTime.fromISO(fecha).plus({days: dias}).toISODate();
+export function getFechaLimitePagoByDays(fecha: Date, dias: number): Date{
+    return DateTime.fromJSDate(fecha).plus({days: dias}).toJSDate();
 }   
 
-export const obtenerSaldoUltimoPeriodo = (periodos, idTarjeta)=>{
+export const obtenerSaldoUltimoPeriodo = (periodos: Periodo[], idTarjeta: string): number=>{
     const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
     if(periodosTarjeta.length === 0){
         return 0;
     }else{
-        return periodosTarjeta.sort((a, b) => (new Date(b.fechaCorte)-new Date(a.fechaCorte)))[0].saldoFinal;
+        return periodosTarjeta.sort((a, b) => (b.fechaCorte.getTime()-a.fechaCorte.getTime()))[0].saldoFinal;
     }
 }
 
-export const obtenerSaldoTotal = (periodos, idTarjeta)=>{
+export const obtenerSaldoTotal = (periodos: Periodo[], idTarjeta: string): number =>{
     const periodosTarjeta = periodos.filter(periodo => periodo.idTarjeta === idTarjeta);
     const saldoTotal = periodosTarjeta.reduce((total, periodo)=>{
       return total + periodo.saldoFinal;
     }, 0)
     return saldoTotal;
+}
+
+export const obtenerProximoPago = (pago: Pago): Date =>{
+    const hoy = DateTime.local().startOf("day");
+    if(pago.periodicidad === "Mensual"){
+        return hoy.plus({months: 1}).toJSDate();    
+    }else if(pago.periodicidad === "Anual"){
+        return hoy.plus({years: 1}).toJSDate();   
+    }else{
+        return hoy.plus({days: pago.diasPersonalizada}).toJSDate();
+    }
 }
