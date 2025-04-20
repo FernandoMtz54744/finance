@@ -44,7 +44,7 @@ export default function Periodos({periodos, tarjeta}: props) {
 
   return (
     <div className='flex flex-col items-center justify-center'>
-      <div className='account-title text-3xl my-6'>{tarjeta.nombre+" "+tarjeta.tipo}</div>
+      <div className='text-3xl my-6'>{tarjeta.nombre+" "+tarjeta.tipo}</div>
       <div className='flex flex-col items-center w-full mb-16'>
         {periodos.filter(periodo => periodo.idTarjeta === tarjeta.id).sort((a, b) => (b.fechaCorte.getTime() - a.fechaCorte.getTime())).map((periodo,i) => 
           
@@ -70,7 +70,7 @@ export default function Periodos({periodos, tarjeta}: props) {
           {(periodo.saldoFinal === 0 && periodo.pagado)?
             <div className='md:w-1/5 text-blue-500'>Liquidado: {Utils.currencyFormat(periodo.pagado)}</div>
           :
-            <div className='md:w-1/5 text-green-400'>Saldo Final: {Utils.currencyFormat(periodo.saldoFinal)}</div>
+            <div className='md:w-1/5 text-green-500'>Saldo Final: {Utils.currencyFormat(periodo.saldoFinal)}</div>
           }
 
           {tarjeta.tipo === "Crédito" && Utils.getFechaLimitePago(periodo.fechaCorte) && 

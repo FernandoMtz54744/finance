@@ -8,8 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from './context/AuthContext';
 import HomeContainer from './containers/HomeContainer';
 import { Toaster } from 'react-hot-toast';
-import PagosConcurrentesContainer from './containers/PagosConcurrentes/PagosConcurrentesContainer';
-import AgregarPagoContainer from './containers/PagosConcurrentes/AgregarPagoContainer';
+
 import EfectivoContainer from './containers/efectivo/EfectivoContainer';
 import BuscarContainer from './containers/buscar/BuscarContainer';
 import ProfileContainer from './containers/profile/ProfileContainer';
@@ -24,6 +23,9 @@ import AgregarTarjetaContainer from './containers/tarjetas/AgregarTarjetaContain
 import EditarTarjetaContainer from './containers/tarjetas/EditarTarjetaContainer';
 import LoadingComponent from './shared/LoadingComponent';
 import { LoadingProvider } from './context/LoadingContext';
+import PagosRecurrentesContainer from './containers/PagosRecurrentes/PagosRecurrentesContainer';
+import AgregarPagoContainer from './containers/PagosRecurrentes/AgregarPagoContainer';
+import EditarPagoContainer from './containers/PagosRecurrentes/EditarPagoContainer';
 
 /* AGREGA LOCALE DE PRIMEREACT*/
 addLocale('es', {
@@ -49,15 +51,20 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeContainer/>}/>
           <Route path="/Home" element={<Tarjetas/>}/>
+          {/* Periodos */}
           <Route path="/periodos" element={<PeriodosContainer/>}/>
-          <Route path="/movimientos" element={<MovimientosContainer/>}/>
-          <Route path="/agregarTarjeta" element={<AgregarTarjetaContainer/>}/>
           <Route path="/periodos/agregar" element={<AgregarPeriodoContainer/>}/>
-          <Route path="/editarTarjeta" element={<EditarTarjetaContainer/>}/>
           <Route path="/editarPeriodo" element={<EditarPeriodoContainer/>}/>
-          <Route path="/pagosRecurrentes/:idUsuario" element={<PagosConcurrentesContainer/>}/>
-          <Route path="/efectivo/:idUsuario" element={<EfectivoContainer/>}/>
+          <Route path="/movimientos" element={<MovimientosContainer/>}/>
+          {/* Tarjetas */}
+          <Route path="/agregarTarjeta" element={<AgregarTarjetaContainer/>}/>
+          <Route path="/editarTarjeta" element={<EditarTarjetaContainer/>}/>
+          {/* Pagos Recurrentes */}
+          <Route path="/pagosRecurrentes/:idUsuario" element={<PagosRecurrentesContainer/>}/>
           <Route path="/agregarPago" element={<AgregarPagoContainer/>}/>
+          <Route path="/editarPago" element={<EditarPagoContainer/>}/>
+          {/*  */}
+          <Route path="/efectivo/:idUsuario" element={<EfectivoContainer/>}/>
           <Route path="/buscar/:idUsuario" element={<BuscarContainer/>}/>
           <Route path="/profile/:idUsuario" element={<ProfileContainer/>}/>
         </Routes>

@@ -13,6 +13,7 @@ export default defineConfig({
   server: {
     open: true,
     port: process.env.PORT,
+    // port: 3000,
     allowedHosts: true,
     host: true
   },
