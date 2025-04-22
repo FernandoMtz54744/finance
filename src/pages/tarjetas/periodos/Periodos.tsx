@@ -58,7 +58,7 @@ export default function Periodos({periodos, tarjeta}: props) {
         }
 
         {tarjeta.tipo === "Crédito" && isBetweenCorteLimit(Utils.getFechaLimitePago(periodo.fechaCorte), periodo.fechaCorte) && 
-          <div className={`bg-teal-950 rounded-t-lg w-3xs self-center md:self-end text-center md:mr-8 ${periodo.totalPeriodo<0?"red":"text-green-400"}`}>
+          <div className={`bg-teal-950 rounded-t-lg w-3xs self-center md:self-end text-center md:mr-8 ${periodo.totalPeriodo<0?"red":"green"}`}>
             Pagar {Utils.currencyFormat(periodo.totalPeriodo)}
           </div>
         }
@@ -70,7 +70,7 @@ export default function Periodos({periodos, tarjeta}: props) {
           {(periodo.saldoFinal === 0 && periodo.pagado)?
             <div className='md:w-1/5 text-blue-500'>Liquidado: {Utils.currencyFormat(periodo.pagado)}</div>
           :
-            <div className='md:w-1/5 text-green-500'>Saldo Final: {Utils.currencyFormat(periodo.saldoFinal)}</div>
+            <div className={`md:w-1/5 ${periodo.saldoFinal < 0 ? "red":"green"}`}>Saldo Final: {Utils.currencyFormat(periodo.saldoFinal)}</div>
           }
 
           {tarjeta.tipo === "Crédito" && Utils.getFechaLimitePago(periodo.fechaCorte) && 

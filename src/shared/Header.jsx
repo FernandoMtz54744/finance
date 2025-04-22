@@ -10,7 +10,6 @@ export default function Header({usuario, loginGoogle, logout}) {
     { label: 'Tarjetas', icon: 'pi pi-fw pi-credit-card' , command: ()=> navigate("/")},
     { label: 'Pagos recurrentes', icon: 'pi pi-fw pi-sync', command: ()=> navigate(`/pagosRecurrentes/${usuario.uid}`) },
     { label: 'Efectivo', icon: 'pi pi-fw pi-money-bill', command: ()=> navigate(`/efectivo/${usuario.uid}`) },
-    { label: 'Buscar', icon: 'pi pi-fw pi-search', command: ()=> navigate(`/buscar/${usuario.uid}`)},
     { label: 'Perfil', icon: 'pi pi-fw pi-user', command: ()=> navigate(`/profile/${usuario.uid}`)}
   ];
 

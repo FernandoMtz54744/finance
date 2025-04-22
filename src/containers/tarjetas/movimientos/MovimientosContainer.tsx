@@ -17,7 +17,6 @@ export default function MovimientosContainer() {
     linkDocumento: "",
     total:{totalAbono:0, totalCargo:0, totalPeriodo:0,saldoFinal:0}
   })
-  const [file, setFile] = useState();
 
   //Consulta los movimientos
   useEffect(()=>{
@@ -25,7 +24,7 @@ export default function MovimientosContainer() {
       if(snapshot.exists()){
         setMovimientoViewModel({
           ...movimientoViewModel,
-          movimientos: snapshot.data().movimientos.map((movimiento: any) => ({
+          movimientos: (snapshot.data().movimientos ?? []).map((movimiento: any) => ({
             cantidad: movimiento.cantidad,
             fecha: movimiento.fecha.toDate(),
             isEfectivo: movimiento.isEfectivo,
@@ -130,9 +129,6 @@ export default function MovimientosContainer() {
           movimientosUtils.agregaMovimiento(e);
         }
       }
-    },
-    changeFile: (e: any)=>{
-      setFile(e.target.files[0]);
     }
   }
   

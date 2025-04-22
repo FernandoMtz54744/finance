@@ -32,9 +32,7 @@ interface props {
   },
   handlers: {
     onChange: (e: any)=> void,
-    keyDown: (e: any)=> void,
-    changeFile: (e: any)=> void,
-
+    keyDown: (e: any)=> void
   }
 }
 
@@ -117,7 +115,7 @@ export default function Movimientos({ periodo, tarjeta, formMovimiento, movimien
             header={"Abonos"}/>
         
           <div className='flex flex-row justify-center gap-2 bg-teal-950 py-3 w-full rounded-md mt-8 '>
-              Total Abonos: <div className='total-abono'>{currencyFormat(movimientoViewModel.total.totalAbono)}</div>
+              Total Abonos: <div className='total-abono green'>{currencyFormat(movimientoViewModel.total.totalAbono)}</div>
           </div>
         </div>
 
@@ -128,7 +126,7 @@ export default function Movimientos({ periodo, tarjeta, formMovimiento, movimien
               header={"Cargos"}/>
           
           <div className='flex flex-row justify-center gap-2 bg-teal-950 py-3 w-full rounded-md mt-8 '>
-            Total Cargos <div className='total-cargo'>{currencyFormat(movimientoViewModel.total.totalCargo)}</div>
+            Total Cargos <div className='total-cargo red'>{currencyFormat(movimientoViewModel.total.totalCargo)}</div>
           </div>
         </div>
       </div>

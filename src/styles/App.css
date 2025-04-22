@@ -28,7 +28,7 @@ body{
 }
 
 .red{
-    color: var(--green);
+    color: var(--red);
 }
 
 .p-speeddial-button{
@@ -37,3 +37,9 @@ body{
     background-color: transparent;
     border: 2px solid;
 }
+
+/* .p-button{
+    background-color: #042f2e;
+    color: whitesmoke;
+    border: none;
+} */

@@ -57,7 +57,7 @@ export default function PagosRecurrentes({pagos, actualizaPago, visible, formBit
     
     return (
         <div className='flex flex-col items-center justify-center'>
-            <div className='text-3xl mt-6'>Pagos Recurrentes</div>
+            <div className='text-3xl mt-6'>PAGOS RECURRENTES</div>
             <div className='w-full px-16 mb-16'>
                 {pagos.sort((a,b) => {
                     if (!a.isPagado && b.isPagado) { // Priorizar pagos no pagados
@@ -81,7 +81,7 @@ export default function PagosRecurrentes({pagos, actualizaPago, visible, formBit
 
                         <div className="flex flex-col md:flex-row md:items-center justify-between w-full py-4 px-4 md:px-12 rounded-md bg-teal-950 md:text-center">
                             <div className='md:w-1/6 md:text-left text-center'>{pago.nombre}
-                                {pago.auditar && <span className='text-red-600'>*</span>}
+                                {pago.auditar && <span className='red'>*</span>}
                             </div>
                             <div className='md:w-1/6 md:text-left text-center'>{Utils.convertDate(pago.ultimoPago)}</div>
                             <div className='md:w-1/6 text-center'>{Utils.currencyFormat(pago.cantidad)}</div>
@@ -89,7 +89,7 @@ export default function PagosRecurrentes({pagos, actualizaPago, visible, formBit
                             <div className="md:w-1/6 flex flex-row justify-center items-center">
                                 <InputSwitch checked={pago.isPagado} onChange={()=> actualizaPago(pago)} />
                             </div>
-                            <div className={`md:w-1/6 text-center ${pago.isPagado?" text-green-500":"text-red-500"}`}>{pago.isPagado?"PAGADO":"SIN PAGAR"}</div>
+                            <div className={`md:w-1/6 text-center ${pago.isPagado?"green":"red"}`}>{pago.isPagado?"PAGADO":"SIN PAGAR"}</div>
                         </div>
                     </div>
                 ))}

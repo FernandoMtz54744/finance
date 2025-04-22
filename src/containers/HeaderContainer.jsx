@@ -1,5 +1,5 @@
+import Header from '@/shared/Header';
 import { useAuth } from '../context/AuthContext';
-import Header from '../pages/layouts/Header';
 
 export default function HeaderContainer() {
   const context = useAuth();
