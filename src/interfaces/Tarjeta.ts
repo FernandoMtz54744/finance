@@ -5,6 +5,6 @@ export interface Tarjeta {
     color: string,
     correo: string,
     diaCorte: number,
-    tipo: string
+    tipo: "Crédito" | "Débito"
 }
   

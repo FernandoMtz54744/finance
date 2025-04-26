@@ -1,5 +1,5 @@
 import { Efectivo } from '@/interfaces/Efectivo'
-import { currencyFormat } from '../../utils/utils'
+import * as Utils from '../../utils/utils'
 import { InputNumber } from 'primereact/inputnumber'
 import { Button } from 'primereact/button'
 
@@ -7,10 +7,9 @@ interface props {
     form: Efectivo,
     handleChange: (e: any)=>void,
     agregarEfectivo: (e: any)=>void,
-    sumaEfectivo: (efectivo: Efectivo) => number
 }
 
-export default function AgregaEfectivo({form, handleChange, agregarEfectivo, sumaEfectivo}: props) {
+export default function AgregaEfectivo({form, handleChange, agregarEfectivo}: props) {
   return (
     <table>
         <thead className='bg-teal-950 text-center'>
@@ -26,32 +25,32 @@ export default function AgregaEfectivo({form, handleChange, agregarEfectivo, sum
                 <td>
                     <InputNumber value={form.cincuenta} onChange={(e) => handleChange({target: {name: 'cincuenta', value: e.value}})} placeholder='0 billetes'  suffix=' billetes' min={0}/>
                 </td>
-                <td>{currencyFormat(form.cincuenta * 50)}</td>
+                <td>{Utils.currencyFormat(form.cincuenta * 50)}</td>
             </tr>
             <tr>
                 <td>$100</td>
                 <td className='w-3xs'>
                     <InputNumber value={form.cien} onChange={(e) => handleChange({target: {name: 'cien', value: e.value}})} placeholder='0 billetes' suffix=' billetes' min={0}/>
                 </td>
-                <td>{currencyFormat(form.cien * 100)}</td>
+                <td>{Utils.currencyFormat(form.cien * 100)}</td>
             </tr>
             <tr>
                 <td>$200</td>
                 <td className='w-3xs'>
                     <InputNumber value={form.doscientos} onChange={(e) => handleChange({target: {name: 'doscientos', value: e.value}})} placeholder='0 billetes' suffix=' billetes' min={0}/>
                 </td>
-                <td>{currencyFormat(form.doscientos * 200)}</td>
+                <td>{Utils.currencyFormat(form.doscientos * 200)}</td>
             </tr>
             <tr>
                 <td>$500</td>
                 <td className='w-3xs'>
                     <InputNumber value={form.quinientos} onChange={(e) => handleChange({target: {name: 'quinientos', value: e.value}})} placeholder='0 billetes' suffix=' billetes' min={0}/>
                 </td>
-                <td>{currencyFormat(form.quinientos * 500)}</td>
+                <td>{Utils.currencyFormat(form.quinientos * 500)}</td>
             </tr>
             <tr>
                 <td colSpan={2} className='p-4'> Total en efectivo </td>
-                <td>{currencyFormat(sumaEfectivo(form))}</td>
+                <td>{Utils.currencyFormat(Utils.sumaEfectivo(form))}</td>
             </tr>
             <tr>
                 <td colSpan={3}>

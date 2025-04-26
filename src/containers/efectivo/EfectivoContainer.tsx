@@ -68,10 +68,6 @@ export default function EfectivoContainer() {
     }); 
   }
 
-  const sumaEfectivo = (efectivo: Efectivo): number =>{
-    return (efectivo.cincuenta * 50) + (efectivo.cien * 100) + (efectivo.doscientos * 200) + (efectivo.quinientos * 500);
-  }
-
   const validaForm = (efectivo: Efectivo): boolean => {
     if(!efectivo.fecha) return false;
     if(!efectivo.idUsuario) return false;
@@ -81,9 +77,9 @@ export default function EfectivoContainer() {
   return (
     <div className='flex flex-col items-center justify-center'>
       <div className='text-3xl my-6'>EFECTIVO</div>
-      <AgregaEfectivo form={form} handleChange={handleChange} agregarEfectivo={agregarEfectivo} sumaEfectivo={sumaEfectivo}/>
+      <AgregaEfectivo form={form} handleChange={handleChange} agregarEfectivo={agregarEfectivo}/>
       <div className='text-3xl my-8'>HISTORIAL DE EFECTIVO</div>
-      <MuestraEfectivo efectivos={efectivos} sumaEfectivo={sumaEfectivo}/>
+      <MuestraEfectivo efectivos={efectivos}/>
     </div>
   )
 }

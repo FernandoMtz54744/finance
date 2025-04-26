@@ -1,3 +1,4 @@
+import { Efectivo } from '@/interfaces/Efectivo';
 import { Pago } from '@/interfaces/Pago';
 import { Periodo } from '@/interfaces/Periodo';
 import { DateTime } from 'luxon';
@@ -112,4 +113,8 @@ export const obtenerProximoPago = (pago: Pago): Date =>{
     }else{
         return hoy.plus({days: pago.diasPersonalizada}).toJSDate();
     }
+}
+
+export const sumaEfectivo = (efectivo: Efectivo): number =>{
+    return (efectivo.cincuenta * 50) + (efectivo.cien * 100) + (efectivo.doscientos * 200) + (efectivo.quinientos * 500);
 }

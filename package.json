@@ -1,13 +1,9 @@
 {
   "name": "finance",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@emailjs/nodejs": "^5.0.2",
-    "@fortawesome/fontawesome-svg-core": "^6.7.0",
-    "@fortawesome/free-brands-svg-icons": "^6.7.0",
-    "@fortawesome/free-solid-svg-icons": "^6.7.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
     "@tailwindcss/vite": "^4.0.14",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
