@@ -29,8 +29,8 @@ export default async function handler(req: any, res: any){
         
         const hoy = DateTime.local().startOf("day");
         for(const pago of pagos){
-            const proximoPago = DateTime.fromJSDate(pago.proximoPago);
-            if(proximoPago.equals(hoy)){
+            const proximoPago = DateTime.fromJSDate(pago.proximoPago).startOf("day");
+            if(proximoPago.hasSame(hoy, "day")){
                 const data = {
                     isPagado: false,
                     ultimoPago: hoy.toJSDate(),

@@ -23,7 +23,7 @@ export default function AgregarTarjetaContainer() {
     useEffect(()=>{
       if(user)
         setForm({...form, idUsuario: user.uid})
-    }, [user])
+    }, [user]);
 
     const handleChange = (e: any)=>{
       setForm({...form, [e.target.name]: e.target.value});

@@ -1,5 +1,5 @@
 export interface Tarjeta {
-    id?: string,
+    id: string,
     idUsuario: string,
     nombre: string,
     color: string,
@@ -7,4 +7,3 @@ export interface Tarjeta {
     diaCorte: number,
     tipo: "Crédito" | "Débito"
 }
-  

@@ -3,14 +3,12 @@ import "primereact/resources/themes/arya-green/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';  
 import { PrimeReactProvider } from 'primereact/api';
 import { addLocale} from 'primereact/api';
 import { LoadingProvider } from './context/LoadingContext';
-import HeaderContainer from './containers/HeaderContainer';
-import HomeContainer from './containers/HomeContainer';
 import EfectivoContainer from './containers/efectivo/EfectivoContainer';
 import ProfileContainer from './containers/profile/ProfileContainer';
 import PeriodosContainer from './containers/tarjetas/periodos/PeriodosContainer';
@@ -24,6 +22,10 @@ import LoadingComponent from './shared/LoadingComponent';
 import PagosRecurrentesContainer from './containers/PagosRecurrentes/PagosRecurrentesContainer';
 import AgregarPagoContainer from './containers/PagosRecurrentes/AgregarPagoContainer';
 import EditarPagoContainer from './containers/PagosRecurrentes/EditarPagoContainer';
+import Header from './shared/Header';
+import ProtectedRoute from './context/ProtectedRoute';
+import Home from './pages/login/Home';
+import PageNotFound from './shared/PageNotFound';
 
 /* AGREGA LOCALE DE PRIMEREACT*/
 addLocale('es', {
@@ -42,30 +44,35 @@ function App() {
     <AuthProvider>
     <PrimeReactProvider>
     <LoadingProvider>
-      <LoadingComponent />
-      <Toaster/>
-      <BrowserRouter>
-        <HeaderContainer/>
-        <Routes>
-          <Route path="/" element={<HomeContainer/>}/>
-          <Route path="/Home" element={<Tarjetas/>}/>
-          {/* Periodos */}
+    <LoadingComponent />
+    <Toaster/>
+    <BrowserRouter>
+      <Header/>
+      <Routes>
+        {/* RUTAS PÚBLICAS */}
+        <Route path="/Home" element={<Home/>}/>
+
+        {/* RUTAS PROTEGIDAS */}
+        {/* <Route element={<ProtectedRoute/>}> */}
+          <Route path="/" element={<Tarjetas/>}/>
           <Route path="/periodos" element={<PeriodosContainer/>}/>
           <Route path="/periodos/agregar" element={<AgregarPeriodoContainer/>}/>
           <Route path="/editarPeriodo" element={<EditarPeriodoContainer/>}/>
           <Route path="/movimientos" element={<MovimientosContainer/>}/>
-          {/* Tarjetas */}
           <Route path="/agregarTarjeta" element={<AgregarTarjetaContainer/>}/>
           <Route path="/editarTarjeta" element={<EditarTarjetaContainer/>}/>
-          {/* Pagos Recurrentes */}
           <Route path="/pagosRecurrentes/:idUsuario" element={<PagosRecurrentesContainer/>}/>
           <Route path="/agregarPago" element={<AgregarPagoContainer/>}/>
           <Route path="/editarPago" element={<EditarPagoContainer/>}/>
-          {/*  */}
           <Route path="/efectivo/:idUsuario" element={<EfectivoContainer/>}/>
           <Route path="/profile/:idUsuario" element={<ProfileContainer/>}/>
-        </Routes>
-      </BrowserRouter>
+        {/* </Route> */}
+
+        {/* RUTA DEFAULT */}
+        <Route path="*" element={<PageNotFound/>} />
+
+      </Routes>
+    </BrowserRouter>
     </LoadingProvider>
     </PrimeReactProvider>
     </AuthProvider>

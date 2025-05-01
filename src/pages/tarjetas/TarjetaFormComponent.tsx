@@ -11,7 +11,7 @@ interface props {
     title: string,
     isEdit: boolean
     handleChange: (e: any)=> void,
-    handleSubmit: (e: React.FormEvent<HTMLFormElement>)=> void
+    handleSubmit: (e: any)=> void
 }
 
 export default function TarjetaFormComponent({form, title, isEdit, handleChange, handleSubmit}: props) {

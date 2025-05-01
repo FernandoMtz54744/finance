@@ -7,6 +7,10 @@ body{
     font-family: "Funnel Display", sans-serif;
 }
 
+#root{
+    height: 100vh;
+}
+
 .p-component {
     font-family: inherit !important;
 }

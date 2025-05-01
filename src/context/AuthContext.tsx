@@ -84,7 +84,7 @@ export function AuthProvider({children}: {children: ReactNode}){
     }
 
     const logout = async ()=>{
-        const response = await signOut(auth);
+        await signOut(auth);
     }
 
     return <authContext.Provider

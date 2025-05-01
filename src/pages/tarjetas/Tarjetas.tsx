@@ -4,8 +4,8 @@ import { ContextMenu } from 'primereact/contextmenu';
 import { MenuItem } from 'primereact/menuitem';
 import { useAuth } from '@/context/AuthContext';
 import { Tarjeta } from '@/interfaces/Tarjeta';
-import * as Utils from "@/utils/utils"
 import { Button } from 'primereact/button';
+import * as Utils from "@/utils/utils"
 
 export default function Tarjetas() {
 
@@ -23,7 +23,7 @@ export default function Tarjetas() {
 
   return (
     <div className='flex flex-col items-center justify-center'>
-      <div className='account-title text-3xl my-6'>TARJETAS</div>
+      <div className='text-3xl my-6'>TARJETAS</div>
       <div className='grid grid-cols-1 gap-8 p-4 md:grid-cols-4 mb-16'>
           {tarjetas.sort((a, b) => a.nombre.localeCompare(b.nombre)).map((tarjeta, i) => (
             <Link className={`rounded-md p-4 font-medium w-2xs flex flex-col gap-y-3`} 
