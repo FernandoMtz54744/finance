@@ -17,6 +17,7 @@
     "primereact": "^10.9.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.56.1",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.28.0",
     "streamifier": "^0.1.1",
@@ -29,7 +30,8 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -50,7 +52,12 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "^9.26.0",
     "@types/luxon": "^3.4.2",
+    "eslint": "^9.26.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.0.0",
+    "typescript-eslint": "^8.31.1",
     "vite-plugin-vercel": "^9.0.5"
   },
   "type": "module"

@@ -7,6 +7,7 @@ import { Periodo } from '@/interfaces/Periodo'
 import { ContextMenu } from 'primereact/contextmenu'
 import { MenuItem } from 'primereact/menuitem'
 import { Button } from 'primereact/button'
+import TitleComponent from '@/shared/components/TitleComponent'
 
 interface props {
   periodos: Periodo[],
@@ -44,7 +45,7 @@ export default function Periodos({periodos, tarjeta}: props) {
 
   return (
     <div className='flex flex-col items-center justify-center'>
-      <div className='text-3xl my-6'>{tarjeta.nombre+" "+tarjeta.tipo}</div>
+      <TitleComponent title={tarjeta.nombre+" "+tarjeta.tipo}/>
       <div className='flex flex-col items-center w-full mb-16'>
         {periodos.filter(periodo => periodo.idTarjeta === tarjeta.id).sort((a, b) => (b.fechaCorte.getTime() - a.fechaCorte.getTime())).map((periodo,i) => 
           

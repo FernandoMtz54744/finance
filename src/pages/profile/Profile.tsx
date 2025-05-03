@@ -47,9 +47,9 @@ export default function Profile({tarjetas, periodos, efectivo, totalHistorial, o
 
             {/* HISTORIAL */}
             <center className='text-2xl my-6'>HISTORIAL</center>
-            <div className='w-full px-16 flex flex-row justify-center items-center'>
+            <div className='w-full px-16 flex flex-col justify-center items-center'>
                 {totalHistorial.sort((a, b)=> b.fecha.getTime() - a.fecha.getTime()).map((total, i) => (
-                <div key={i} className='w-1/2'>
+                <div key={i} className='w-1/2 mt-6'>
 
                     <div className='bg-teal-950 rounded-md flex flex-row justify-between p-4' onClick={()=>setVisible({...visible, [total.fecha]: !visible[total.fecha]})}>
                         <div>{DateTime.fromJSDate(total.fecha).setLocale("es").toFormat('dd/LLL/yyyy')}</div>

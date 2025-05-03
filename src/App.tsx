@@ -3,7 +3,7 @@ import "primereact/resources/themes/arya-green/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';  
 import { PrimeReactProvider } from 'primereact/api';
@@ -23,7 +23,6 @@ import PagosRecurrentesContainer from './containers/PagosRecurrentes/PagosRecurr
 import AgregarPagoContainer from './containers/PagosRecurrentes/AgregarPagoContainer';
 import EditarPagoContainer from './containers/PagosRecurrentes/EditarPagoContainer';
 import Header from './shared/Header';
-import ProtectedRoute from './context/ProtectedRoute';
 import Home from './pages/login/Home';
 import PageNotFound from './shared/PageNotFound';
 

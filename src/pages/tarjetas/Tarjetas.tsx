@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Tarjeta } from '@/interfaces/Tarjeta';
 import { Button } from 'primereact/button';
 import * as Utils from "@/utils/utils"
+import TitleComponent from '@/shared/components/TitleComponent';
 
 export default function Tarjetas() {
 
@@ -23,46 +24,50 @@ export default function Tarjetas() {
 
   return (
     <div className='flex flex-col items-center justify-center'>
-      <div className='text-3xl my-6'>TARJETAS</div>
-      <div className='grid grid-cols-1 gap-8 p-4 md:grid-cols-4 mb-16'>
-          {tarjetas.sort((a, b) => a.nombre.localeCompare(b.nombre)).map((tarjeta, i) => (
-            <Link className={`rounded-md p-4 font-medium w-2xs flex flex-col gap-y-3`} 
-              to={"/periodos"} key={i} state={{tarjeta: tarjeta}}
-              style={{background: `linear-gradient(#${tarjeta.color}, #020024)`}}
-              onContextMenu={(e) => handleContextMenu(e, tarjeta)}>
+      <TitleComponent title="TARJETAS" />
+      <div className='grid sm:grid-cols-1 md:grid-cols-4 gap-8 mb-16'>
+        {tarjetas.sort((a, b) => a.nombre.localeCompare(b.nombre)).map((tarjeta, i) => (
+        <Link className={`rounded-md p-4 font-normal w-2xs flex flex-col gap-y-3`} 
+          to={"/periodos"} key={i} state={{tarjeta: tarjeta}}
+          style={{background: `linear-gradient(145deg, #${tarjeta.color}, #020024)`}}
+          onContextMenu={(e) => handleContextMenu(e, tarjeta)}>
 
-              <div className='flex flex-row justify-between'>
-                <div>Tarjeta de {tarjeta.tipo}</div>
-                <div>{tarjeta.nombre}</div>
-              </div>
-              <div className='flex flex-row justify-between'>
-                <div>
-                  <div className='text-xs'>Fecha de corte</div>
-                  <div>{Utils.convertDate(Utils.getNextFechaByDay(tarjeta.diaCorte))}</div>
-                </div>
-                {tarjeta.tipo === "Crédito" && (
-                <div>
-                  <div className='text-xs'>F. Límite de pago</div>
-                  <div>{Utils.convertDate(Utils.getFechaLimitePago(Utils.getLastFechaByDay(tarjeta.diaCorte)))}</div>
-                </div>
-                )}
-              </div>
+          <div className='flex flex-row justify-between'>
+            <div>{tarjeta.nombre}</div>
+            <div>{tarjeta.tipo}</div>
+          </div>
 
-              <div className='flex flex-col items-end'>
-                <div className='text-xs'>Saldo final</div>
-                <div>{tarjeta.tipo === "Débito"?
-                  Utils.currencyFormat(Utils.obtenerSaldoUltimoPeriodo(periodos, tarjeta.id)):
-                  Utils.currencyFormat(Utils.obtenerSaldoTotal(periodos, tarjeta.id))
-                  }</div>
-              </div>
-            </Link>
-          ))}
+          <div className='flex flex-row justify-between'>
+            <div>
+              <div className='text-xs'>Fecha de corte</div>
+              <div>{Utils.convertDate(Utils.getNextFechaByDay(tarjeta.diaCorte))}</div>
+            </div>
+            {tarjeta.tipo === "Crédito" && 
+            <div>
+              <div className='text-xs'>F. Límite de pago</div>
+              <div>{Utils.convertDate(Utils.getFechaLimitePago(Utils.getLastFechaByDay(tarjeta.diaCorte)))}</div>
+            </div>
+            }
+          </div>
+
+          <div className='flex flex-col items-end'>
+            <div className='text-xs'>Saldo final</div>
+            <div>{tarjeta.tipo === "Débito"?
+              Utils.currencyFormat(Utils.obtenerSaldoUltimoPeriodo(periodos, tarjeta.id)):
+              Utils.currencyFormat(Utils.obtenerSaldoTotal(periodos, tarjeta.id))
+            }
+            </div>
+          </div>
+
+        </Link>
+        ))}
       </div>
 
       <ContextMenu model={contextItems} ref={cm}/>
       <div className='fixed bottom-8 right-8'>
         <Button icon="pi pi-plus" outlined onClick={()=> navigate("/agregarTarjeta")}/>
       </div>
+      
     </div>
   )
 }
