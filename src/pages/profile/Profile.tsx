@@ -18,7 +18,7 @@ interface props {
 
 export default function Profile({tarjetas, periodos, efectivo, totalHistorial, obtieneTotal, guardarHistorial }: props) {
 
-    const [visible, setVisible] = useState({});
+    const [visible, setVisible] = useState<{[key: string]: boolean}>({});
 
     return (
         <div className='flex flex-col justify-center items-center px-4 md:px-0 mb-16'>
@@ -47,18 +47,17 @@ export default function Profile({tarjetas, periodos, efectivo, totalHistorial, o
 
             {/* HISTORIAL */}
             <center className='text-2xl my-6'>HISTORIAL</center>
-            <div className='w-full px-16 flex flex-col justify-center items-center'>
+            <div className='w-full px-16 flex flex-col justify-center items-center mb-16'>
                 {totalHistorial.sort((a, b)=> b.fecha.getTime() - a.fecha.getTime()).map((total, i) => (
                 <div key={i} className='w-1/2 mt-6'>
 
-                    <div className='bg-teal-950 rounded-md flex flex-row justify-between p-4' onClick={()=>setVisible({...visible, [total.fecha]: !visible[total.fecha]})}>
+                    <div className='bg-teal-950 rounded-md flex flex-row justify-between p-4 hover:cursor-pointer' onClick={()=>setVisible({...visible, [total.fecha.toISOString()]: !visible[total.fecha.toISOString()]})}>
                         <div>{DateTime.fromJSDate(total.fecha).setLocale("es").toFormat('dd/LLL/yyyy')}</div>
                         <div className='flex flex-row'>Total:&nbsp;<div className='green'>{Utils.currencyFormat(total.total)}</div></div>
                     </div>
 
-                    {visible[total.fecha] && 
+                    {visible[total.fecha.toISOString()] && 
                     <div className='flex flex-col items-center'>
-
                         {total.tarjetas.sort((a, b) => a.nombre.localeCompare(b.nombre)).map((tarjeta, i) =>(
                         <div className='flex flex-row justify-between my-2 px-4 w-1/2' key={i}>
                                 <div>{tarjeta.nombre}</div>

@@ -8,7 +8,7 @@ import { Button } from 'primereact/button';
 import * as Utils from "@/utils/utils"
 import TitleComponent from '@/shared/components/TitleComponent';
 
-export default function Tarjetas() {
+export default function TarjetaList() {
 
   const { tarjetas, periodos } = useAuth();
   const navigate = useNavigate();

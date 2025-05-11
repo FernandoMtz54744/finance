@@ -26,8 +26,8 @@ export default function AgregarPeriodoContainer() {
       fechaCorte: data.fechaCorte,
       saldoInicial: data.saldoInicial,
       saldoFinal: data.saldoInicial,
-      pagado: null,
-      totalPeriodo: 0 
+      totalPeriodo: 0,
+      isValidado: false
     }
 
     addDoc(collection(db, "Periodos"), periodo).then(() => {

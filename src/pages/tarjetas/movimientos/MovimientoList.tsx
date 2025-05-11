@@ -19,28 +19,33 @@ import { MenuItem } from "primereact/menuitem";
 import  * as documentoService from "@/services/documentoService";
 import { useLoading } from "@/context/LoadingContext";
 import toast from "react-hot-toast";
+import Swal from 'sweetalert2';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/firebase/firebase.config';
+import { Controller, useForm } from 'react-hook-form';
+import { MovimientoForm } from '@/interfaces/forms/MovimientoForm';
 
 interface props {
   periodo: Periodo,
-  tarjeta: Tarjeta
-  formMovimiento: Movimiento,
-  movimientoViewModel: MovimientoViewModel
-  movimientosUtils: {
-    agregaMovimiento: (e: any)=> void,
-    eliminaMovimiento: (id: string)=> void,
-    actualizaMovimientos: ()=> void,
-  },
-  handlers: {
-    onChange: (e: any)=> void,
-    keyDown: (e: any)=> void
-  }
+  tarjeta: Tarjeta,
+  movimientoViewModel: MovimientoViewModel,
+  eliminaMovimiento: (id: string)=> void,
+  actualizaMovimientos: ()=> void,
 }
 
-export default function Movimientos({ periodo, tarjeta, formMovimiento, movimientoViewModel, movimientosUtils, handlers}: props) {
+export default function MovimientoList({ periodo, tarjeta, movimientoViewModel, eliminaMovimiento, actualizaMovimientos }: props) {
 
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const { setLoading } = useLoading();
+
+  const items = [
+    movimientoViewModel.linkDocumento? 
+      { label:"Ver documento", icon: 'pi pi-eye', command: ()=> window.open(movimientoViewModel.linkDocumento, "_blank")} 
+      :{ label:"Agregar documento", icon: 'pi pi-file-plus', command: ()=> setVisible(true)},
+    !periodo.isValidado && { label:"Validar periodo", icon:'pi pi-verified', command: ()=> validarPeriodo() },
+    { label:"Regresar", icon: 'pi pi-arrow-left', command: ()=> navigate(-1)}
+  ].filter(Boolean) as MenuItem[];
 
   const fileUploadHandler = async(fileEvent: FileUploadHandlerEvent)=>{
     try{
@@ -57,61 +62,35 @@ export default function Movimientos({ periodo, tarjeta, formMovimiento, movimien
     }
   }
 
-  const items = [
-    movimientoViewModel.linkDocumento && { label:"Ver documento", icon: 'pi pi-eye', command: ()=> window.open(movimientoViewModel.linkDocumento, "_blank")},
-    { label:"Agregar documento", icon: 'pi pi-file-plus', command: ()=> setVisible(true)},
-    { label:"Regresar", icon: 'pi pi-arrow-left', command: ()=> navigate(-1)},
-  ].filter(Boolean) as MenuItem[];
+  const validarPeriodo = async ()=>{
+    const result = await Swal.fire({
+          title: 'Validar periodo',
+          text: "¿Desea marcar este periodo como validado?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, agregar',
+          cancelButtonText: 'Cancelar'
+        });
+
+    if(result.isConfirmed){
+      updateDoc(doc(db, "Periodos", periodo.id), {validado: true}).then(() => {
+        toast.success("Periodo marcado correctamente");
+        navigate(-1);
+      }).catch((error)=>{
+        toast.error("Ocurrió un error al validar el periodo");
+        console.log(error);
+      })
+    }
+  }
 
   return (
-    <div className='flex flex-col justify-center items-center'>
-
-      {/* DATOS DEL PERIODO */}
-      <div className='flex md:flex-row flex-col w-full md:justify-between items-center my-4 px-8'>
-          <div>{tarjeta.nombre}&nbsp;{tarjeta.tipo} - {periodo.nombre}</div>
-          <div>Fecha inicio: {convertDate(periodo.fechaInicio)}</div>
-          <div>Fecha de corte: {convertDate(periodo.fechaCorte)}</div>
-          {tarjeta.tipo === "Crédito" && (
-            <div>Fecha límite de pago: {convertDate(getFechaLimitePago(periodo.fechaCorte))}</div>
-          )}
-      </div>
-
-      {/* CÁLCULOS DE LOS MOVIMIENTOS */}
-      <div className='flex md:flex-row flex-col justify-around items-center w-full bg-teal-950 p-1'>
-          <div>Saldo inicial: {currencyFormat(periodo.saldoInicial)}</div>
-          <div className='flex flex-row'>Total Periodo:&nbsp;<div className={movimientoViewModel.total.totalPeriodo >= 0?"green":"red"}>{currencyFormat(movimientoViewModel.total.totalPeriodo)}</div></div>
-          <div>Saldo Final: {currencyFormat(movimientoViewModel.total.saldoFinal)}</div>
-      </div>
-
-      {/* FORMULARIO DE MOVIMIENTOS */}
-      <form className='w-full flex md:flex-row flex-col justify-around border-y-2 py-2 border-teal-950 my-4' autoComplete="off">
-        <div>
-          Fecha: <Calendar className='p-inputtext-sm' name='fecha' value={formMovimiento.fecha}
-            onChange={handlers.onChange} minDate={periodo.fechaInicio} 
-            maxDate={tarjeta.tipo==="Crédito"?getFechaLimitePago(periodo.fechaCorte):periodo.fechaCorte} 
-            dateFormat="dd/M/yy" locale="es"/>
-        </div>
-        <div>
-          Cantidad: <InputNumber className='p-inputtext-sm' mode="currency" currency="USD" name='cantidad' 
-            value={formMovimiento.cantidad} onChange={(e) => handlers.onChange({target: {name: 'cantidad', value: e.value}})} onKeyDown={handlers.keyDown} />
-        </div>
-        <div>
-          Motivo: <InputText className='p-inputtext-sm' type="text" name='motivo' value={formMovimiento.motivo} 
-            onChange={handlers.onChange} onKeyDown={handlers.keyDown} />
-        </div>
-        <div className='flex flex-row justify-center w-16 center'>
-          <ToggleButton className='p-inputtext-sm' onLabel="Efectivo" offLabel="Transferencia" name="isEfectivo"
-            onChange={handlers.onChange} checked={formMovimiento.isEfectivo} onKeyDown={handlers.keyDown}/>
-        </div>
-        <Button onClick={movimientosUtils.agregaMovimiento} label='Agregar'/>
-      </form>
-
+    <>
       {/* CARGOS & ABONOS */}
       <div className='flex md:flex-row flex-col justify-between w-full gap-12 px-8 mb-32'>
         <div className='md:w-1/2'>
           <TableMovimientos 
             movimientos={movimientoViewModel.movimientos.filter(movimiento => movimiento.tipo === "abono").sort((a, b) => a.fecha.getTime()-b.fecha.getTime())}
-            eliminaMovimiento={movimientosUtils.eliminaMovimiento}
+            eliminaMovimiento={eliminaMovimiento}
             header={"Abonos"}/>
         
           <div className='flex flex-row justify-center gap-2 bg-teal-950 py-3 w-full rounded-md mt-8 '>
@@ -122,7 +101,7 @@ export default function Movimientos({ periodo, tarjeta, formMovimiento, movimien
         <div className='md:w-1/2'>
           <TableMovimientos 
               movimientos={movimientoViewModel.movimientos.filter(movimiento => movimiento.tipo === "cargo").sort((a, b) => a.fecha.getTime()-b.fecha.getTime())}
-              eliminaMovimiento={movimientosUtils.eliminaMovimiento}
+              eliminaMovimiento={eliminaMovimiento}
               header={"Cargos"}/>
           
           <div className='flex flex-row justify-center gap-2 bg-teal-950 py-3 w-full rounded-md mt-8 '>
@@ -139,7 +118,7 @@ export default function Movimientos({ periodo, tarjeta, formMovimiento, movimien
           showIcon="pi pi-angle-double-up" hideIcon="pi pi-times"
           pt={{ actionIcon: { style: {pointerEvents: "none"}} }}/>
 
-        <Button onClick={movimientosUtils.actualizaMovimientos} label="Guardar Movimientos" size="large"/>
+        <Button onClick={actualizaMovimientos} label="Guardar Movimientos" size="large" disabled={periodo.isValidado}/>
       </div>
 
       <Dialog header="Subir estado de cuenta" visible={visible} draggable={false} position="center"
@@ -150,6 +129,6 @@ export default function Movimientos({ periodo, tarjeta, formMovimiento, movimien
                 uploadHandler={fileUploadHandler}/>
             </div>
       </Dialog>
-    </div>
+    </>
   )
 }

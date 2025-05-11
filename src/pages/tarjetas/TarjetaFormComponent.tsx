@@ -46,7 +46,7 @@ export default function TarjetaFormComponent({ tarjeta, title, isEdit, onSubmit}
                     <div className='md:col-span-11 col-span-10'>
                         <FloatLabel >
                             <Controller name="tipo" control={control} render={({field}) => (
-                                <Dropdown options={tipos} {...field} editable={isEdit}/>
+                                <Dropdown options={tipos} {...field} disabled={isEdit}/>
                             )}/>
                             <label>Tipo</label>
                         </FloatLabel>

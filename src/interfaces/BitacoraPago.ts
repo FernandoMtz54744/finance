@@ -1,5 +1,5 @@
 export interface BitacoraPago{
-    id?: string,
+    id: string,
     idPago: string
     comentario: string,
     fecha: Date

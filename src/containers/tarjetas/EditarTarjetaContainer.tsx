@@ -3,7 +3,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 import { db } from '@/firebase/firebase.config';
 import { Tarjeta } from '@/interfaces/Tarjeta';
-import { TarjetaForm } from '@/interfaces/forms/TarjetaForm';
+import { EditTarjeta, TarjetaForm } from '@/interfaces/forms/TarjetaForm';
 import TarjetaFormComponent from '@/pages/tarjetas/TarjetaFormComponent';
 
 export default function EditarTarjetaContainer() {
@@ -11,10 +11,16 @@ export default function EditarTarjetaContainer() {
   const { tarjeta } = useLocation().state as {tarjeta: Tarjeta};
 
   const onSubmit = (data: TarjetaForm)=>{
-    updateDoc(doc(db, "Tarjetas", tarjeta.id), data).then(() => {
+    const tarjetaEdit: EditTarjeta = {
+      nombre: data.nombre,
+      color: data.color,
+      diaCorte: data.diaCorte,
+      correo: data.correo
+    }
+    updateDoc(doc(db, "Tarjetas", tarjeta.id), tarjetaEdit).then(() => {
         toast.success("Se modificó la tarjeta con éxito")
         navigate(-1);
-      }).catch((error)=>{
+    }).catch((error)=>{
       toast.error("Error al editar la tarjeta")
       console.log(error)
     })

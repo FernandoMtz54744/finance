@@ -1,7 +1,5 @@
-import { Firestore } from "firebase/firestore"
-
 export interface Pago{
-    id?: string,
+    id: string,
     idUsuario: string,
     nombre: string,
     cantidad: number,
@@ -14,5 +12,4 @@ export interface Pago{
     diasLimitePago: number, //Días despues del proximo pago para pagar
     diasAntesNotificacion: number, //Días antes del proximo pago para mandar la notificación
     auditar: boolean //Opcion para indicar si mantener registro histórico de los pagos
-    notas?: string, //Notas solo cuando la opción de auditar está habilitada
 }

@@ -65,11 +65,13 @@ export default function Periodos({periodos, tarjeta}: props) {
         }
 
         <div className='flex flex-col md:flex-row md:items-center justify-between w-full py-4 px-4 md:px-12 rounded-md bg-teal-950 md:text-center'>
-          <div className='md:w-1/5 md:text-left text-center'>{periodo.nombre}</div>
+          <div className='md:w-1/5 md:text-left text-center flex row items-center'>{periodo.nombre}&nbsp;
+          {periodo.isValidado?<span className='pi pi-verified text-green-500'></span>:<span className='text-red-500 pi pi-minus-circle'></span>}
+          </div>
           <div className='md:w-1/5'>Inicio: {Utils.convertDate(periodo.fechaInicio)}</div>
           <div className='md:w-1/5'>Corte: {Utils.convertDate(periodo.fechaCorte)}</div>
-          {(periodo.saldoFinal === 0 && periodo.pagado)?
-            <div className='md:w-1/5 text-blue-500'>Liquidado: {Utils.currencyFormat(periodo.pagado)}</div>
+          {(periodo.saldoFinal === 0 && periodo.liquidado)?
+            <div className='md:w-1/5 text-blue-500'>Liquidado: {Utils.currencyFormat(periodo.liquidado)}</div>
           :
             <div className={`md:w-1/5 ${periodo.saldoFinal < 0 ? "red":"green"}`}>Saldo Final: {Utils.currencyFormat(periodo.saldoFinal)}</div>
           }

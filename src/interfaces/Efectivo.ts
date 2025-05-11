@@ -1,7 +1,7 @@
 export interface Efectivo{
-    id?: string,
+    id: string,
     idUsuario: string,
-    fecha?: Date,
+    fecha: Date,
     cincuenta: number
     cien: number,
     doscientos: number,

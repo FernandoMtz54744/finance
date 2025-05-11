@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react'
 import { doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import Movimientos from '@/pages/tarjetas/movimientos/Movimientos';
 import { db } from '@/firebase/firebase.config';
 import { Movimiento } from '@/interfaces/Movimiento';
 import { Periodo } from '@/interfaces/Periodo';
 import { Tarjeta } from '@/interfaces/Tarjeta';
 import { MovimientoViewModel } from '@/interfaces/MovimientoViewModel';
+import { MovimientoForm } from '@/interfaces/forms/MovimientoForm';
+import MovimientoFormComponent from '@/pages/tarjetas/movimientos/MovimientoFormComponent';
+import MovimientosHeader from '@/pages/tarjetas/movimientos/MovimientosHeader';
+import MovimientoList from '@/pages/tarjetas/movimientos/MovimientoList';
 
 export default function MovimientosContainer() {
   const {periodo, tarjeta} = useLocation().state as {periodo: Periodo, tarjeta: Tarjeta};
-  const [formMovimiento, setFormMovimiento] = useState<Movimiento>({fecha: periodo.fechaInicio, cantidad: 0, motivo: "", isEfectivo: false, tipo: ""});
   const [movimientoViewModel, setMovimientoViewModel] = useState<MovimientoViewModel>({
     movimientos: [],
     linkDocumento: "",
@@ -25,12 +27,12 @@ export default function MovimientosContainer() {
         setMovimientoViewModel({
           ...movimientoViewModel,
           movimientos: (snapshot.data().movimientos ?? []).map((movimiento: any) => ({
+            id: movimiento.id,
             cantidad: movimiento.cantidad,
             fecha: movimiento.fecha.toDate(),
             isEfectivo: movimiento.isEfectivo,
             motivo: movimiento.motivo,
-            tipo: movimiento.tipo,
-            id: movimiento.id
+            tipo: movimiento.tipo
           })),
           linkDocumento: snapshot.data().documento
         })
@@ -59,87 +61,48 @@ export default function MovimientosContainer() {
     }
   }, [movimientoViewModel.movimientos]);
 
-  const movimientosUtils = {
-    //Agrega el movimiento al arreglo de movimientos
-    agregaMovimiento: (e: any)=>{
-      e.preventDefault();
-      const movimiento: Movimiento = {
-        id: Date.now().toString(),
-        fecha: formMovimiento.fecha,
-        cantidad: Number(Math.abs(formMovimiento.cantidad)),
-        motivo: formMovimiento.motivo,
-        isEfectivo: formMovimiento.isEfectivo,
-        tipo: formMovimiento.cantidad < 0 ? "cargo" : "abono"
-      }
-      if(!movimientosUtils.validaMovimiento(movimiento)) return;
-      setMovimientoViewModel({...movimientoViewModel, movimientos: [...movimientoViewModel.movimientos, movimiento]});
-      setFormMovimiento({fecha: formMovimiento.fecha, cantidad: 0, motivo: "", isEfectivo: false, tipo: ""});
-    },
-    //Elimina el movimiento del arreglo de movimientos
-    eliminaMovimiento: (id: string) =>{
-      setMovimientoViewModel({...movimientoViewModel, movimientos: movimientoViewModel.movimientos.filter(movimiento => movimiento.id !== id)})
-    },
-    //Actualiza los movimientos en la BD
-    actualizaMovimientos: async ()=>{
-      try{
-        const movimientos = { idPeriodo: periodo.id, movimientos: movimientoViewModel.movimientos}
-        await setDoc(doc(db, "Movimientos", periodo.id), movimientos, {merge: true});
-        const data = {
-          saldoFinal: movimientoViewModel.total.saldoFinal,
-          totalPeriodo: movimientoViewModel.total.totalPeriodo,
-          pagado: movimientoViewModel.total.totalAbono
-        }
-        await setDoc(doc(db, "Periodos", periodo.id), data, {merge: true});
-        toast.success("Movimientos actualizados");
-      }catch(error){
-        console.log(error);
-        toast.error("Error al actualizar los movimientos")
-      }
-    },
-    //Valida movimiento
-    validaMovimiento: (movimiento: Movimiento)=>{
-      if(movimiento.cantidad === 0){
-        toast.error("Agregue una cantidad");
-        return false;
-      }
-      if(!movimiento.motivo){
-        toast.error("Agregue un motivo");
-        return false;
-      } 
-      return true;
+  const onSubmit = (data: MovimientoForm)=>{
+    const movimiento: Movimiento = {
+      id: Date.now().toString(),
+      fecha: data.fecha,
+      cantidad: Number(Math.abs(data.cantidad)),
+      motivo: data.motivo,
+      isEfectivo: data.isEfectivo,
+      tipo: data.cantidad < 0 ? "cargo" : "abono"
     }
+    setMovimientoViewModel({...movimientoViewModel, movimientos: [...movimientoViewModel.movimientos, movimiento]});
   }
 
-  /*  MANEJADORES DE EVENTOS */
-  const handlers = {
-    onChange: (e: any)=>{
-      if(e.target.type === "checkbox"){
-        setFormMovimiento({...formMovimiento, [e.target.name]:e.target.checked})
-      }else{
-        setFormMovimiento({...formMovimiento, [e.target.name]:e.target.value})
-      }
-    },
+  const eliminaMovimiento = (id: string) =>{
+    setMovimientoViewModel({...movimientoViewModel, movimientos: movimientoViewModel.movimientos.filter(movimiento => movimiento.id !== id)})
+  }
 
-    keyDown: (e: any) =>{    
-      if(e.key === 'Enter'){
-        if(e.target.type === "checkbox"){
-          e.preventDefault()
-          setFormMovimiento({...formMovimiento, isEfectivo: !formMovimiento.isEfectivo})
-        }else{
-          movimientosUtils.agregaMovimiento(e);
-        }
+  const actualizaMovimientos = async ()=>{
+    try{
+      const movimientos = { idPeriodo: periodo.id, movimientos: movimientoViewModel.movimientos}
+      await setDoc(doc(db, "Movimientos", periodo.id), movimientos, {merge: true});
+      const data = {
+        saldoFinal: movimientoViewModel.total.saldoFinal,
+        totalPeriodo: movimientoViewModel.total.totalPeriodo,
+        ...(tarjeta.tipo === 'Crédito' && {
+        liquidado: movimientoViewModel.total.totalAbono})
       }
+      await setDoc(doc(db, "Periodos", periodo.id), data, {merge: true});
+      toast.success("Movimientos actualizados");
+    }catch(error){
+      console.log(error);
+      toast.error("Error al actualizar los movimientos")
     }
   }
   
   return (
-    <Movimientos 
-      periodo = {periodo}
-      tarjeta={tarjeta}
-      formMovimiento={formMovimiento} 
-      movimientoViewModel = {movimientoViewModel}
-      movimientosUtils = {movimientosUtils}
-      handlers = {handlers}
-    />
+    <div className='flex flex-col justify-center items-center'>
+      <MovimientosHeader tarjeta={tarjeta} periodo={periodo} movimientoViewModel={movimientoViewModel} />
+      <MovimientoFormComponent tarjeta={tarjeta} periodo={periodo} onSubmit={onSubmit}/>
+      <MovimientoList tarjeta={tarjeta} periodo={periodo} movimientoViewModel={movimientoViewModel}
+        eliminaMovimiento = {eliminaMovimiento}
+        actualizaMovimientos = {actualizaMovimientos}
+      />
+    </div>
   )
 }

@@ -15,7 +15,6 @@ import PeriodosContainer from './containers/tarjetas/periodos/PeriodosContainer'
 import AgregarPeriodoContainer from './containers/tarjetas/periodos/AgregarPeriodoContainer';
 import EditarPeriodoContainer from './containers/tarjetas/periodos/EditarPeriodoContainer';
 import MovimientosContainer from './containers/tarjetas/movimientos/MovimientosContainer';
-import Tarjetas from './pages/tarjetas/Tarjetas';
 import AgregarTarjetaContainer from './containers/tarjetas/AgregarTarjetaContainer';
 import EditarTarjetaContainer from './containers/tarjetas/EditarTarjetaContainer';
 import LoadingComponent from './shared/LoadingComponent';
@@ -25,6 +24,7 @@ import EditarPagoContainer from './containers/PagosRecurrentes/EditarPagoContain
 import Header from './shared/Header';
 import Home from './pages/login/Home';
 import PageNotFound from './shared/PageNotFound';
+import TarjetaList from './pages/tarjetas/TarjetaList';
 
 /* AGREGA LOCALE DE PRIMEREACT*/
 addLocale('es', {
@@ -53,7 +53,7 @@ function App() {
 
         {/* RUTAS PROTEGIDAS */}
         {/* <Route element={<ProtectedRoute/>}> */}
-          <Route path="/" element={<Tarjetas/>}/>
+          <Route path="/" element={<TarjetaList/>}/>
           <Route path="/periodos" element={<PeriodosContainer/>}/>
           <Route path="/periodos/agregar" element={<AgregarPeriodoContainer/>}/>
           <Route path="/editarPeriodo" element={<EditarPeriodoContainer/>}/>

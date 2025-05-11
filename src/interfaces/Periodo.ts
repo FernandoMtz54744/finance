@@ -8,6 +8,6 @@ export interface Periodo {
     saldoInicial: number,
     saldoFinal: number,
     totalPeriodo: number,
-    pagado: number | null
-}
-  
+    liquidado?: number,
+    isValidado: boolean
+}  

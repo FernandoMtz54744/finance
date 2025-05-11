@@ -66,8 +66,9 @@ export function AuthProvider({children}: {children: ReactNode}){
                                 saldoInicial: data.saldoInicial,
                                 saldoFinal: data.saldoFinal,
                                 totalPeriodo: data.totalPeriodo,
-                                pagado: data.pagado
-                            }   
+                                liquidado: data.liquidado,
+                                isValidado: data.isValidado
+                            } as Periodo
                         }));
                     });
                 }catch(error){

@@ -1,5 +1,5 @@
 export interface Movimiento {
-    id?: string,
+    id: string,
     fecha: Date,
     cantidad: number,
     motivo: string,
