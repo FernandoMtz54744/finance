@@ -8,18 +8,14 @@ import PagosRecurrentes from '@/pages/pagosRecurrentes/PagosRecurrentes';
 import { Pago } from '@/interfaces/Pago';
 import { DateTime } from 'luxon';
 import * as Utils from "@/utils/utils"
-import { BitacoraPago } from '@/interfaces/BitacoraPago';
+import { BitacoraPagoAdd, BitacoraPagoForm } from '@/interfaces/forms/BitacoraPagoForm';
 
 export default function PagosRecurrentesContainer() {
   const params= useParams();
   const [pagos, setPagos] = useState<Pago[]>([]);
   // Bitácora
   const [visible, setVisible] = useState<boolean>(false);
-  const [formBitacora, setFormBitacora] = useState<BitacoraPago>({
-    idPago: "",
-    comentario: "",
-    fecha: DateTime.local().toJSDate()
-  });
+
   const pagoSeleccionado = useRef<Pago | null>(null);
   
   useEffect(()=>{
@@ -70,19 +66,19 @@ export default function PagosRecurrentesContainer() {
     } 
   }
 
-  const updateBitacora = async (e: any)=>{
-    e.preventDefault();
+  const onSubmitBitacora = async (data: BitacoraPagoForm)=>{
     try{
-      const data: BitacoraPago = {
-        idPago: pagoSeleccionado.current?.id!,
-        comentario: formBitacora.comentario,
-        fecha: formBitacora.fecha
+      console.log(data);
+      if(!pagoSeleccionado.current?.id){
+        toast.error("No se pudo obtener el id del pago seleccionado");
+        return
       }
-      if(!validaBitacora(data)){
-        toast.error("Ingrese los datos de la bitácora");
-        return;
+      const bitacoraPagoAdd: BitacoraPagoAdd = {
+        idPago: pagoSeleccionado.current?.id,
+        comentario: data.comentario,
+        fecha: data.fecha
       }
-      await addDoc(collection(db, "BitacoraPagos"), data);
+      await addDoc(collection(db, "BitacoraPagos"), bitacoraPagoAdd);
       toast.success("Se agregó el registro en bitácora");
     }catch(error){
       toast.error("Error al agregar en bitácora el pago");
@@ -97,7 +93,7 @@ export default function PagosRecurrentesContainer() {
       text: "Se detetó que la fecha de pago no coincide con la establecida\n¿Desea actualizar la fecha de hoy como nueva fecha de pago?",
       icon: 'question',
       showCancelButton: true,
-      cancelButtonText: 'Cancelar',
+      cancelButtonText: 'No cambiar',
       confirmButtonText: 'Sí, cambiar'
     });
 
@@ -140,21 +136,12 @@ export default function PagosRecurrentesContainer() {
     return false;
   }
 
-  const validaBitacora = (data: BitacoraPago): boolean =>{
-    if(!data.comentario) return false;
-    if(!data.fecha) return false;
-    if(!data.idPago) return false;
-    return true;
-  }
-
   return (
     <PagosRecurrentes 
       pagos={pagos} 
       actualizaPago={actualizaPago}
       visible={visible}
-      formBitacora={formBitacora}
-      setFormBitacora={setFormBitacora}
-      updateBitacora={updateBitacora}
+      onSubmitBitacora={onSubmitBitacora}
       />
   )
 }

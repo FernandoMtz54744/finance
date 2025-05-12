@@ -14,17 +14,17 @@ import { BitacoraPago } from '@/interfaces/BitacoraPago';
 import { Calendar } from 'primereact/calendar';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '@/firebase/firebase.config';
+import { Controller, useForm } from 'react-hook-form';
+import { BitacoraPagoForm } from '@/interfaces/forms/BitacoraPagoForm';
 
 interface props {
     pagos: Pago[],
     actualizaPago: (pago: Pago) => void
     visible: boolean,
-    formBitacora: BitacoraPago,
-    setFormBitacora: (e: any) => void
-    updateBitacora: (e: any) => void
+    onSubmitBitacora: (e: BitacoraPagoForm)=>void
 } 
 
-export default function PagosRecurrentes({pagos, actualizaPago, visible, formBitacora, setFormBitacora, updateBitacora}: props) {
+export default function PagosRecurrentes({pagos, actualizaPago, visible, onSubmitBitacora }: props) {
     const navigate = useNavigate();
     const cm = useRef<ContextMenu | null>(null);
     const [contextItems, setContextItems] = useState<MenuItem[]>([]);
@@ -40,6 +40,10 @@ export default function PagosRecurrentes({pagos, actualizaPago, visible, formBit
     // Bitácora de pagos
     const [bitacoraVisible, setBitacoraVisible] = useState<boolean>(false);
     const [bitacoraPago, setBitacoraPago] = useState<BitacoraPago[]>([]);
+    const { control, handleSubmit, formState: {errors} } = useForm<BitacoraPagoForm>({defaultValues:{
+        comentario: "",
+        fecha: DateTime.local().toJSDate()
+      }})
 
     const muestraBitacora = async (pago: Pago)=>{
         setBitacoraVisible(true);
@@ -101,24 +105,26 @@ export default function PagosRecurrentes({pagos, actualizaPago, visible, formBit
         
         {/* Modal de formulario para bitácora */}
         <Dialog header="Bitácora" visible={visible} draggable={false} position="center" className="w-1/2" onHide={()=>{}}>
-            <form className="grid grid-cols-12 gap-x-6 p-fluid">
-                <div className='col-span-3 my-6'>
-                    <FloatLabel>
-                        <Calendar name='fecha' value={formBitacora.fecha} showIcon locale='es' dateFormat="dd/M/yy"
-                            onChange={(e) => setFormBitacora({...formBitacora, fecha: e.target.value})}/>
-                        <label htmlFor="fecha">Fecha</label>
+            <form onSubmit={handleSubmit(onSubmitBitacora)} className="grid grid-cols-12 gap-x-6 p-fluid gap-y-6" autoComplete='off'>
+                <FloatLabel  className='col-span-3'>
+                    <Controller name="fecha" control={control} rules={{required: "La fecha es requerida"}} render={({field}) => (
+                        <Calendar showIcon locale='es' dateFormat="dd/M/yy" {...field}/>
+                    )}/>
+                    <label>Fecha</label>
+                </FloatLabel>
+
+                <div className='col-span-9'>
+                    <FloatLabel >
+                        <Controller name="comentario" control={control} rules={{required: "El comentario es requerido"}} render={({field}) => (
+                            <InputText {...field}/>
+                        )}/>
+                        <label>Comentario</label>
                     </FloatLabel>
+                    {errors.comentario && <span className='text-xs text-red-500 ml-2 col-start-4 col-span-9'>{errors.comentario.message}</span>}
                 </div>
-                <div className='col-span-9 my-6'>
-                    <FloatLabel>
-                        <InputText name='comentario' value={formBitacora.comentario} 
-                            onChange={(e) => setFormBitacora({...formBitacora, comentario: e.target.value})}/>
-                        <label htmlFor="comentario">Comentario</label>
-                    </FloatLabel>
-                </div>
-                <div className='col-span-12 mt-4'>
-                    <Button label="Registrar" onClick={updateBitacora}></Button>
-                </div>
+
+
+                <Button className='col-span-12 mt-4' label="Registrar"></Button>
             </form>
         </Dialog>
 

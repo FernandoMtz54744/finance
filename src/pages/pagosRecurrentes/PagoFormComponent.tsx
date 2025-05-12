@@ -9,7 +9,7 @@ import { InputNumber } from 'primereact/inputnumber'
 import { InputText } from 'primereact/inputtext'
 import { ToggleButton } from 'primereact/togglebutton'
 import { Tooltip } from 'primereact/tooltip'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 interface props {
@@ -29,7 +29,8 @@ export default function PagoFormComponent({pago, onSubmit, title}: props) {
         proximoPago: pago?.proximoPago || DateTime.local().plus({months: 1}).toJSDate(),
         diasLimitePago: pago?.diasLimitePago || 0,
         diasAntesNotificacion: pago?.diasAntesNotificacion || 0,
-        auditar: pago?.auditar || false
+        auditar: pago?.auditar || false,
+        ...(pago?.periodicidad === "Personalizada" && { diasPersonalizada: pago.diasPersonalizada })
     }});
 
     useEffect(() =>{
@@ -125,7 +126,7 @@ export default function PagoFormComponent({pago, onSubmit, title}: props) {
                     <div className='col-span-12 md:col-span-5'>
                         <FloatLabel>
                             <Controller name="diasLimitePago" control={control} 
-                                rules={{required: "El día es requerido", min:{value: 1, message: "El día debe ser mayor o igual que 1"}, max:{ value: 31, message: "El día debe ser menor o igual a 31"} }}
+                                rules={{required: "El día es requerido", min:{value: 0, message: "El día debe ser mayor o igual que 0"}, max:{ value: 31, message: "El día debe ser menor o igual a 31"} }}
                                 render={({field}) => (
                                 <InputNumber {...field} onChange={(e) => field.onChange(e.value)} suffix=" días" />
                             )} />

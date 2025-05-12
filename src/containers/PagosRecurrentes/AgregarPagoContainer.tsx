@@ -20,14 +20,14 @@ export default function AgregarPagoContainer() {
       nombre: data.nombre,
       cantidad: data.cantidad,
       periodicidad: data.periodicidad,
-      diasPersonalizada: data.diasPersonalizada, 
       correo: data.correo,
       isPagado: false,
       ultimoPago: data.ultimoPago, 
       proximoPago: data.proximoPago,
       diasLimitePago: data.diasLimitePago, 
       diasAntesNotificacion: data.diasAntesNotificacion,
-      auditar: data.auditar
+      auditar: data.auditar,
+      ...(data.periodicidad === "Personalizada" && { diasPersonalizada: data.diasPersonalizada })
     }
 
     addDoc(collection(db, "PagosRecurrentes"), pago).then(() => {
