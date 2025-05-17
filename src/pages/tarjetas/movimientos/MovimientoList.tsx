@@ -73,7 +73,7 @@ export default function MovimientoList({ periodo, tarjeta, movimientoViewModel, 
         });
 
     if(result.isConfirmed){
-      updateDoc(doc(db, "Periodos", periodo.id), {validado: true}).then(() => {
+      updateDoc(doc(db, "Periodos", periodo.id), {isValidado: true}).then(() => {
         toast.success("Periodo marcado correctamente");
         navigate(-1);
       }).catch((error)=>{
