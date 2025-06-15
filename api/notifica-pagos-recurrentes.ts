@@ -34,7 +34,8 @@ export default async function handler(req: any, res: any){
         const hoy = DateTime.local().startOf("day");
         for(const pago of pagos){
             const fechaPago = DateTime.fromJSDate(pago.proximoPago);
-            if(fechaPago.equals(hoy)){ //Avisa los pagos el mismo día
+            const fechaCargo = DateTime.fromJSDate(pago.ultimoPago); //Considerando que se actualiza ultimoPago como el mismo día
+            if(fechaPago.equals(hoy) || fechaCargo.equals(hoy)){ //Avisa los pagos el mismo día
                 const mensaje = `El día de hoy se debe realizar tu pago recurrente de ${pago.nombre}.
                 No olvides marcarlo como pagado una vez concluido.
                 Cantidad del pago ${Utils.currencyFormat(pago.cantidad)}`

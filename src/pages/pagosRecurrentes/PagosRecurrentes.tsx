@@ -56,7 +56,7 @@ export default function PagosRecurrentes({pagos, actualizaPago, visible, onSubmi
                 comentario: data.comentario, 
                 fecha: data.fecha.toDate(),
             } as BitacoraPago
-        }))
+        }).sort((a, b) => b.fecha.getTime() - a.fecha.getTime()));
     }
     
     return (
@@ -104,16 +104,16 @@ export default function PagosRecurrentes({pagos, actualizaPago, visible, onSubmi
         <ContextMenu model={contextItems} ref={cm}/>
         
         {/* Modal de formulario para bitácora */}
-        <Dialog header="Bitácora" visible={visible} draggable={false} position="center" className="w-1/2" onHide={()=>{}}>
+        <Dialog header="Bitácora" visible={visible} draggable={false} position="center" className="w-100 mx-4 md:w-1/2" onHide={()=>{}}>
             <form onSubmit={handleSubmit(onSubmitBitacora)} className="grid grid-cols-12 gap-x-6 p-fluid gap-y-6" autoComplete='off'>
-                <FloatLabel  className='col-span-3'>
+                <FloatLabel  className='col-span-12 md:col-span-3'>
                     <Controller name="fecha" control={control} rules={{required: "La fecha es requerida"}} render={({field}) => (
                         <Calendar showIcon locale='es' dateFormat="dd/M/yy" {...field}/>
                     )}/>
                     <label>Fecha</label>
                 </FloatLabel>
 
-                <div className='col-span-9'>
+                <div className='col-span-12 md:col-span-9'>
                     <FloatLabel >
                         <Controller name="comentario" control={control} rules={{required: "El comentario es requerido"}} render={({field}) => (
                             <InputText {...field}/>
