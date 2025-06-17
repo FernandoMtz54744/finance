@@ -25,6 +25,7 @@ import Header from './shared/Header';
 import Home from './pages/login/Home';
 import PageNotFound from './shared/PageNotFound';
 import TarjetaList from './pages/tarjetas/TarjetaList';
+import RendimientosContainer from './containers/rendimientos/RendimientosContainer';
 
 /* AGREGA LOCALE DE PRIMEREACT*/
 addLocale('es', {
@@ -65,6 +66,8 @@ function App() {
           <Route path="/editarPago" element={<EditarPagoContainer/>}/>
           <Route path="/efectivo/:idUsuario" element={<EfectivoContainer/>}/>
           <Route path="/profile/:idUsuario" element={<ProfileContainer/>}/>
+          <Route path="/rendimientos/:idUsuario" element={<RendimientosContainer/>}/>
+          
         {/* </Route> */}
 
         {/* RUTA DEFAULT */}

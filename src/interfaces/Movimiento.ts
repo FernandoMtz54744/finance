@@ -3,7 +3,7 @@ export interface Movimiento {
     fecha: Date,
     cantidad: number,
     motivo: string,
-    isEfectivo: boolean,
+    isRendimiento: boolean,
     tipo: string
 }
   

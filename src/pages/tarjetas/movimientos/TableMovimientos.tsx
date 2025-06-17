@@ -1,6 +1,7 @@
 import { Button } from "primereact/button";
 import { Movimiento } from "../../../interfaces/Movimiento";
 import { convertDate, currencyFormat } from "../../../utils/utils";
+import { Tooltip } from "primereact/tooltip";
 
 interface props {
     header: string,
@@ -26,7 +27,12 @@ export default function TableMovimientos({header, movimientos, eliminaMovimiento
                     <tr key={i} className="border-b-1 border-teal-900">
                         <td className="px-4">{convertDate(movimiento.fecha)}</td>
                         <td>{currencyFormat(movimiento.cantidad)}</td>
-                        <td>{movimiento.motivo} {movimiento.isEfectivo && <i className="pi pi-money-bill" style={{ color: '#3e9c35' }}></i>}</td>
+                        <td className="align-middle">
+                            <span className="inline-flex items-center gap-1">{movimiento.motivo} {movimiento.isRendimiento 
+                            && <i className="pi pi-arrow-circle-up text-green-500" data-pr-tooltip="Rendimiento de inversión"></i>}
+                            </span>
+                            <Tooltip target=".pi-arrow-circle-up" />
+                        </td>
                         <td><Button onClick={()=>eliminaMovimiento(movimiento.id)} icon="pi pi-trash" severity="danger" text size="small"/></td>
                     </tr>
                 ))}

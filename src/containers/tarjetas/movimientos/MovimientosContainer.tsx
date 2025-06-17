@@ -30,7 +30,7 @@ export default function MovimientosContainer() {
             id: movimiento.id,
             cantidad: movimiento.cantidad,
             fecha: movimiento.fecha.toDate(),
-            isEfectivo: movimiento.isEfectivo,
+            isRendimiento: movimiento.isRendimiento || false,
             motivo: movimiento.motivo,
             tipo: movimiento.tipo
           })),
@@ -67,7 +67,7 @@ export default function MovimientosContainer() {
       fecha: data.fecha,
       cantidad: Number(Math.abs(data.cantidad)),
       motivo: data.motivo,
-      isEfectivo: data.isEfectivo,
+      isRendimiento: data.isRendimiento || false,
       tipo: data.cantidad < 0 ? "cargo" : "abono"
     }
     setMovimientoViewModel({...movimientoViewModel, movimientos: [...movimientoViewModel.movimientos, movimiento]});
@@ -79,7 +79,7 @@ export default function MovimientosContainer() {
 
   const actualizaMovimientos = async ()=>{
     try{
-      const movimientos = { idPeriodo: periodo.id, movimientos: movimientoViewModel.movimientos}
+      const movimientos = { idPeriodo: periodo.id, movimientos: movimientoViewModel.movimientos, idUsuario: periodo.idUsuario}
       await setDoc(doc(db, "Movimientos", periodo.id), movimientos, {merge: true});
       const data = {
         saldoFinal: movimientoViewModel.total.saldoFinal,

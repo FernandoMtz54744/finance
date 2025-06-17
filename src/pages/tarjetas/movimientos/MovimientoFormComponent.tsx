@@ -21,7 +21,7 @@ export default function MovimientoFormComponent({tarjeta,periodo, onSubmit}: pro
       fecha: periodo.fechaInicio,
       cantidad: 0,
       motivo: '',
-      isEfectivo: false
+      isRendimiento: false
   }});
 
   useEffect(()=>{
@@ -33,7 +33,7 @@ export default function MovimientoFormComponent({tarjeta,periodo, onSubmit}: pro
     if(e.key === 'Enter'){
       if(e.target.type === "checkbox"){
         e.preventDefault()
-        setValue("isEfectivo", !watch("isEfectivo"));   
+        setValue("isRendimiento", !watch("isRendimiento"));   
       }
     }
   }
@@ -64,8 +64,8 @@ export default function MovimientoFormComponent({tarjeta,periodo, onSubmit}: pro
       </div>
     
       <div className='flex flex-row justify-center w-16 center'>
-        <Controller name="isEfectivo" control={control} render={({field}) => (
-          <ToggleButton className='p-inputtext-sm' onLabel="Efectivo" offLabel="Transferencia" onIcon="pi pi-money-bill" offIcon="pi pi-credit-card"
+        <Controller name="isRendimiento" control={control} render={({field}) => (
+          <ToggleButton className='p-inputtext-sm' onLabel="Rendimiento" offLabel="Movimiento" onIcon="pi pi-arrow-circle-up" offIcon="pi pi-arrow-right-arrow-left"
             checked={field.value} onChange={(e) => field.onChange(e.value)} onKeyDown={handleKeyDown}/>
         )}/>
       </div>

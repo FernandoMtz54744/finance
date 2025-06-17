@@ -7,12 +7,14 @@ import { useAuth } from '@/context/AuthContext';
 export default function Header() {
   const { user, loginWIthGoogle, logout } = useAuth();
   const navigate = useNavigate();
+  const context = useAuth();
 
   const navlist = user ? [
     { label: 'Tarjetas', icon: 'pi pi-fw pi-credit-card' , command: ()=> navigate("/")},
     { label: 'Pagos recurrentes', icon: 'pi pi-fw pi-sync', command: ()=> navigate(`/pagosRecurrentes/${user.uid}`) },
     { label: 'Efectivo', icon: 'pi pi-fw pi-money-bill', command: ()=> navigate(`/efectivo/${user.uid}`) },
-    { label: 'Perfil', icon: 'pi pi-fw pi-user', command: ()=> navigate(`/profile/${user.uid}`)}
+    { label: 'Perfil', icon: 'pi pi-fw pi-user', command: ()=> navigate(`/profile/${user.uid}`)},
+    { label: 'Rendimientos', icon: 'pi pi-arrow-circle-up', command: ()=> navigate(`/rendimientos/${user.uid}`, {state:{periodos: context.periodos, tarjetas: context.tarjetas}})}
   ] : []
 
   return (

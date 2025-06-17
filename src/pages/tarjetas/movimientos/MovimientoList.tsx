@@ -22,8 +22,6 @@ import toast from "react-hot-toast";
 import Swal from 'sweetalert2';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '@/firebase/firebase.config';
-import { Controller, useForm } from 'react-hook-form';
-import { MovimientoForm } from '@/interfaces/forms/MovimientoForm';
 
 interface props {
   periodo: Periodo,
