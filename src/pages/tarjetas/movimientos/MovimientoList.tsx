@@ -84,7 +84,7 @@ export default function MovimientoList({ periodo, tarjeta, movimientoViewModel, 
   return (
     <>
       {/* CARGOS & ABONOS */}
-      <div className='flex md:flex-row flex-col justify-between w-full gap-12 px-8 mb-32'>
+      <div className='flex md:flex-row flex-col justify-between w-full gap-12 md:px-8 mb-32'>
         <div className='md:w-1/2'>
           <TableMovimientos 
             movimientos={movimientoViewModel.movimientos.filter(movimiento => movimiento.tipo === "abono").sort((a, b) => a.fecha.getTime()-b.fecha.getTime())}
